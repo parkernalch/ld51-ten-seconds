@@ -11,18 +11,21 @@ public class PlayerController : KinematicBody2D
 	[Export]public int tilesPerSecond;
 	[Export]public float timeToAccelerate;
 	[Export]public float timeToDecelerate;
-	
+
 	private float _accelerationFactor;
 	private float _decelerationFactor;
 	private float _topSpeed;
 	private float _topSpeedSquared;
-	
+
 	private bool _isDashing;
-	[Export]public float dashTime;
-	[Export]public float dashMultiplier;
-	
+	private bool _canDash;
+
+	[Export] public float dashTime;
+	[Export] public float dashCooldown;
+	[Export] public float dashMultiplier;
+
 	private Sprite _sprite;
-		
+
 	public override void _Ready()
 	{
 		_sprite = (Sprite)GetNode("Sprite");
@@ -30,6 +33,7 @@ public class PlayerController : KinematicBody2D
 		_inputDirection = new Vector2(0, 0);
 		_isRunning = false;
 		_isDashing = false;
+		_canDash = true;
 		Assert.True(timeToAccelerate > 0, "acceleration time must be nonzero");
 		Assert.True(timeToDecelerate > 0, "deceleration tme must be nonzero");
 		_topSpeed = tilesPerSecond * tileSize;
@@ -37,7 +41,7 @@ public class PlayerController : KinematicBody2D
 		_accelerationFactor = _topSpeed / (timeToAccelerate * timeToAccelerate);
 		_decelerationFactor = _topSpeed / (timeToDecelerate);
 	}
-	
+
 	public override void _Process(float delta) {
 		_isRunning = Input.IsActionPressed("run");
 		_inputDirection.x = Input.GetActionStrength("move_right") - Input.GetActionStrength("move_left");
@@ -48,15 +52,15 @@ public class PlayerController : KinematicBody2D
 	{
 		if (e.IsActionPressed("dash"))
 		{
-//			InputEventAction a = e as InputEventAction;
-//			GD.Print(a);
-//			if (a.Action == "dash" && a.Pressed)
-//			{
+			//			InputEventAction a = e as InputEventAction;
+			//			GD.Print(a);
+			//			if (a.Action == "dash" && a.Pressed)
+			//			{
 			Dash();
-//			}
+			//			}
 		}
 	}
-	
+
 	public override void _PhysicsProcess(float delta) {
 		int runModifier = _isRunning ? 1 : 2;
 		if (_isDashing)
@@ -67,7 +71,7 @@ public class PlayerController : KinematicBody2D
 			_velocity = MoveAndSlide(ApplyForces(delta, _inputDirection));
 		}
 	}
-	
+
 	public Vector2 ApplyForces(float delta, Vector2 inputDirection) {
 		Vector2 v = _velocity;
 		float v2 = _velocity.LengthSquared();
@@ -95,10 +99,10 @@ public class PlayerController : KinematicBody2D
 		}
 		return v;
 	}
-	
+
 	async public void Dash()
 	{
-		if (_isDashing) return;
+		if (_isDashing || !_canDash) return;
 		_velocity = _inputDirection.Normalized() * _topSpeed * dashMultiplier;
 		_isDashing = true;
 		_sprite.SelfModulate = new Color(1, 1, 1, 0.5f);
@@ -107,5 +111,8 @@ public class PlayerController : KinematicBody2D
 		await ToSignal(GetTree().CreateTimer(dashTime), "timeout");
 		_isDashing = false;
 		_sprite.SelfModulate = new Color(1, 1, 1, 1);
+		_canDash = false;
+		await ToSignal(GetTree().CreateTimer(dashCooldown), "timeout");
+		_canDash = true;
 	}
 }
