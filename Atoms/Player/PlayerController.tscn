@@ -12,6 +12,8 @@ tileSize = 32
 tilesPerSecond = 5
 timeToAccelerate = 0.01
 timeToDecelerate = 0.01
+dashTime = 0.1
+dashMultiplier = 3.0
 
 [node name="Sprite" type="Sprite" parent="."]
 modulate = Color( 0.843137, 0.203922, 0.788235, 1 )
