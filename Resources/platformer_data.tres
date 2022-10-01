@@ -1,0 +1,25 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Resources/platformer_data.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+gravity_up_modifier = 4.0
+gravity_down_modifier = 8.0
+gravity_terminal_velocity = 5.0
+jump_max_height = 9.0
+jump_is_variable = true
+jump_duration = 1.0
+jump_midair_count = 0
+jump_has_air_control = true
+jump_buffer_timeout = 0.2
+jump_coyote_timeout = 0.2
+wall_drag = 0.5
+wall_drag_decay_time = 1.0
+wall_jump_enabled = true
+wall_jump_force = 400.0
+wall_jump_angle = 45.0
+wall_jump_control_timeout = 0.2
+move_acceleration_time = 0.3
+move_deceleration_time = 0.3
+move_top_speed = 14.0
