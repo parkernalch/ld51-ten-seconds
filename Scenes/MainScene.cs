@@ -9,13 +9,13 @@ public class MainScene : Node2D
 {
 	private float time = 0;
 	private PackedScene _projectile;
-	private Player _player;
+	private PlayerController _player;
 
 
 	public override void _Ready()
 	{
 		_projectile = ResourceLoader.Load<PackedScene>("res://Atoms/Projectile/Projectile.tscn");
-		_player = this.FindSingleton<Player>();
+		_player = (PlayerController)this.FindNode("PlayerController");
 	}
 
 	public override void _Process(float delta)
