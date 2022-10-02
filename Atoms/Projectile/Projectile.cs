@@ -9,6 +9,7 @@ public class Projectile : Area2D
 	Vector2 _velocity = Vector2.Zero;
 	Vector2 _acceleration = Vector2.Zero;
 
+	EventBus _eventBus;
 	Node2D _target;
 	private Timer _timer;
 
@@ -19,6 +20,7 @@ public class Projectile : Area2D
 		_velocity = transform.x * Speed;
 		_target = target;
 		_timer.Start(10);
+		_eventBus = GetNode<EventBus>("/root/EventBus");
 	}
 
 	public override void _Ready()
@@ -51,6 +53,7 @@ public class Projectile : Area2D
 	public void OnProjectileBodyEntered(Node body)
 	{
 		// TODO: explode projectile, kill player
+		_eventBus.EmitSignal("missile_connected", this);
 		QueueFree();
 	}
 

@@ -1,0 +1,125 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Assets/Fonts/Silkscreen-Bold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Resources/button_theme.tres" type="Theme" id=2]
+[ext_resource path="res://Assets/Fonts/Silkscreen-Regular.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Scenes/MainMenu.cs" type="Script" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 64
+outline_size = 32
+outline_color = Color( 0.0941176, 0.741176, 0.937255, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 48
+outline_size = 13
+font_data = ExtResource( 3 )
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 4 )
+
+[node name="Label" type="Label" parent="."]
+anchor_right = 1.0
+margin_bottom = 221.0
+custom_fonts/font = SubResource( 1 )
+text = "Objective
+Complete"
+align = 1
+valign = 1
+
+[node name="Label2" type="Label" parent="."]
+anchor_right = 1.0
+margin_left = -11.0
+margin_top = 101.0
+margin_right = -11.0
+margin_bottom = 322.0
+rect_rotation = -11.2073
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "placeholder title"
+align = 1
+valign = 1
+
+[node name="ButtonContainer" type="VBoxContainer" parent="."]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 200.0
+margin_right = -200.0
+
+[node name="PlayButton" type="Button" parent="ButtonContainer"]
+margin_right = 624.0
+margin_bottom = 57.0
+theme = ExtResource( 2 )
+text = "Start the Clock"
+
+[node name="CreditsButton" type="Button" parent="ButtonContainer"]
+margin_top = 61.0
+margin_right = 624.0
+margin_bottom = 118.0
+theme = ExtResource( 2 )
+text = "Show Me The Credits"
+
+[node name="OptionsButton" type="Button" parent="ButtonContainer"]
+margin_top = 122.0
+margin_right = 624.0
+margin_bottom = 179.0
+theme = ExtResource( 2 )
+text = "what are my options?"
+
+[node name="CreditsPanel" type="Panel" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 40.0
+margin_top = 40.0
+margin_right = -40.0
+margin_bottom = -40.0
+
+[node name="Label" type="Label" parent="CreditsPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Here There be Credits"
+align = 1
+valign = 1
+
+[node name="BackButton" type="Button" parent="CreditsPanel"]
+anchor_left = 0.5
+anchor_top = 0.7
+anchor_right = 0.5
+anchor_bottom = 0.7
+margin_left = -51.0
+margin_top = -57.0
+margin_right = 51.0
+theme = ExtResource( 2 )
+text = "<---"
+
+[node name="OptionsPanel" type="Panel" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 40.0
+margin_top = 40.0
+margin_right = -40.0
+margin_bottom = -40.0
+
+[node name="Label" type="Label" parent="OptionsPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Options? We Got 'em"
+align = 1
+valign = 1
+
+[node name="BackButton" type="Button" parent="OptionsPanel"]
+anchor_left = 0.5
+anchor_top = 0.7
+anchor_right = 0.5
+anchor_bottom = 0.7
+margin_left = -51.0
+margin_top = -57.0
+margin_right = 51.0
+theme = ExtResource( 2 )
+text = "<---"
