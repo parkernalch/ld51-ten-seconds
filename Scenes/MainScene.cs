@@ -8,13 +8,15 @@ using JamToolkit.Util;
 public class MainScene : Node2D
 {
 	private float time = 0;
-	private PackedScene _projectile;
 	private PlayerController _player;
+	private Emitter _emitter;
+	private const float Interval = 5f;
+	private int _level = 1;
 
 
 	public override void _Ready()
 	{
-		_projectile = ResourceLoader.Load<PackedScene>("res://Atoms/Projectile/Projectile.tscn");
+		_emitter = this.GetNode<Emitter>("Emitter");
 		_player = (PlayerController)this.FindNode("PlayerController");
 	}
 
@@ -22,12 +24,21 @@ public class MainScene : Node2D
 	{
 		time += delta;
 
-		if (time > 10)
+		if (time > Interval)
 		{
-			time -= 10;
-			var bullet = _projectile.Instance<Projectile>();
-			this.AddChild(bullet);
-			bullet.Start(this.Transform, _player);
+			time -= Interval;
+
+			// if (_level % 2 == 0)
+			// {
+			// 	_emitter.Clear();
+			// }
+			// else
+			// {
+			_emitter.EmitCoin();
+			// }
+			// _emitter.SprayArcWave(5, Mathf.Pi / 4, Mathf.Pi / 8, _level);
+
+			_level += 1;
 		}
 	}
 }

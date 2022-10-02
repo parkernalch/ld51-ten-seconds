@@ -7,10 +7,10 @@ public class PlayerController : KinematicBody2D
 	private Vector2 _inputDirection;
 	private bool _isRunning;
 	private Vector2 _velocity;
-	[Export]public int tileSize;
-	[Export]public int tilesPerSecond;
-	[Export]public float timeToAccelerate;
-	[Export]public float timeToDecelerate;
+	[Export] public int tileSize;
+	[Export] public int tilesPerSecond;
+	[Export] public float timeToAccelerate;
+	[Export] public float timeToDecelerate;
 
 	private float _accelerationFactor;
 	private float _decelerationFactor;
@@ -85,7 +85,7 @@ public class PlayerController : KinematicBody2D
 			) {
 				return v * 0;
 			}
-		} else 
+		} else
 		{
 			// accelerate
 			v += inputDirection.Normalized() * _accelerationFactor * delta;

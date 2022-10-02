@@ -1,27 +1,56 @@
+using System;
+using System.Drawing.Drawing2D;
 using Godot;
 using JamToolkit.Util;
 
 public class Projectile : Area2D
 {
-	[Export] public float Speed { get; set; } = 350;
 	[Export] public float SteerForce { get; set; } = 50;
-
-	Vector2 _velocity = Vector2.Zero;
-	Vector2 _acceleration = Vector2.Zero;
 
 	EventBus _eventBus;
 	Node2D _target;
 	private Timer _timer;
+	[Export] public float Speed { get; set; } = 350;
+	[Export] public Vector2 Velocity { get; set; } = Vector2.Zero;
+	[Export] public Vector2 Acceleration { get; set; } = Vector2.Zero;
 
-	public void Start(Transform2D transform, Node2D target)
+
+	/// <summary>
+	/// Send the projectile from the <paramref name="origin"/> facing the initial
+	/// <paramref name="direction"/> specified. If a <paramref name="target"/> is
+	/// specified, home into that location over time.
+	/// </summary>
+	/// <param name="origin"></param>
+	/// <param name="direction"></param>
+	/// <param name="target"></param>
+	public void Start(Transform2D origin, float direction, Node2D target = null) =>
+		Start(origin, new Vector2(Mathf.Cos(direction), Mathf.Sin(direction)), target);
+
+	/// <summary>
+	/// Send the projectile from the <paramref name="origin"/> facing the initial
+	/// <paramref name="direction"/> specified. If a <paramref name="target"/> is
+	/// specified, home into that location over time.
+	/// </summary>
+	/// <param name="origin"></param>
+	/// <param name="direction"></param>
+	/// <param name="target"></param>
+	public void Start(Transform2D origin, Vector2 direction, Node2D target = null)
 	{
-		GlobalTransform = transform;
+		GlobalTransform = origin;
 		Rotation += (float)GD.RandRange(-0.09f, 0.09f);
-		_velocity = transform.x * Speed;
+		Velocity = direction.Normalized() * Speed;
 		_target = target;
-		_timer.Start(10);
+		_timer.Start(10); // missile dies after 10 seconds
 		_eventBus = GetNode<EventBus>("/root/EventBus");
 	}
+
+	/// <summary>
+	/// Send the projectile from the <paramref name="origin"/> facing down
+	/// </summary>
+	/// <param name="origin"></param>
+	/// <param name="direction"></param>
+	/// <param name="target"></param>
+	public void Start(Transform2D origin) => Start(origin, Vector2.Down);
 
 	public override void _Ready()
 	{
@@ -47,12 +76,12 @@ public class Projectile : Area2D
 		var desired = (_target.Position - Position).Normalized() * Speed;
 
 		// minus current velocity vector to get our course correction
-		return (desired - _velocity).Normalized() * SteerForce;
+		return (desired - Velocity).Normalized() * SteerForce;
 	}
 
-	public void OnProjectileBodyEntered(Node body)
+	void OnProjectileBodyEntered(Node body)
 	{
-		// TODO: explode projectile, kill player
+		// TODO: explode projectile
 		_eventBus.EmitSignal("missile_connected", this);
 		QueueFree();
 	}
@@ -68,11 +97,11 @@ public class Projectile : Area2D
 	public override void _PhysicsProcess(float delta)
 	{
 		// update acc vector to home in on target
-		_acceleration += Seek();
+		Acceleration += Seek();
 		// regular physics calculation
-		_velocity += _acceleration * delta;
-		_velocity = _velocity.LimitLength(Speed);
-		Rotation = _velocity.Angle();
-		Position += _velocity * delta;
+		Velocity += Acceleration * delta;
+		Velocity = Velocity.LimitLength(Speed); // cap our max velocity
+		Rotation = Velocity.Angle();
+		Position += Velocity * delta;
 	}
 }

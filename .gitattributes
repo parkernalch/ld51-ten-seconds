@@ -1,0 +1,4 @@
+* text=auto
+
+*.godot text eol=lf
+*.tres text eol=lf

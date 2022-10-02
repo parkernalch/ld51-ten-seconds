@@ -82,5 +82,15 @@ namespace JamToolkit.Util
 
         public static T FindChild<T>(this Node node, Predicate<T> predicate) where T : Node =>
             node.FindChild(child => child is T t && predicate(t)) as T;
+
+        public static void RemoveChildren<T>(this Node node) where T : Node
+        {
+	        while (true)
+	        {
+		        var proj = node.FindChild<T>();
+		        if (proj == null) break;
+		        node.RemoveChild(proj);
+	        }
+        }
     }
 }
