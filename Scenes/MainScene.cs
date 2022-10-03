@@ -7,16 +7,22 @@ using JamToolkit.Util;
 /// </summary>
 public class MainScene : Node2D
 {
+	EventBus _eventBus;
 	private float time = 0;
 	private PlayerController _player;
 	private Emitter _emitter;
 	private const float Interval = 5f;
 	private int _level = 1;
+
 	public override void _Ready()
 	{
+		_eventBus = GetNode<EventBus>("/root/EventBus");
 		_emitter = this.GetNode<Emitter>("Emitter");
 		_player = (PlayerController)this.FindNode("PlayerController");
+		_eventBus.Connect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
 	}
+
+	void OnCoinCollected(Coin coin) => GD.Print("Got a COIN!");
 
 	public override void _Process(float delta)
 	{

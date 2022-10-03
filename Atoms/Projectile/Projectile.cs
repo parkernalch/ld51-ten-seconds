@@ -86,7 +86,7 @@ public class Projectile : Area2D
 	void OnProjectileBodyEntered(Node body)
 	{
 		// TODO: explode projectile
-		_eventBus.EmitSignal(nameof(EventBus.MissileConnected), this);
+		_eventBus.ConnectMissile(this);
 		QueueFree();
 	}
 
