@@ -85,6 +85,10 @@ dash={
  ]
 }
 
+[mono]
+
+project/assembly_name="TenSeconds"
+
 [physics]
 
 common/enable_pause_aware_picking=true

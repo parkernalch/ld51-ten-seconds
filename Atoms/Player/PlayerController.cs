@@ -6,6 +6,7 @@ public class PlayerController : KinematicBody2D
 {
 	private Vector2 _inputDirection;
 	private bool _isRunning;
+	private AnimationNodeStateMachinePlayback _stateMachine;
 	private Vector2 _velocity;
 	[Export] public int tileSize;
 	[Export] public int tilesPerSecond;
@@ -63,6 +64,7 @@ public class PlayerController : KinematicBody2D
 
 	public override void _PhysicsProcess(float delta) {
 		int runModifier = _isRunning ? 1 : 2;
+		AnimatePlayer();
 		if (_isDashing)
 		{
 			_velocity = MoveAndSlide(_velocity);
@@ -70,6 +72,25 @@ public class PlayerController : KinematicBody2D
 		{
 			_velocity = MoveAndSlide(ApplyForces(delta, _inputDirection));
 		}
+	}
+	
+	public void AnimatePlayer() {
+		var _animationTree = (AnimationTree)GetNode("AnimationTree");
+		_stateMachine = (AnimationNodeStateMachinePlayback)_animationTree.Get("parameters/playback");
+		if (_velocity.LengthSquared() == 0)
+		{
+			_stateMachine.Travel("Idle");
+		} else
+		{
+			if (_isDashing)
+			{
+				_stateMachine.Travel("Dash");	
+			} else {
+				_stateMachine.Travel("Run");	
+			}
+		}
+		_animationTree.Set("parameters/Idle/blend_position", _velocity);
+		_animationTree.Set("parameters/Run/blend_position", _velocity);
 	}
 
 	public Vector2 ApplyForces(float delta, Vector2 inputDirection) {
