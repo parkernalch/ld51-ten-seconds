@@ -9,6 +9,7 @@ public class Projectile : Area2D
 
 	EventBus _eventBus;
 	Node2D _target;
+	VisibilityNotifier2D _visibilityNotifier2D;
 	private Timer _timer;
 	[Export] public float Speed { get; set; } = 350;
 	[Export] public Vector2 Velocity { get; set; } = Vector2.Zero;
@@ -54,8 +55,10 @@ public class Projectile : Area2D
 
 	public override void _Ready()
 	{
+		_visibilityNotifier2D = this.FindChildByName<VisibilityNotifier2D>("VisibilityNotifier2D");
 		_timer = this.FindChildByName<Timer>("Lifetime");
 
+		_visibilityNotifier2D.Connect("screen_exited", this, nameof(OnLifetimeTimeout));
 		Connect("body_entered", this, nameof(OnProjectileBodyEntered));
 		_timer.Connect("timeout", this, nameof(OnLifetimeTimeout));
 		_timer.Connect("tree_exiting", this, nameof(OnLifetimeExitingTree));
@@ -70,7 +73,8 @@ public class Projectile : Area2D
 
 	Vector2 Seek()
 	{
-		if (_target == null) return Vector2.Zero;
+		if (_target == null)
+			return Vector2.Zero;
 
 		// desired vector
 		var desired = (_target.Position - Position).Normalized() * Speed;
