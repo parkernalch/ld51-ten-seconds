@@ -505,7 +505,6 @@ dashMultiplier = 3.0
 texture = ExtResource( 2 )
 hframes = 8
 vframes = 9
-frame = 48
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
