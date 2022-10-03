@@ -29,7 +29,7 @@ public class Emitter : Node2D
 	/// <param name="count"></param>
 	/// <param name="fromRotation">The starting angle for the first projectile</param>
 	/// <param name="toRotation">The ending angle for the last projectile</param>
-	async public void SprayProjectiles(int count, float fromRotation, float toRotation, float delay)
+	public async void SprayProjectiles(int count, float fromRotation, float toRotation, float delay)
 	{
 		if (fromRotation > toRotation)
 		{

@@ -4,11 +4,14 @@ using System;
 public class EventBus : Node
 {
 	[Signal]
-	delegate void CoinCollected(Coin coin);
+	public delegate void CoinCollected(Coin coin);
+
 	[Signal]
-	delegate void KeyObtained(Node key);
+	public delegate void KeyObtained(Node key);
+
 	[Signal]
-	delegate void ChestOpened(Node chest);
+	public delegate void ChestOpened(Node chest);
+
 	[Signal]
-	delegate void MissileCnnectedo(Projectile missile);
+	public delegate void MissileConnected(Projectile missile);
 }

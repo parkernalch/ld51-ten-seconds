@@ -35,13 +35,11 @@ public class Coin : Area2D
 		_eventBus = GetNode<EventBus>("/root/EventBus");
 	}
 
-	private void OnTweenPosition(Vector2 position) => Position = position;
-
 	private void OnCoinBodyEntered(Node body)
 	{
 		if (!Collectable) return;
 
-		_eventBus.EmitSignal("coin_collected", this);
+		_eventBus.EmitSignal(nameof(EventBus.CoinCollected), this);
 		QueueFree();
 	}
 
