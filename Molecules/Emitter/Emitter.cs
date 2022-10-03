@@ -29,7 +29,7 @@ public class Emitter : Node2D
 	/// <param name="count"></param>
 	/// <param name="fromRotation">The starting angle for the first projectile</param>
 	/// <param name="toRotation">The ending angle for the last projectile</param>
-	public void SprayProjectiles(int count, float fromRotation, float toRotation)
+	async public void SprayProjectiles(int count, float fromRotation, float toRotation, float delay)
 	{
 		if (fromRotation > toRotation)
 		{
@@ -41,6 +41,8 @@ public class Emitter : Node2D
 		for (var angle = fromRotation; angle < toRotation; angle += delta)
 		{
 			EmitProjectile(false, CircleClamp(angle));
+
+			await ToSignal(GetTree().CreateTimer(delay), "timeout");
 		}
 	}
 
@@ -53,11 +55,11 @@ public class Emitter : Node2D
 	/// <param name="arcWidth">width of the arc in radians</param>
 	/// <param name="rotationPerStep">the offset per step in radians</param>
 	/// <param name="step">arbitrary number in an increasing sequence</param>
-	public void SprayArcWave(int count, float arcWidth, float rotationPerStep, int step)
+	public void SprayArcWave(int count, float arcWidth, float rotationPerStep, int step, float delay)
 	{
 		var rotationOffset = rotationPerStep * step;
 
-		SprayProjectiles(count, rotationOffset + 0, rotationOffset + arcWidth);
+		SprayProjectiles(count, rotationOffset + 0, rotationOffset + arcWidth, delay);
 	}
 
 	private float CircleClamp(float value) => value % TwoPi;

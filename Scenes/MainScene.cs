@@ -12,8 +12,6 @@ public class MainScene : Node2D
 	private Emitter _emitter;
 	private const float Interval = 5f;
 	private int _level = 1;
-
-
 	public override void _Ready()
 	{
 		_emitter = this.GetNode<Emitter>("Emitter");
@@ -36,7 +34,12 @@ public class MainScene : Node2D
 			// {
 			_emitter.EmitCoin();
 			// }
-			// _emitter.SprayArcWave(5, Mathf.Pi / 4, Mathf.Pi / 8, _level);
+
+			// normal arc spray
+			_emitter.SprayArcWave(5, Mathf.Pi / 4, Mathf.Pi / 8, _level, 0);
+
+			// sprinkler spray
+			_emitter.SprayArcWave(10, Mathf.Pi / 2, Mathf.Pi / 4, 1, .2f);
 
 			_level += 1;
 		}
