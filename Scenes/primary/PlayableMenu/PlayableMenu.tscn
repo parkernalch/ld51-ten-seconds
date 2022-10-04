@@ -1,0 +1,89 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Resources/simple_tileset.tres" type="TileSet" id=1]
+[ext_resource path="res://Assets/Fonts/Silkscreen-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Atoms/Player/PlayerController.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/primary/PlayableMenu/PlayableMenu.cs" type="Script" id=4]
+[ext_resource path="res://Atoms/SceneTrigger/SceneTrigger.tscn" type="PackedScene" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+size = 34
+font_data = ExtResource( 2 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 16, 40 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 16, 40 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 70, 16 )
+
+[node name="PlayableMenu" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CreditsLabel" type="Label" parent="CanvasLayer"]
+margin_left = 14.0
+margin_top = 266.0
+margin_right = 274.0
+margin_bottom = 311.0
+custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "<--- Credits"
+
+[node name="OptionsLabel" type="Label" parent="CanvasLayer"]
+margin_left = 727.0
+margin_top = 266.0
+margin_right = 1017.0
+margin_bottom = 311.0
+custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "Options ---->"
+
+[node name="StartLabel" type="Label" parent="CanvasLayer"]
+margin_left = 480.0
+margin_top = -5.0
+margin_right = 600.0
+margin_bottom = 232.0
+custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "^
+|
+|
+|
+START"
+align = 1
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 32, 32 )
+cell_custom_transform = Transform2D( 32, 0, 0, 32, 0, 0 )
+cell_y_sort = true
+format = 1
+tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 12, 0, 0, 13, 0, 0, 14, 0, 0, 19, 0, 0, 20, 0, 0, 21, 0, 0, 22, 0, 0, 23, 0, 0, 24, 0, 0, 25, 0, 0, 26, 0, 0, 27, 0, 0, 28, 0, 0, 29, 0, 0, 30, 0, 0, 31, 0, 0, 65536, 0, 0, 65550, 1, 0, 65555, 1, 0, 65567, 0, 0, 131072, 0, 0, 131086, 1, 0, 131091, 1, 0, 131103, 0, 0, 196608, 0, 0, 196622, 1, 0, 196623, 1, 0, 196624, 1, 0, 196625, 1, 0, 196626, 1, 0, 196627, 1, 0, 196639, 0, 0, 262144, 0, 0, 262175, 0, 0, 327680, 0, 0, 327711, 0, 0, 393216, 0, 0, 393247, 0, 0, 458752, 0, 0, 458783, 0, 0, 655360, 0, 0, 655391, 0, 0, 720896, 0, 0, 720927, 0, 0, 786432, 0, 0, 786463, 0, 0, 851968, 0, 0, 851999, 0, 0, 917504, 0, 0, 917535, 0, 0, 983040, 0, 0, 983071, 0, 0, 1048576, 0, 0, 1048607, 0, 0, 1114112, 0, 0, 1114143, 0, 0, 1179648, 0, 0, 1179649, 0, 0, 1179650, 0, 0, 1179651, 0, 0, 1179652, 0, 0, 1179653, 0, 0, 1179654, 0, 0, 1179655, 0, 0, 1179656, 0, 0, 1179657, 0, 0, 1179658, 0, 0, 1179659, 0, 0, 1179660, 0, 0, 1179661, 0, 0, 1179662, 0, 0, 1179663, 0, 0, 1179664, 0, 0, 1179665, 0, 0, 1179666, 0, 0, 1179667, 0, 0, 1179668, 0, 0, 1179669, 0, 0, 1179670, 0, 0, 1179671, 0, 0, 1179672, 0, 0, 1179673, 0, 0, 1179674, 0, 0, 1179675, 0, 0, 1179676, 0, 0, 1179677, 0, 0, 1179678, 0, 0, 1179679, 0, 0 )
+
+[node name="PlayerController" parent="TileMap" instance=ExtResource( 3 )]
+position = Vector2( 542, 476 )
+
+[node name="OptionsTrigger" parent="." instance=ExtResource( 5 )]
+position = Vector2( 1030, 284 )
+targetScene = "Options"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OptionsTrigger"]
+shape = SubResource( 3 )
+
+[node name="CreditsTrigger" parent="." instance=ExtResource( 5 )]
+position = Vector2( -8, 287 )
+targetScene = "Credits"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CreditsTrigger"]
+shape = SubResource( 2 )
+
+[node name="GameTrigger" parent="." instance=ExtResource( 5 )]
+position = Vector2( 544, -6 )
+targetScene = "StartGame"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GameTrigger"]
+shape = SubResource( 4 )

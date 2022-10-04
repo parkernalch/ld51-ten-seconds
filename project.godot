@@ -27,12 +27,14 @@ _global_script_class_icons={
 [application]
 
 config/name="TenSeconds"
-run/main_scene="res://Scenes/main_scene.tscn"
+run/main_scene="res://Scenes/primary/PlayableMenu/PlayableMenu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 EventBus="*res://Scripts/EventBus.cs"
+GameManager="*res://Scripts/GameManager.cs"
+SceneManager="*res://Scripts/SceneManager.cs"
 
 [display]
 

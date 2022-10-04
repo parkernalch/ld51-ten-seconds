@@ -26,4 +26,15 @@ public class EventBus : Node
 
 	public void ConnectMissile(Projectile projectile) => this.EmitSignal(nameof(EventBus.MissileConnected), projectile);
 
+	[Signal]
+	public delegate void ObjectiveCompleted();
+	public void CompleteObjective() => this.EmitSignal(nameof(EventBus.ObjectiveCompleted));
+
+	[Signal]
+	public delegate void ObjectiveFailed();
+	public void FailObjective() => this.EmitSignal(nameof(EventBus.ObjectiveFailed));
+
+	[Signal]
+	public delegate void CountdownEnded();
+	public void EndCountdown() => this.EmitSignal(nameof(EventBus.CountdownEnded));
 }

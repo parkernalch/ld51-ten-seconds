@@ -3,7 +3,6 @@ using System;
 
 public class MainMenu : Control
 {
-	PackedScene gameScene;
 	Panel creditsPanel;
 	Panel optionsPanel;
 	
@@ -13,7 +12,6 @@ public class MainMenu : Control
 	
 	public override void _Ready()
 	{
-		gameScene = ResourceLoader.Load<PackedScene>("res://Scenes/main_scene.tscn");
 		playButton = this.GetNode<Button>("ButtonContainer/PlayButton");
 		creditsButton = this.GetNode<Button>("ButtonContainer/CreditsButton");
 		optionsButton = this.GetNode<Button>("ButtonContainer/OptionsButton");
@@ -38,7 +36,7 @@ public class MainMenu : Control
 	
 	private void OnPlayButtonPressed()
 	{
-		GetTree().ChangeSceneTo(gameScene);
+		this.GetNode<SceneManager>("/root/SceneManager").GoToGame();
 	}
 	
 	private void OnCreditsButtonPressed()

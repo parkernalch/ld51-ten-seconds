@@ -8,10 +8,11 @@ public class Emitter : Node2D
 	private PlayerController _player;
 	const float TwoPi = Mathf.Pi * 2;
 
-	public override void _Ready()
+	public async override void _Ready()
 	{
 		_projectile = ResourceLoader.Load<PackedScene>("res://Atoms/Projectile/Projectile.tscn");
 		_coin = ResourceLoader.Load<PackedScene>("res://Atoms/Coin/Coin.tscn");
+		await ToSignal(GetTree(), "idle_frame");
 		_player = this.FindSingleton<PlayerController>();
 	}
 
