@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Assets/Runes/ring.png" type="Texture" id=1]
+[ext_resource path="res://Resources/radial_wipe_shader.gdshader" type="Shader" id=2]
+[ext_resource path="res://Atoms/Rune/RuneRing.cs" type="Script" id=3]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 2 )
+shader_param/fill_ratio = 1.0
+shader_param/start_angle = 180.0
+shader_param/max_angle = 360.0
+shader_param/invert_fill = false
+shader_param/reflect_x = false
+shader_param/reflect_y = false
+shader_param/offset = Vector2( 0, 0 )
+
+[node name="RuneRing" type="Sprite"]
+material = SubResource( 1 )
+texture = ExtResource( 1 )
+script = ExtResource( 3 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true

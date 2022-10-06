@@ -496,15 +496,17 @@ collision_mask = 3
 script = ExtResource( 1 )
 tileSize = 32
 tilesPerSecond = 5
-timeToAccelerate = 0.01
-timeToDecelerate = 0.01
-dashTime = 0.1
-dashMultiplier = 3.0
+timeToAccelerate = 0.1
+timeToDecelerate = 0.1
+dashTime = 0.2
+dashCooldown = 0.5
+dashMultiplier = 2.0
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
 hframes = 8
 vframes = 9
+frame = 7
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false

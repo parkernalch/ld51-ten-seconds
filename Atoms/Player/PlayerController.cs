@@ -54,6 +54,11 @@ public class PlayerController : KinematicBody2D
 
 		_eventBus.Connect(nameof(EventBus.MissileConnected), this, nameof(OnMissileHit));
 	}
+	
+	public bool IsVulnerable()
+	{
+		return !_isDashing;
+	}
 
 	public override void _Process(float delta)
 	{
@@ -167,8 +172,6 @@ public class PlayerController : KinematicBody2D
 		_velocity = _inputDirection.Normalized() * _topSpeed * dashMultiplier;
 		_isDashing = true;
 		_sprite.SelfModulate = new Color(1, 1, 1, 0.5f);
-		// TODO: disable then enable relevant area2Ds that handle interaction with
-		// hazards, missiles, coins, etc. as needed
 		await Delay(dashTime);
 		_isDashing = false;
 		_sprite.SelfModulate = new Color(1, 1, 1);

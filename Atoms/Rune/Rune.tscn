@@ -1,0 +1,29 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Atoms/Rune/Rune.cs" type="Script" id=1]
+[ext_resource path="res://Assets/Runes/key.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Runes/arrow.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Runes/coin.png" type="Texture" id=4]
+[ext_resource path="res://Resources/radial_wipe_shader.gdshader" type="Shader" id=5]
+[ext_resource path="res://Atoms/Rune/RuneRing.tscn" type="PackedScene" id=6]
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 5 )
+shader_param/fill_ratio = 0.0
+shader_param/start_angle = 0.0
+shader_param/max_angle = 360.0
+shader_param/invert_fill = true
+shader_param/reflect_x = false
+shader_param/reflect_y = false
+shader_param/offset = Vector2( 0, 0 )
+
+[node name="Rune" type="Sprite"]
+material = SubResource( 2 )
+texture = ExtResource( 3 )
+script = ExtResource( 1 )
+arrowTexture = ExtResource( 3 )
+keyTexture = ExtResource( 2 )
+coinTexture = ExtResource( 4 )
+
+[node name="RuneRing" parent="." instance=ExtResource( 6 )]
+scale = Vector2( -0.833333, -0.833333 )

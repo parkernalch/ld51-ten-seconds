@@ -88,10 +88,15 @@ public class Projectile : Area2D
 		// TODO: explode projectile
 		if (body is PlayerController)
 		{
-			_eventBus.ConnectMissile(this);
+			if ((body as PlayerController).IsVulnerable())
+			{
+				_eventBus.ConnectMissile(this);
+				QueueFree();
+			}
+		} else 
+		{
+			QueueFree();	
 		}
-
-		QueueFree();
 	}
 
 	void OnLifetimeExitingTree()
