@@ -32,11 +32,15 @@ public class PlayerController : KinematicBody2D
 
 	private Sprite _sprite;
 	private AnimationTree _animationTree;
+	private Tween _tween;
+	private ShaderMaterial _material;
 
 	public override void _Ready()
 	{
 		_eventBus = GetNode<EventBus>("/root/EventBus");
-		_animationTree = this.FindChild<AnimationTree>();
+		_tween = this.GetNode<Tween>();
+		_animationTree = this.GetNode<AnimationTree>();
+		_material = (ShaderMaterial)this.Material;
 		_stateMachine = (AnimationNodeStateMachinePlayback)_animationTree.Get("parameters/playback");
 
 		_sprite = this.FindChild<Sprite>();
@@ -186,10 +190,36 @@ public class PlayerController : KinematicBody2D
 	{
 		if (Health == 0) return;
 
+		PlayShaderDamage();
+
 		Health--;
 		if (Health == 0)
 		{
 			_velocity = Vector2.Zero;
 		}
+	}
+
+	private void PlayShaderDamage()
+	{
+		_tween.StopAll();
+		_tween.InterpolateProperty(
+			_material,
+			"shader_param/flash_modifier",
+			0,
+			1,
+			0.1f,
+			Tween.TransitionType.Sine,
+			Tween.EaseType.Out
+		);
+		_tween.InterpolateProperty(
+			_material,
+			"shader_param/flash_modifier",
+			1,
+			0,
+			0.1f,
+			Tween.TransitionType.Sine,
+			Tween.EaseType.Out
+		);
+		_tween.Start();
 	}
 }

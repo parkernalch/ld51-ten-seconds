@@ -23,6 +23,9 @@ namespace JamToolkit.Util
             }
         }
 
+        public static T GetNode<T>(this Node node) where T: class =>
+	        node.GetNode<T>(typeof(T).Name);
+
         /// <summary>
         /// Find an instance of the type T from the root node
         /// </summary>

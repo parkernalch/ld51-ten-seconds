@@ -1,7 +1,8 @@
-[gd_scene load_steps=54 format=2]
+[gd_scene load_steps=55 format=2]
 
 [ext_resource path="res://Atoms/Player/PlayerController.cs" type="Script" id=1]
 [ext_resource path="res://Assets/characters/adventurer.png" type="Texture" id=2]
+[ext_resource path="res://Materials/Flash.tres" type="Material" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 16, 16 )
@@ -492,6 +493,7 @@ graph_offset = Vector2( 152.04, 38 )
 [sub_resource type="AnimationNodeStateMachinePlayback" id=25]
 
 [node name="PlayerController" type="KinematicBody2D"]
+material = ExtResource( 3 )
 collision_mask = 3
 script = ExtResource( 1 )
 tileSize = 32
@@ -503,6 +505,7 @@ dashCooldown = 0.5
 dashMultiplier = 2.0
 
 [node name="Sprite" type="Sprite" parent="."]
+use_parent_material = true
 texture = ExtResource( 2 )
 hframes = 8
 vframes = 9
@@ -536,3 +539,5 @@ parameters/Die/blend_position = Vector2( 0, 0 )
 parameters/Hurt/blend_position = Vector2( 0, 0 )
 parameters/Idle/blend_position = Vector2( -0.000508368, 1 )
 parameters/Run/blend_position = Vector2( -0.000508368, 0.99241 )
+
+[node name="Tween" type="Tween" parent="."]
