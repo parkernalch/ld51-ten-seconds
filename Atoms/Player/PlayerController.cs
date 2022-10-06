@@ -83,7 +83,7 @@ public class PlayerController : KinematicBody2D
 		if (IsDead) return;
 
 
-		if (e.IsActionPressed("dash"))
+		if (e.IsActionPressed("dash") && IsRunning)
 		{
 			//			InputEventAction a = e as InputEventAction;
 			//			GD.Print(a);
