@@ -37,4 +37,19 @@ public class EventBus : Node
 	[Signal]
 	public delegate void CountdownEnded();
 	public void EndCountdown() => this.EmitSignal(nameof(EventBus.CountdownEnded));
+
+	[Signal]
+	public delegate void LevelCompleted();
+	public void CompleteLevel() => this.EmitSignal(nameof(EventBus.LevelCompleted));
+	
+	[Signal]
+	public delegate void LevelFailed();
+	public void FailLevel() => this.EmitSignal(nameof(EventBus.LevelFailed));
+	
+	[Signal]
+	public delegate void ObjectiveCountChanged(int successful, int failed);
+	public void ChangeObjectiveCount(int success, int fail) => this.EmitSignal(nameof(ObjectiveCountChanged), success, fail);
+
+	[Signal]
+	public delegate void EnteredRoom(int roomIndex);
 }

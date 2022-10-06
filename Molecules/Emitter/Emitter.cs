@@ -7,6 +7,7 @@ public class Emitter : Node2D
 	private PackedScene _coin;
 	private PlayerController _player;
 	const float TwoPi = Mathf.Pi * 2;
+	EventBus _eventBus;
 
 	public async override void _Ready()
 	{

@@ -20,9 +20,20 @@ public class MainScene : Node2D
 		_emitter = this.GetNode<Emitter>("Emitter");
 		_player = (PlayerController)this.FindNode("PlayerController");
 		_eventBus.Connect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
+		_eventBus.Connect(nameof(EventBus.ObjectiveCompleted), this, nameof(OnObjectiveCompleted));
+		_eventBus.Connect(nameof(EventBus.ObjectiveFailed), this, nameof(OnObjectiveFailed));
+		_eventBus.Connect(nameof(EventBus.LevelCompleted), this, nameof(OnLevelCompleted));
 	}
 
 	void OnCoinCollected(Coin coin) => GD.Print("Got a COIN!");
+
+	void OnObjectiveCompleted() => GD.Print("Objective Complete!");
+	void OnObjectiveFailed() => GD.Print("Objective Failed...");
+
+	void OnLevelCompleted()
+	{
+		SetProcess(false);
+	}
 
 	public override void _Process(float delta)
 	{

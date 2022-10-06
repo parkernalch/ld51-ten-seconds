@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Molecules/Emitter/Emitter.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Atoms/Player/PlayerController.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/MainScene.cs" type="Script" id=3]
 [ext_resource path="res://Resources/simple_tileset.tres" type="TileSet" id=4]
+[ext_resource path="res://Atoms/Temp/ObjectiveArea/ObjectiveArea.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Atoms/Rune/Rune.tscn" type="PackedScene" id=6]
 
 [node name="MainScene" type="Node2D"]
@@ -29,3 +30,10 @@ tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 
 self_modulate = Color( 1, 1, 1, 0.392157 )
 position = Vector2( 528, 288 )
 scale = Vector2( 2, 2 )
+
+[node name="SuccessArea" parent="." instance=ExtResource( 5 )]
+position = Vector2( 255, 290 )
+
+[node name="FailureArea" parent="." instance=ExtResource( 5 )]
+position = Vector2( 829, 292 )
+isSuccessArea = false
