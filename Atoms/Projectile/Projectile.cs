@@ -42,7 +42,6 @@ public class Projectile : Area2D
 		Velocity = direction.Normalized() * Speed;
 		_target = target;
 		_timer.Start(10); // missile dies after 10 seconds
-		_eventBus = GetNode<EventBus>("/root/EventBus");
 	}
 
 	/// <summary>
@@ -55,6 +54,7 @@ public class Projectile : Area2D
 
 	public override void _Ready()
 	{
+		_eventBus = GetNode<EventBus>("/root/EventBus");
 		_visibilityNotifier2D = this.FindChildByName<VisibilityNotifier2D>("VisibilityNotifier2D");
 		_timer = this.FindChildByName<Timer>("Lifetime");
 
@@ -62,11 +62,20 @@ public class Projectile : Area2D
 		Connect("body_entered", this, nameof(OnProjectileBodyEntered));
 		_timer.Connect("timeout", this, nameof(OnLifetimeTimeout));
 		_timer.Connect("tree_exiting", this, nameof(OnLifetimeExitingTree));
+		_eventBus.Connect(nameof(EventBus.LevelCompleted), this, nameof(OnLevelCompleted));
+	}
+	
+	private void OnLevelCompleted()
+	{
+		this.QueueFree();
 	}
 
 	protected override void Dispose(bool disposing)
 	{
-		Disconnect("body_entered", this, nameof(OnProjectileBodyEntered));
+		if (IsConnected("body_entered", this, nameof(OnProjectileBodyEntered)))
+		{
+			Disconnect("body_entered", this, nameof(OnProjectileBodyEntered));
+		}
 
 		base.Dispose(disposing);
 	}

@@ -19,6 +19,11 @@ public class SceneManager : Node
 		GetTree().ChangeSceneTo(gameScene);
 	}
 	
+	public void GoToNextLevel()
+	{
+		GetTree().ChangeSceneTo(gameScene);
+	}
+	
 	public void GoToOptions()
 	{
 		GetTree().ChangeSceneTo(optionsScene);

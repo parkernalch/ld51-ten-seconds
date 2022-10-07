@@ -7,7 +7,7 @@ public class GameManager : Node
 	int objectiveCompletedCount;
 	int objectiveFailedCount;
 	
-	int currentRoom = 0;
+	public int currentRoom = 0;
 	
 	int objectivesPerRoom = 5;
 	
@@ -44,7 +44,7 @@ public class GameManager : Node
 		}
 	}
 	
-	void OnEnteredRoom()
+	void OnEnteredRoom(int roomIndex)
 	{
 		currentRoom++;
 		objectiveCompletedCount = 0;

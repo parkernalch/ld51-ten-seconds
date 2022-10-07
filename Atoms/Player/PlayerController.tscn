@@ -4,9 +4,6 @@
 [ext_resource path="res://Assets/characters/adventurer.png" type="Texture" id=2]
 [ext_resource path="res://Materials/Flash.tres" type="Material" id=3]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 16, 16 )
-
 [sub_resource type="Animation" id=2]
 resource_name = "dash down"
 length = 0.25
@@ -492,6 +489,9 @@ graph_offset = Vector2( 152.04, 38 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=25]
 
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 8, 8.75 )
+
 [node name="PlayerController" type="KinematicBody2D"]
 material = ExtResource( 3 )
 collision_mask = 3
@@ -509,11 +509,7 @@ use_parent_material = true
 texture = ExtResource( 2 )
 hframes = 8
 vframes = 9
-frame = 7
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-shape = SubResource( 1 )
+frame = 5
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 reset_on_save = false
@@ -541,3 +537,7 @@ parameters/Idle/blend_position = Vector2( -0.000508368, 1 )
 parameters/Run/blend_position = Vector2( -0.000508368, 0.99241 )
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 4.75 )
+shape = SubResource( 1 )

@@ -52,4 +52,5 @@ public class EventBus : Node
 
 	[Signal]
 	public delegate void EnteredRoom(int roomIndex);
+	public void EnterRoom(int roomIndex) => this.EmitSignal(nameof(EnteredRoom), roomIndex);
 }

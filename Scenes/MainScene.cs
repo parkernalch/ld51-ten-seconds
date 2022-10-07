@@ -13,16 +13,18 @@ public class MainScene : Node2D
 	private Emitter _emitter;
 	private const float Interval = 5f;
 	private int _level = 1;
-
+	// If GameManager.currentLevel > 0, load increasingly difficult Obstacles
 	public override void _Ready()
 	{
 		_eventBus = GetNode<EventBus>("/root/EventBus");
+		GameManager _gameManager = GetNode<GameManager>("/root/GameManager");
 		_emitter = this.GetNode<Emitter>("Emitter");
 		_player = (PlayerController)this.FindNode("PlayerController");
 		_eventBus.Connect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
 		_eventBus.Connect(nameof(EventBus.ObjectiveCompleted), this, nameof(OnObjectiveCompleted));
 		_eventBus.Connect(nameof(EventBus.ObjectiveFailed), this, nameof(OnObjectiveFailed));
 		_eventBus.Connect(nameof(EventBus.LevelCompleted), this, nameof(OnLevelCompleted));
+		_eventBus.EnterRoom(_gameManager.currentRoom);
 	}
 
 	void OnCoinCollected(Coin coin) => GD.Print("Got a COIN!");
