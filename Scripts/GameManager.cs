@@ -13,6 +13,7 @@ public class GameManager : Node
 	
 	EventBus _eventBus;
 	SceneManager _sceneManager;
+	PlayerController _player;
 	
 	public override void _Ready()
 	{
@@ -22,6 +23,17 @@ public class GameManager : Node
 		_eventBus.Connect(nameof(EventBus.ObjectiveCompleted), this, nameof(OnObjectiveCompleted));
 		_eventBus.Connect(nameof(EventBus.ObjectiveFailed), this, nameof(OnObjectiveFailed));
 		_eventBus.Connect(nameof(EventBus.CountdownEnded), this, nameof(OnCountdownEnded));
+		_eventBus.Connect(nameof(EventBus.PlayerChanged), this, nameof(OnPlayerChanged));
+	}
+	
+	void OnPlayerChanged(PlayerController player)
+	{
+		_player = player;
+	}
+	
+	public PlayerController GetPlayer()
+	{
+		return _player;
 	}
 	
 	void OnObjectiveCompleted()

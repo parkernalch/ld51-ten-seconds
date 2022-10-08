@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Molecules/Emitter/Emitter.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Atoms/Player/PlayerController.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Atoms/Temp/ObjectiveArea/ObjectiveArea.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Atoms/Rune/Rune.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Atoms/SceneTrigger/SceneTrigger.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Atoms/CoinBag/CoinBag.tscn" type="PackedScene" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 15, 8 )
@@ -27,7 +28,7 @@ tile_set = ExtResource( 4 )
 cell_quadrant_size = 32
 cell_custom_transform = Transform2D( 32, 0, 0, 32, 0, 0 )
 format = 1
-tile_data = PoolIntArray( 131085, 1610612776, 0, 196618, 1610612773, 0, 196619, 1610612773, 0, 196620, 1610612776, 0, 327683, 1610612776, 0, 327684, 37, 0, 327685, 37, 0, 327700, 2, 0, 393218, 1610612776, 0 )
+tile_data = PoolIntArray( 0, -2147483612, 0, 1, 536870953, 0, 2, 536870953, 0, 3, 536870953, 0, 4, 536870953, 0, 5, 536870953, 0, 6, 536870953, 0, 7, 536870953, 0, 8, 536870965, 0, 9, 536870953, 0, 10, 536870953, 0, 11, 536870953, 0, 12, 536870953, 0, 13, 536870953, 0, 14, 536870953, 0, 15, 536870948, 0, 65536, -2147483607, 0, 65551, -536870871, 0, 131072, -2147483607, 0, 131085, 1610612776, 0, 131087, -536870871, 0, 196608, -2147483607, 0, 196618, 1610612773, 0, 196619, 1610612773, 0, 196620, 1610612776, 0, 196623, -536870871, 0, 262144, -2147483607, 0, 262159, -536870871, 0, 327680, -2147483607, 0, 327683, 1610612776, 0, 327684, 37, 0, 327685, 37, 0, 327695, -536870871, 0, 327700, 2, 0, 393216, -2147483607, 0, 393218, 1610612776, 0, 393231, -536870871, 0, 458752, -2147483607, 0, 458767, -536870871, 0, 524288, 1073741860, 0, 524289, 1073741865, 0, 524290, 1073741865, 0, 524291, 1073741865, 0, 524292, 1073741865, 0, 524293, 1073741865, 0, 524294, 1073741865, 0, 524295, 1073741865, 0, 524296, 1073741877, 0, 524297, 1073741865, 0, 524298, 1073741865, 0, 524299, 1073741865, 0, 524300, 1073741865, 0, 524301, 1073741865, 0, 524302, 1073741865, 0, 524303, -536870876, 0 )
 
 [node name="Emitter" parent="." instance=ExtResource( 1 )]
 position = Vector2( 69, 69 )
@@ -60,3 +61,9 @@ isSuccessArea = false
 [node name="PlayerController" parent="." instance=ExtResource( 2 )]
 position = Vector2( 537, 495 )
 scale = Vector2( 2, 2 )
+
+[node name="CoinBag" parent="." instance=ExtResource( 8 )]
+position = Vector2( 265, 406 )
+
+[node name="CoinBag2" parent="." instance=ExtResource( 8 )]
+position = Vector2( 750, 191 )
