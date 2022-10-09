@@ -68,7 +68,7 @@ public class Projectile : Area2D
 		_timer.Connect("tree_exiting", this, nameof(OnLifetimeExitingTree));
 		_eventBus.Connect(nameof(EventBus.LevelCompleted), this, nameof(OnLevelCompleted));
 	}
-	
+
 	private void OnLevelCompleted()
 	{
 		this.QueueFree();
@@ -99,9 +99,8 @@ public class Projectile : Area2D
 	void OnProjectileBodyEntered(Node body)
 	{
 		// TODO: explode projectile
-		if (body is PlayerController)
+		if (body is PlayerController pc)
 		{
-			PlayerController pc = body as PlayerController;
 			if (pc.IsVulnerable())
 			{
 				_eventBus.ConnectMissile(this);
