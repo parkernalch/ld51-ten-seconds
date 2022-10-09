@@ -58,7 +58,7 @@ public class PlayerController : KinematicBody2D
 
 		_eventBus.Connect(nameof(EventBus.MissileConnected), this, nameof(OnMissileHit));
 	}
-	
+
 	public bool IsVulnerable()
 	{
 		return !_isDashing;
@@ -117,18 +117,22 @@ public class PlayerController : KinematicBody2D
 		}
 		else if (_isDashing)
 		{
-			_stateMachine.Travel("Dash");
+			BlendedTravel("Dash");
 		}
 		else if (IsRunning)
 		{
-			_stateMachine.Travel("Run");;
-			_animationTree.Set("parameters/Run/blend_position", _velocity);
+			BlendedTravel("Run");
 		}
 		else
 		{
-			_stateMachine.Travel("Idle");
-			_animationTree.Set("parameters/Idle/blend_position", _velocity);
+			BlendedTravel("Idle");
 		}
+	}
+
+	private void BlendedTravel(string animation)
+	{
+		_animationTree.Set($"parameters/{animation}/blend_position", _inputDirection.Normalized());
+		_stateMachine.Travel(animation);
 	}
 
 	private bool IsHurt => Health != _lastHealth;

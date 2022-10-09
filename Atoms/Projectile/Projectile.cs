@@ -102,9 +102,10 @@ public class Projectile : Area2D
 				_eventBus.ConnectMissile(this);
 				QueueFree();
 			}
-		} else 
+		}
+		else
 		{
-			QueueFree();	
+			QueueFree();
 		}
 	}
 
