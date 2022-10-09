@@ -41,6 +41,10 @@ public class Projectile : Area2D
 		Rotation += (float)GD.RandRange(-0.09f, 0.09f);
 		Velocity = direction.Normalized() * Speed;
 		_target = target;
+		if (target != null)
+		{
+			GetNode<Trail>("Trail").DefaultColor = new Color(1, 0, 0, 1);
+		}
 		_timer.Start(10); // missile dies after 10 seconds
 	}
 
@@ -127,6 +131,6 @@ public class Projectile : Area2D
 		Velocity += Acceleration * delta;
 		Velocity = Velocity.LimitLength(Speed); // cap our max velocity
 		Rotation = Velocity.Angle();
-		Position += Velocity * delta;
+		GlobalPosition += Velocity * delta;
 	}
 }
