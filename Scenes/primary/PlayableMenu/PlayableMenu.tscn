@@ -1,11 +1,10 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Resources/scribble_tiles.tres" type="TileSet" id=1]
 [ext_resource path="res://Assets/Fonts/Silkscreen-Regular.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Atoms/Player/PlayerController.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/primary/PlayableMenu/PlayableMenu.cs" type="Script" id=4]
 [ext_resource path="res://Atoms/SceneTrigger/SceneTrigger.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Atoms/CoinBag/CoinBag.tscn" type="PackedScene" id=6]
 
 [sub_resource type="DynamicFont" id=1]
 size = 34
@@ -75,7 +74,7 @@ format = 1
 tile_data = PoolIntArray( 0, 42, 0, 1, 41, 0, 2, 41, 0, 3, 41, 0, 4, 41, 0, 5, 41, 0, 6, 41, 0, 7, 39, 0, 9, 536870951, 0, 10, 41, 0, 11, 41, 0, 12, 41, 0, 13, 41, 0, 14, 41, 0, 15, -1610612694, 0, 65536, -1073741783, 0, 65551, -1610612695, 0, 131072, -1073741783, 0, 131087, -1610612695, 0, 196608, -1073741783, 0, 196623, -1610612695, 0, 262144, -2147483596, 0, 262159, -536870860, 0, 327680, -1073741783, 0, 327695, -1610612695, 0, 393216, -1073741783, 0, 393231, -1610612695, 0, 458752, -1073741783, 0, 458767, -1610612695, 0, 524288, -1073741782, 0, 524289, 1610612777, 0, 524290, 1610612777, 0, 524291, 1610612777, 0, 524292, 1610612777, 0, 524293, 1610612777, 0, 524294, 1610612777, 0, 524295, 1610612777, 0, 524296, 1610612777, 0, 524297, 1610612777, 0, 524298, 1610612777, 0, 524299, 1610612777, 0, 524300, 1610612777, 0, 524301, 1610612777, 0, 524302, 1610612777, 0, 524303, 1610612778, 0 )
 
 [node name="PlayerController" parent="." instance=ExtResource( 3 )]
-position = Vector2( 542, 476 )
+position = Vector2( 542, 277 )
 scale = Vector2( 2, 2 )
 tileSize = 64
 tilesPerSecond = 3
@@ -104,6 +103,3 @@ targetScene = "StartGame"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GameTrigger"]
 shape = SubResource( 4 )
-
-[node name="CoinBag" parent="." instance=ExtResource( 6 )]
-position = Vector2( 536, 283 )

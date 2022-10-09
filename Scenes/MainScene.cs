@@ -8,62 +8,47 @@ using JamToolkit.Util;
 public class MainScene : Node2D
 {
 	EventBus _eventBus;
+	Rune _rune;
 	private float time = 0;
 	private PlayerController _player;
-	private Emitter _emitter;
 	private const float Interval = 5f;
 	private int _level = 1;
+	Godot.Collections.Array<Objective> _objectives = new Godot.Collections.Array<Objective>();
+	Objective _currentObjective;
 	// If GameManager.currentLevel > 0, load increasingly difficult Obstacles
 	public override void _Ready()
 	{
+		_rune = GetNode<Rune>("Rune");
 		_eventBus = GetNode<EventBus>("/root/EventBus");
+		foreach(Objective o in GetNode("Objectives").GetChildren())
+		{
+			o.Deactivate();
+			_objectives.Add(o);
+		}
 		GameManager _gameManager = GetNode<GameManager>("/root/GameManager");
-		_emitter = this.GetNode<Emitter>("Emitter");
 		_player = (PlayerController)this.FindNode("PlayerController");
 		_eventBus.LoadPlayer(_player);
-		_eventBus.Connect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
-		_eventBus.Connect(nameof(EventBus.ObjectiveCompleted), this, nameof(OnObjectiveCompleted));
-		_eventBus.Connect(nameof(EventBus.ObjectiveFailed), this, nameof(OnObjectiveFailed));
-		_eventBus.Connect(nameof(EventBus.LevelCompleted), this, nameof(OnLevelCompleted));
+		_eventBus.Connect(nameof(EventBus.CountdownEnded), this, nameof(LoadNextObjective));
 		_eventBus.EnterRoom(_gameManager.currentRoom);
+		LoadNextObjective();
+	}
+	
+	void LoadNextObjective()
+	{
+		if (_currentObjective != null &&_currentObjective.HasMethod(nameof(Objective.Deactivate)))
+		{
+			_currentObjective.Deactivate();
+		}
+		if (_objectives.Count == 0)
+		{
+			GetNode<SceneManager>("/root/SceneManager").GoToMainMenu();
+			return;
+		}
+		_currentObjective = _objectives[0];
+		_objectives.RemoveAt(0);
+		_currentObjective.Activate();
+		_rune.SetObjectiveIcon(_currentObjective.objectiveType);
 	}
 	
 	public PlayerController GetPlayer() => _player;
-
-	void OnCoinCollected(Coin coin) => GD.Print("Got a COIN!");
-
-	void OnObjectiveCompleted() => GD.Print("Objective Complete!");
-	void OnObjectiveFailed() => GD.Print("Objective Failed...");
-
-	void OnLevelCompleted()
-	{
-		SetProcess(false);
-	}
-
-	public override void _Process(float delta)
-	{
-		time += delta;
-
-		if (time > Interval)
-		{
-			time -= Interval;
-
-			// if (_level % 2 == 0)
-			// {
-			// 	_emitter.Clear();
-			// }
-			// else
-			// {
-			_emitter.EmitCoin();
-			// }
-
-			// normal arc spray
-			_emitter.SprayArcWave(5, Mathf.Pi / 4, Mathf.Pi / 8, _level, 0);
-
-			// sprinkler spray
-			_emitter.SprayArcWave(10, Mathf.Pi / 2, Mathf.Pi / 4, 1, .2f);
-
-			_level += 1;
-		}
-	}
 }

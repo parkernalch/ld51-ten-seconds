@@ -39,7 +39,7 @@ public class Coin : Area2D
 	{
 		if (!Collectable) return;
 
-		_eventBus.CollectCoin(this);
+		// _eventBus.CollectCoin(this);
 		QueueFree();
 	}
 
@@ -55,7 +55,7 @@ public class Coin : Area2D
 
 		if (Position == _target.Value)
 		{
-			_eventBus.CreateCoin(this);
+			// _eventBus.CreateCoin(this);
 			Collectable = true;
 		}
 	}

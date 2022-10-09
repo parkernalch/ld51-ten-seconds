@@ -43,7 +43,6 @@ public class Countdown : CenterContainer
 	void Timeout()
 	{
 		var nxt = _random.Next();
-		GD.Print("Timeout", nxt);
 		_eventBus.EndCountdown();
 		if (nxt % 2 == 0)
 		{
@@ -59,7 +58,6 @@ public class Countdown : CenterContainer
 	
 	void FlashSuccess()
 	{
-		GD.Print("Success!");
 		_tween.StopAll();
 		_tween.InterpolateProperty(_label, "self_modulate", new Color(1, 1, 1, 1), new Color(0, 1, 0, 1), 0.2f);
 		_tween.InterpolateProperty(_label, "self_modulate", new Color(0, 1, 0, 1), new Color(1, 1, 1, 1), 0.2f, 0, 0, 0.2f);	
@@ -68,7 +66,6 @@ public class Countdown : CenterContainer
 	
 	void FlashFailure()
 	{
-		GD.Print("Failure");
 		_tween.StopAll();
 		_tween.InterpolateProperty(_label, "self_modulate", new Color(1, 1, 1, 1), new Color(1, 0, 0, 1), 0.2f);
 		_tween.InterpolateProperty(_label, "self_modulate", new Color(1, 0, 0, 1), new Color(1, 1, 1, 1), 0.2f, 0, 0, 0.2f);	

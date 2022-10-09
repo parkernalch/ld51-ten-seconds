@@ -56,7 +56,7 @@ public class PlayerController : KinematicBody2D
 		_accelerationFactor = _topSpeed / (timeToAccelerate * timeToAccelerate);
 		_decelerationFactor = _topSpeed / timeToDecelerate;
 
-		_eventBus.Connect(nameof(EventBus.MissileConnected), this, nameof(OnMissileHit));
+		// _eventBus.Connect(nameof(EventBus.MissileConnected), this, nameof(OnMissileHit));
 	}
 
 	public bool IsVulnerable()
@@ -190,7 +190,7 @@ public class PlayerController : KinematicBody2D
 
 	private SignalAwaiter Delay(float timeSec) => ToSignal(GetTree().CreateTimer(timeSec), "timeout");
 
-	void OnMissileHit(Projectile projectile)
+	public void TakeProjectileDamage(Projectile projectile)
 	{
 		if (Health == 0) return;
 

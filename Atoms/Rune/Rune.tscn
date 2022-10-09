@@ -29,29 +29,57 @@ coinTexture = ExtResource( 4 )
 [node name="RuneRing" parent="." instance=ExtResource( 6 )]
 scale = Vector2( -0.833333, -0.833333 )
 
-[node name="Pips" type="Node2D" parent="."]
+[node name="SuccessPips" type="Node2D" parent="."]
 
-[node name="Pip1" type="Sprite" parent="Pips"]
+[node name="Pip1" type="Sprite" parent="SuccessPips"]
 position = Vector2( 0, -38.6 )
 scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 7 )
 
-[node name="Pip2" type="Sprite" parent="Pips"]
+[node name="Pip2" type="Sprite" parent="SuccessPips"]
 position = Vector2( 20, -38.6 )
 scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 7 )
 
-[node name="Pip3" type="Sprite" parent="Pips"]
+[node name="Pip3" type="Sprite" parent="SuccessPips"]
 position = Vector2( -20, -38.6 )
 scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 7 )
 
-[node name="Pip5" type="Sprite" parent="Pips"]
+[node name="Pip5" type="Sprite" parent="SuccessPips"]
 position = Vector2( -40, -38.6 )
 scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 7 )
 
-[node name="Pip4" type="Sprite" parent="Pips"]
+[node name="Pip4" type="Sprite" parent="SuccessPips"]
 position = Vector2( 40, -38.6 )
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 7 )
+
+[node name="FailurePips" type="Node2D" parent="."]
+modulate = Color( 1, 0, 0, 1 )
+
+[node name="Pip1" type="Sprite" parent="FailurePips"]
+position = Vector2( 0, 40.4 )
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 7 )
+
+[node name="Pip2" type="Sprite" parent="FailurePips"]
+position = Vector2( 20, 40.4 )
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 7 )
+
+[node name="Pip3" type="Sprite" parent="FailurePips"]
+position = Vector2( -20, 40.4 )
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 7 )
+
+[node name="Pip5" type="Sprite" parent="FailurePips"]
+position = Vector2( -40, 40.4 )
+scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 7 )
+
+[node name="Pip4" type="Sprite" parent="FailurePips"]
+position = Vector2( 40, 40.4 )
 scale = Vector2( 0.1, 0.1 )
 texture = ExtResource( 7 )

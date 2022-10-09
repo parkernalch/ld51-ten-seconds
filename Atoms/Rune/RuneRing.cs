@@ -20,7 +20,6 @@ public class RuneRing : Sprite
 	
 	void OnLevelCompleted() 
 	{
-		GD.Print("Got Level Completed");
 		_tween.StopAll();
 		ShaderMaterial mat = Material as ShaderMaterial;
 		mat.SetShaderParam("fill_ratio", 0);
@@ -30,14 +29,12 @@ public class RuneRing : Sprite
 	
 	void OnTimeout()
 	{
-		GD.Print("TIMEOUT");
 		Start();
 		_eventBus.EndCountdown();		
 	}
 	
 	void Start()
 	{
-		GD.Print("Start...");
 		_timer.Start();
 		ShaderMaterial mat = Material as ShaderMaterial;
 		_tween.InterpolateProperty(

@@ -86,7 +86,7 @@ public class Projectile : Area2D
 			return Vector2.Zero;
 
 		// desired vector
-		var desired = (_target.Position - Position).Normalized() * Speed;
+		var desired = (_target.GlobalPosition - GlobalPosition).Normalized() * Speed;
 
 		// minus current velocity vector to get our course correction
 		return (desired - Velocity).Normalized() * SteerForce;
@@ -97,9 +97,11 @@ public class Projectile : Area2D
 		// TODO: explode projectile
 		if (body is PlayerController)
 		{
-			if ((body as PlayerController).IsVulnerable())
+			PlayerController pc = body as PlayerController;
+			if (pc.IsVulnerable())
 			{
 				_eventBus.ConnectMissile(this);
+				pc.TakeProjectileDamage(this);
 				QueueFree();
 			}
 		}

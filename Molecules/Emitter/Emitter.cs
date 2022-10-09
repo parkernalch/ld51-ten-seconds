@@ -1,20 +1,52 @@
 using Godot;
 using JamToolkit.Util;
 
-public class Emitter : Node2D
+public class Emitter : ObjectiveObject
 {
 	private PackedScene _projectile;
-	private PackedScene _coin;
 	private PlayerController _player;
 	const float TwoPi = Mathf.Pi * 2;
 	EventBus _eventBus;
+	[Export]bool homing = false;
+	[Export]float volleyInterval = 1f;
+	Timer _timer;
+	
+	[Export]int missileCount = 0;
+	
+	[Export]int angleMin = 0;
+	float angleMinRad;
+	[Export]int angleMax = 180;
+	float angleMaxRad;
+	bool isActive = false;
 
 	public async override void _Ready()
 	{
+		this.state = ObjectiveObject.OBJECTIVE_STATE.SUCCESS;
+		_eventBus = GetNode<EventBus>("/root/EventBus");
+		_timer = GetNode<Timer>("Timer");
+		_timer.WaitTime = volleyInterval;
+		_timer.Connect("timeout", this, nameof(FireNextWave));
 		_projectile = ResourceLoader.Load<PackedScene>("res://Atoms/Projectile/Projectile.tscn");
-		_coin = ResourceLoader.Load<PackedScene>("res://Atoms/Coin/Coin.tscn");
 		await ToSignal(GetTree(), "idle_frame");
+		_eventBus.Connect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
 		_player = this.FindSingleton<PlayerController>();
+		angleMinRad = Mathf.Deg2Rad(angleMin);
+		angleMaxRad = Mathf.Deg2Rad(angleMax);
+	}
+	
+	void OnMissileConnected(Projectile projectile)
+	{
+		this.NotifyFailure();
+	}
+	
+	private void FireNextWave()
+	{
+		if (!isActive) return;
+		// normal arc spray
+		SprayArcWave(missileCount, angleMaxRad - angleMinRad, Mathf.Pi / 8, 1, 0);
+
+		// sprinkler spray
+		SprayArcWave(missileCount, angleMaxRad - angleMinRad, Mathf.Pi / 8, 1, .2f);
 	}
 
 	public void EmitProjectile(bool homing, float angle)
@@ -42,7 +74,7 @@ public class Emitter : Node2D
 
 		for (var angle = fromRotation; angle < toRotation; angle += delta)
 		{
-			EmitProjectile(false, CircleClamp(angle));
+			EmitProjectile(homing, CircleClamp(angle));
 
 			await ToSignal(GetTree().CreateTimer(delay), "timeout");
 		}
@@ -61,33 +93,32 @@ public class Emitter : Node2D
 	{
 		var rotationOffset = rotationPerStep * step;
 
-		SprayProjectiles(count, rotationOffset + 0, rotationOffset + arcWidth, delay);
+		SprayProjectiles(count, angleMinRad + rotationOffset + 0, angleMinRad + rotationOffset + arcWidth, delay);
 	}
 
 	private float CircleClamp(float value) => value % TwoPi;
 
-	public void EmitCoin()
-	{
-		var coin = _coin.Instance<Coin>();
-		this.AddChild(coin);
-
-		// currently we would want to check this position to verify
-		// there is nothing of interest at that location
-		// can we check the tile map for what the tile in that location is?
-		// if its something we dont want to we guess a new position
-		// if guessing the position has too many failures we may need to collect
-		// all the open positions of the tile map and randomly select one
-		var rect = this.GetViewportRect().Size;
-		var x = (float)GD.RandRange(0, rect.x);
-		var y = (float)GD.RandRange(0, rect.y);
-		var target = new Vector2(x, y);
-
-		coin.Start(this.Transform, target);
-	}
-
 	public void Clear()
 	{
 		this.RemoveChildren<Projectile>();
-		this.RemoveChildren<Coin>();
 	}
+
+	public override ObjectiveObject Disable()
+	{
+		isActive = false;
+		Visible = false;
+		_timer.Stop();
+		_timer.Disconnect("timeout", this, nameof(FireNextWave));
+		return this;
+	}
+	
+	public override void Enable()
+	{
+		isActive = true;
+		Visible = true;
+		_timer.Connect("timeout", this, nameof(FireNextWave));
+		_timer.Start();
+	}
+	
+	
 }

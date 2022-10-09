@@ -3,6 +3,7 @@ using System;
 
 public class SimpleCoin : Sprite
 {
+	EventBus _eventBus;
 	Vector2 velocity;
 	RayCast2D raycast;
 	PlayerController player;
@@ -10,6 +11,7 @@ public class SimpleCoin : Sprite
 	
 	public override void _Ready()
 	{
+		_eventBus = GetNode<EventBus>("/root/EventBus");
 		raycast = GetNode<RayCast2D>("RayCast2D");
 		velocity = new Vector2(0f, 0f);
 		player = GetNode<GameManager>("/root/GameManager").GetPlayer();
@@ -57,7 +59,14 @@ public class SimpleCoin : Sprite
 		if (player == null) return;
 		if ((player.GlobalPosition - this.GlobalPosition).LengthSquared() < 1000f)
 		{
-			QueueFree();
+			Collect();
 		}
+	}
+	
+	async void Collect()
+	{
+		_eventBus.CollectCoin(this);
+		await ToSignal(GetTree(), "idle_frame");
+		QueueFree();
 	}
 }

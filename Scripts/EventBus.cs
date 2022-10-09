@@ -4,14 +4,14 @@ using System;
 public class EventBus : Node
 {
 	[Signal]
-	public delegate void CoinCreated(Coin coin);
+	public delegate void CoinCreated(SimpleCoin coin);
 
-	public void CreateCoin(Coin coin) => this.EmitSignal(nameof(EventBus.CoinCreated), coin);
+	public void CreateCoin(SimpleCoin coin) => this.EmitSignal(nameof(EventBus.CoinCreated), coin);
 
 	[Signal]
-	public delegate void CoinCollected(Coin coin);
+	public delegate void CoinCollected(SimpleCoin coin);
 
-	public void CollectCoin(Coin coin) => this.EmitSignal(nameof(EventBus.CoinCollected), coin);
+	public void CollectCoin(SimpleCoin coin) => this.EmitSignal(nameof(EventBus.CoinCollected), coin);
 
 	[Signal]
 	public delegate void KeyObtained(Node key);
