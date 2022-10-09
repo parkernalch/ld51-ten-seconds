@@ -1,10 +1,12 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Resources/scribble_tiles.tres" type="TileSet" id=1]
 [ext_resource path="res://Assets/Fonts/Silkscreen-Regular.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Atoms/Player/PlayerController.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/primary/PlayableMenu/PlayableMenu.cs" type="Script" id=4]
 [ext_resource path="res://Atoms/SceneTrigger/SceneTrigger.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Atoms/IcePatch/IcePatch.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Atoms/SpiderWeb/SpiderWeb.tscn" type="PackedScene" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 34
@@ -76,6 +78,7 @@ tile_data = PoolIntArray( 0, 42, 0, 1, 41, 0, 2, 41, 0, 3, 41, 0, 4, 41, 0, 5, 4
 [node name="PlayerController" parent="." instance=ExtResource( 3 )]
 position = Vector2( 542, 277 )
 scale = Vector2( 2, 2 )
+z_index = 1
 tileSize = 64
 tilesPerSecond = 3
 timeToAccelerate = 0.2
@@ -103,3 +106,9 @@ targetScene = "StartGame"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GameTrigger"]
 shape = SubResource( 4 )
+
+[node name="SpiderWeb" parent="." instance=ExtResource( 7 )]
+position = Vector2( 647, 290 )
+
+[node name="IcePatch" parent="." instance=ExtResource( 6 )]
+position = Vector2( 443, 372 )

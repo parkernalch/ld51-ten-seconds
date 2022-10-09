@@ -33,7 +33,6 @@ public class PlayerController : KinematicBody2D
 	private AnimationTree _animationTree;
 	private Tween _tween;
 	private ShaderMaterial _material;
-	private CollisionShape2D _collider;
 
 	public override void _Ready()
 	{
@@ -42,7 +41,6 @@ public class PlayerController : KinematicBody2D
 		_animationTree = this.GetNode<AnimationTree>();
 		_material = (ShaderMaterial)Material;
 		_stateMachine = (AnimationNodeStateMachinePlayback)_animationTree.Get("parameters/playback");
-		_collider = this.GetNode<CollisionShape2D>();
 		_sprite = this.GetNode<Sprite>();
 
 		_lastHealth = Health;
@@ -52,11 +50,24 @@ public class PlayerController : KinematicBody2D
 		_canDash = true;
 		Assert.True(timeToAccelerate > 0, "acceleration time must be nonzero");
 		Assert.True(timeToDecelerate > 0, "deceleration time must be nonzero");
-		_topSpeed = tilesPerSecond * tileSize;
-		_accelerationFactor = _topSpeed / (timeToAccelerate * timeToAccelerate);
+		ResetTopSpeed();
 
 		// _eventBus.Connect(nameof(EventBus.MissileConnected), this, nameof(OnMissileHit));
 	}
+
+	public void SetTopSpeed(float speed)
+	{
+		_topSpeed = speed;
+		SetAccelerationFactor(_topSpeed);
+	}
+
+	public void ResetTopSpeed()
+	{
+		_topSpeed = tilesPerSecond * tileSize;
+		SetAccelerationFactor(_topSpeed);
+	}
+
+	private void SetAccelerationFactor(float topSpeed) => _accelerationFactor = topSpeed / (timeToAccelerate * timeToAccelerate);
 
 	public bool IsVulnerable() => !_isDashing;
 

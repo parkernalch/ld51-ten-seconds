@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Godot;
 
 namespace JamToolkit.Util
@@ -50,6 +52,14 @@ namespace JamToolkit.Util
         }
 
         public static Node FindChildByName(this Node node, string name) => node.FindChild(child => child.Name == name);
+
+        public static IEnumerable<Node> EnumerateChildren(this Node node)
+        {
+	        for (var j = 0; j < node.GetChildCount(); j++)
+	        {
+		        yield return node.GetChild(j);
+	        }
+        }
 
         public static Node FindChild(this Node node, Predicate<Node> predicate)
         {
