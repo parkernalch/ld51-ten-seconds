@@ -27,7 +27,7 @@ public class IcePatch : Area2D
 			var effect = pc.FindChild<FrictionEffect>();
 			if (effect == null) return;
 
-			effect.Start();
+			effect.Remove();
 		}
 	}
 }

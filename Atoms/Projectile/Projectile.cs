@@ -140,7 +140,7 @@ public class Projectile : Area2D
 		Velocity = Velocity.LimitLength(Speed); // cap our max velocity
 		Rotation = Velocity.Angle();
 		GlobalPosition += Velocity * delta;
-		_raycast.CastTo = Velocity.Normalized();
+		_raycast.CastTo = Velocity.Normalized() * 4;
 
 		if (_raycast.IsColliding() && _raycast.GetCollider() is TileMap)
 		{
@@ -149,7 +149,7 @@ public class Projectile : Area2D
 			var vCompW = Velocity.Normalized() - vCompU;
 			var newVelocity = Velocity.Length() * (vCompW - vCompU);
 			Velocity = newVelocity;
-			_raycast.CastTo = Velocity.Normalized();
+			_raycast.CastTo = Velocity.Normalized() * 4;
 			Bounces--;
 		}
 	}
