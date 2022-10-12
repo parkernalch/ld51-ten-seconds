@@ -11,9 +11,11 @@ public class Projectile : Area2D
 	Node2D _target;
 	VisibilityNotifier2D _visibilityNotifier2D;
 	private Timer _timer;
+	private RayCast2D _raycast;
 	[Export] public float Speed { get; set; } = 350;
 	[Export] public Vector2 Velocity { get; set; } = Vector2.Zero;
 	[Export] public Vector2 Acceleration { get; set; } = Vector2.Zero;
+	[Export] public int Bounces { get; set; } = 5;
 
 
 	/// <summary>
@@ -40,6 +42,7 @@ public class Projectile : Area2D
 		GlobalTransform = origin;
 		Rotation += (float)GD.RandRange(-0.09f, 0.09f);
 		Velocity = direction.Normalized() * Speed;
+		_raycast.CastTo = direction.Normalized();
 		_target = target;
 		if (target != null)
 		{
@@ -59,6 +62,7 @@ public class Projectile : Area2D
 	public override void _Ready()
 	{
 		_eventBus = GetNode<EventBus>("/root/EventBus");
+		_raycast = GetNode<RayCast2D>("RayCast2D");
 		_visibilityNotifier2D = this.FindChildByName<VisibilityNotifier2D>("VisibilityNotifier2D");
 		_timer = this.FindChildByName<Timer>("Lifetime");
 
@@ -108,7 +112,12 @@ public class Projectile : Area2D
 				QueueFree();
 			}
 		}
-		else
+		else if(_target != null)
+		{
+			// homing arrows die on collision
+			QueueFree();
+		}
+		else if(Bounces == 0)
 		{
 			QueueFree();
 		}
@@ -131,5 +140,17 @@ public class Projectile : Area2D
 		Velocity = Velocity.LimitLength(Speed); // cap our max velocity
 		Rotation = Velocity.Angle();
 		GlobalPosition += Velocity * delta;
+		_raycast.CastTo = Velocity.Normalized();
+
+		if (_raycast.IsColliding() && _raycast.GetCollider() is TileMap)
+		{
+			var norm = _raycast.GetCollisionNormal();
+			var vCompU = norm * Velocity.Normalized().Dot(norm);
+			var vCompW = Velocity.Normalized() - vCompU;
+			var newVelocity = Velocity.Length() * (vCompW - vCompU);
+			Velocity = newVelocity;
+			_raycast.CastTo = Velocity.Normalized();
+			Bounces--;
+		}
 	}
 }

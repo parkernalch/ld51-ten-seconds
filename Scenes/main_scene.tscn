@@ -48,6 +48,9 @@ scale = Vector2( 2, 2 )
 [node name="PlayerController" parent="." instance=ExtResource( 2 )]
 position = Vector2( 537, 495 )
 scale = Vector2( 2, 2 )
+tileSize = 64
+tilesPerSecond = 3
+dashTime = 0.4
 
 [node name="Objectives" type="Node2D" parent="."]
 

@@ -10,16 +10,16 @@ public class Emitter : ObjectiveObject
 	[Export]bool homing = false;
 	[Export]float volleyInterval = 1f;
 	Timer _timer;
-	
+
 	[Export]int missileCount = 0;
-	
+
 	[Export]int angleMin = 0;
 	float angleMinRad;
 	[Export]int angleMax = 180;
 	float angleMaxRad;
 	bool isActive = false;
 
-	public async override void _Ready()
+	public override async void _Ready()
 	{
 		this.state = ObjectiveObject.OBJECTIVE_STATE.SUCCESS;
 		_eventBus = GetNode<EventBus>("/root/EventBus");
@@ -33,12 +33,12 @@ public class Emitter : ObjectiveObject
 		angleMinRad = Mathf.Deg2Rad(angleMin);
 		angleMaxRad = Mathf.Deg2Rad(angleMax);
 	}
-	
+
 	void OnMissileConnected(Projectile projectile)
 	{
 		this.NotifyFailure();
 	}
-	
+
 	private void FireNextWave()
 	{
 		if (!isActive) return;
@@ -111,7 +111,7 @@ public class Emitter : ObjectiveObject
 		_timer.Disconnect("timeout", this, nameof(FireNextWave));
 		return this;
 	}
-	
+
 	public override void Enable()
 	{
 		isActive = true;
@@ -119,6 +119,6 @@ public class Emitter : ObjectiveObject
 		_timer.Connect("timeout", this, nameof(FireNextWave));
 		_timer.Start();
 	}
-	
-	
+
+
 }
