@@ -57,4 +57,8 @@ public class EventBus : Node
 	[Signal]
 	public delegate void PlayerChanged(PlayerController player);
 	public void LoadPlayer(PlayerController player) => this.EmitSignal(nameof(PlayerChanged), player);
+	
+	[Signal]
+	public delegate void CoinCountChanged(int newValue);
+	public void ChangeCoinCount(int newCount) => this.EmitSignal(nameof(CoinCountChanged), newCount);
 }

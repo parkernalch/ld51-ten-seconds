@@ -8,6 +8,7 @@ public class GameManager : Node
 	int objectiveFailedCount;
 	
 	public int currentRoom = 0;
+	public int coinCount = 0;
 	
 	int objectivesPerRoom = 5;
 	
@@ -24,6 +25,7 @@ public class GameManager : Node
 		_eventBus.Connect(nameof(EventBus.ObjectiveFailed), this, nameof(OnObjectiveFailed));
 		_eventBus.Connect(nameof(EventBus.CountdownEnded), this, nameof(OnCountdownEnded));
 		_eventBus.Connect(nameof(EventBus.PlayerChanged), this, nameof(OnPlayerChanged));
+		_eventBus.Connect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
 	}
 	
 	void OnPlayerChanged(PlayerController player)
@@ -58,7 +60,7 @@ public class GameManager : Node
 	
 	void OnEnteredRoom(int roomIndex)
 	{
-		currentRoom++;
+		GD.Print("entered room ", roomIndex);
 		objectiveCompletedCount = 0;
 		objectiveFailedCount = 0;
 	}
@@ -75,13 +77,21 @@ public class GameManager : Node
 		objectiveFailedCount = 0;
 	}
 	
-	private void NextLevel()
+	public void NextLevel()
 	{
+		GD.Print("Next Level");
 		// _sceneManager.LoadNextLevel();
 	}
 	
 	public int GetCurrentDifficulty()
 	{
 		return objectiveCompletedCount + objectiveFailedCount;
+	}
+	
+	public int OnCoinCollected(SimpleCoin coin)
+	{
+		coinCount += coin.value;
+		_eventBus.ChangeCoinCount(coinCount);
+		return coinCount;
 	}
 }

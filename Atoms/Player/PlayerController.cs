@@ -14,6 +14,7 @@ public class PlayerController : KinematicBody2D
 	[Export] public float Friction { get; set; }
 	[Export] public int Health { get; set; } = 10;
 
+	private int _coinValue = 0;
 	private int _lastHealth;
 	private EventBus _eventBus;
 	private AnimationNodeStateMachinePlayback _stateMachine;
@@ -36,6 +37,7 @@ public class PlayerController : KinematicBody2D
 
 	public override void _Ready()
 	{
+		_coinValue = 0;
 		_eventBus = GetNode<EventBus>("/root/EventBus");
 		_tween = this.GetNode<Tween>();
 		_animationTree = this.GetNode<AnimationTree>();
@@ -222,5 +224,26 @@ public class PlayerController : KinematicBody2D
 			Tween.EaseType.Out
 		);
 		_tween.Start();
+	}
+	
+	public int GiveCoin(int value)
+	{
+		_coinValue += value;
+		GD.Print("coins in purse: ", _coinValue);
+		return _coinValue;
+	}
+	
+	public bool PayToll(int toll)
+	{
+		GameManager gm = GetNode<GameManager>("/root/GameManager");
+		int coins = gm.coinCount;
+		GD.Print("Paying toll ", toll, " ", coins);
+		if (gm.coinCount >= toll)
+		{
+			gm.coinCount -= toll;
+			_eventBus.ChangeCoinCount(gm.coinCount);
+			return true;
+		}
+		return false;
 	}
 }

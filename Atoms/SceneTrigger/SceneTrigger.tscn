@@ -3,4 +3,5 @@
 [ext_resource path="res://Atoms/SceneTrigger/SceneTrigger.cs" type="Script" id=1]
 
 [node name="SceneTrigger" type="Area2D"]
+collision_layer = 0
 script = ExtResource( 1 )

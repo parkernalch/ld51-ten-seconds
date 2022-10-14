@@ -3,6 +3,7 @@ using System;
 
 public class SimpleCoin : Sprite
 {
+	public int value = 1;
 	EventBus _eventBus;
 	Vector2 velocity;
 	RayCast2D raycast;
@@ -66,6 +67,7 @@ public class SimpleCoin : Sprite
 	async void Collect()
 	{
 		_eventBus.CollectCoin(this);
+		player.GiveCoin(value);
 		await ToSignal(GetTree(), "idle_frame");
 		QueueFree();
 	}

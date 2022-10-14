@@ -17,7 +17,8 @@ public class TileSystem : TileMap
 		tileLookup.Add(2, ResourceLoader.Load<PackedScene>("res://TileSystem/Tiles/Void/VoidTile.tscn"));
 		// Ice
 		tileLookup.Add(3, ResourceLoader.Load<PackedScene>("res://TileSystem/Tiles/Ice/IceTile.tscn"));
-		
+		// Cracker
+		tileLookup.Add(4, ResourceLoader.Load<PackedScene>("res://TileSystem/Tiles/Breakable/BreakableTile.tscn"));
 		ReplaceTilesWithScenes();
 	}
 

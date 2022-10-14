@@ -8,6 +8,9 @@ public class SceneManager : Node
 	PackedScene creditsScene = ResourceLoader.Load<PackedScene>("res://Scenes/primary/CreditsScene/CreditsScene.tscn");
 	PackedScene optionsScene = ResourceLoader.Load<PackedScene>("res://Scenes/primary/OptionsScene/OptionsScene.tscn");
 	
+	public override void _Ready()
+	{
+	}
 		
 	public void GoToMainMenu()
 	{
@@ -21,6 +24,7 @@ public class SceneManager : Node
 	
 	public void GoToNextLevel()
 	{
+		GetNode<GameManager>("/root/GameManager").currentRoom++;
 		GetTree().ChangeSceneTo(gameScene);
 	}
 	
