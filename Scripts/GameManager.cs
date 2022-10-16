@@ -60,7 +60,6 @@ public class GameManager : Node
 	
 	void OnEnteredRoom(int roomIndex)
 	{
-		GD.Print("entered room ", roomIndex);
 		objectiveCompletedCount = 0;
 		objectiveFailedCount = 0;
 	}
@@ -78,6 +77,11 @@ public class GameManager : Node
 	}
 	
 	public void NextLevel()
+	{
+		GD.Print("Next Level");
+		// _sceneManager.LoadNextLevel();
+	}
+	public void PrevLevel()
 	{
 		GD.Print("Next Level");
 		// _sceneManager.LoadNextLevel();

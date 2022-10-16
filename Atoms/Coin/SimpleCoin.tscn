@@ -8,6 +8,7 @@ atlas = ExtResource( 2 )
 region = Rect2( 320, 512, 64, 64 )
 
 [node name="SimpleCoin" type="Sprite"]
+scale = Vector2( 0.5, 0.5 )
 texture = SubResource( 1 )
 script = ExtResource( 1 )
 

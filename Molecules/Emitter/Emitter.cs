@@ -103,13 +103,12 @@ public class Emitter : ObjectiveObject
 		this.RemoveChildren<Projectile>();
 	}
 
-	public override ObjectiveObject Disable()
+	public override void Disable()
 	{
 		isActive = false;
 		Visible = false;
 		_timer.Stop();
 		_timer.Disconnect("timeout", this, nameof(FireNextWave));
-		return this;
 	}
 
 	public override void Enable()

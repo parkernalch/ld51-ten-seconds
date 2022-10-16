@@ -1,23 +1,49 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Assets/temp/tilesheet.png" type="Texture" id=1]
+[ext_resource path="res://Assets/aseprite/breakableTile-Sheet.png" type="Texture" id=1]
 [ext_resource path="res://TileSystem/Tiles/Breakable/BreakableTile.cs" type="Script" id=2]
-[ext_resource path="res://Assets/dotted32xSquare.png" type="Texture" id=3]
-[ext_resource path="res://Assets/filled32xSquare.png" type="Texture" id=4]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 16, 16 )
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+render_mode unshaded;
+
+uniform sampler2D textureSheet;
+uniform float columns = 3.0;
+uniform float rows = 3.0;
+uniform vec2 position = vec2(2.0, 0.0);
+
+void fragment()
+{
+	float UV_X = (UV.x + (position.x / columns));
+	float UV_Y = (UV.y + (position.y / rows));
+	COLOR = texture(textureSheet, vec2(UV_X, UV_Y));
+
+//	COLOR.a = texture(TEXTURE, UV).a * UV_X;
+}"
+
+[sub_resource type="ShaderMaterial" id=4]
+resource_local_to_scene = true
+shader = SubResource( 3 )
+shader_param/columns = 3.0
+shader_param/rows = 3.0
+shader_param/position = Vector2( 0, 0 )
+shader_param/textureSheet = ExtResource( 1 )
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 64, 64, 64 )
-
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 32, 32 )
+region = Rect2( 0, 32, 32, 32 )
 
 [node name="BreakableTile" type="Area2D"]
 script = ExtResource( 2 )
-crackTextures = [ ExtResource( 4 ), ExtResource( 3 ) ]
-
-[node name="Sprite" type="Sprite" parent="."]
-texture = SubResource( 1 )
+crackIndices = [ Vector2( 0, 0 ), Vector2( 1, 0 ), Vector2( 2, 0 ) ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 4 )
+texture = SubResource( 1 )

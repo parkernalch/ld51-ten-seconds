@@ -32,7 +32,9 @@ public class Objective : Node2D
 		foreach(ObjectiveObject obj in objects)
 		{
 			obj.Enable();
+			GD.Print("Enabled object ", obj.Name);
 			obj.Connect(nameof(ObjectiveObject.StateResolved), this, nameof(OnStateResolved));
+			GD.Print("Connected StateResolved for ", obj.Name);
 		}
 		_eventBus.Connect(nameof(EventBus.CountdownEnded), this, nameof(ObjectiveTimerEnded));
 		isActive = true;

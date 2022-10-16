@@ -15,7 +15,7 @@ public class ObjectiveObject : Node2D
     public bool IsSucceeded() => state == OBJECTIVE_STATE.SUCCESS;
     public bool IsFailed() => state == OBJECTIVE_STATE.FAILURE;
     
-    public virtual ObjectiveObject Disable() => this;
+    public virtual void Disable() { }
     
     public virtual void Enable() { }
     

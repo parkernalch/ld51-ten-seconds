@@ -48,13 +48,15 @@ public class CoinBag : ObjectiveObject
 		GetNode<Sprite>("Sprite").Visible = false;
 	}
 	
-	public override ObjectiveObject Disable()
+	public override void Disable()
 	{
-		_timer.Stop();
-		_timer.Disconnect("timeout", this, nameof(Burst));
-		_eventBus.Disconnect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
-		Visible = false;
-		return this;
+		if (IsConnected(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected)))
+		{
+			_timer.Stop();
+			_timer.Disconnect("timeout", this, nameof(Burst));
+			_eventBus.Disconnect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
+			Visible = false;
+		}
 	}
 
 	public override void Enable()

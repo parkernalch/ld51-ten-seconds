@@ -3,23 +3,28 @@ using System;
 
 public class TileSystem : TileMap
 {
+	EventBus _eventBus;
 	Godot.Collections.Dictionary<int, PackedScene> tileLookup = new Godot.Collections.Dictionary<int, PackedScene>();
 	int halfCell;
+	Godot.Collections.Dictionary<Vector2, Node2D> instancedTiles = new Godot.Collections.Dictionary<Vector2, Node2D>();
+	
 	 
 	public override void _Ready()
 	{
+		_eventBus = GetNode<EventBus>("/root/EventBus");
 		halfCell = (int)(CellSize.x * 0.5f);
-		// Floor
-		tileLookup.Add(0, ResourceLoader.Load<PackedScene>("res://TileSystem/Tiles/Floor/FloorTile.tscn"));
+		// Ice
+		tileLookup.Add(0, ResourceLoader.Load<PackedScene>("res://TileSystem/Tiles/Ice/IceTile.tscn"));
 		// Web
 		tileLookup.Add(1, ResourceLoader.Load<PackedScene>("res://TileSystem/Tiles/Web/WebTile.tscn"));
-		// Void
-		tileLookup.Add(2, ResourceLoader.Load<PackedScene>("res://TileSystem/Tiles/Void/VoidTile.tscn"));
-		// Ice
-		tileLookup.Add(3, ResourceLoader.Load<PackedScene>("res://TileSystem/Tiles/Ice/IceTile.tscn"));
 		// Cracker
-		tileLookup.Add(4, ResourceLoader.Load<PackedScene>("res://TileSystem/Tiles/Breakable/BreakableTile.tscn"));
+		tileLookup.Add(2, ResourceLoader.Load<PackedScene>("res://TileSystem/Tiles/Breakable/BreakableTile.tscn"));
+		// Void
+		tileLookup.Add(3, ResourceLoader.Load<PackedScene>("res://TileSystem/Tiles/Void/VoidTile.tscn"));
+		// Floor
+		tileLookup.Add(4, ResourceLoader.Load<PackedScene>("res://TileSystem/Tiles/Floor/FloorTile.tscn"));
 		ReplaceTilesWithScenes();
+		_eventBus.Connect(nameof(EventBus.LobbedProjectileImpacted), this, nameof(BreakTile));
 	}
 
 	void ReplaceTilesWithScenes()
@@ -33,6 +38,28 @@ public class TileSystem : TileMap
 			AddChild(scene);
 			scene.GlobalPosition = MapToWorld(tilePosition) + offsetVector;
 			SetCell((int)tilePosition.x, (int)tilePosition.y, -1);
+			instancedTiles[tilePosition] = scene;
+		}
+	}
+	
+	void BreakTile(Vector2 globalBreakPosition)
+	{
+		Vector2 localPos = this.ToLocal(globalBreakPosition);
+		Vector2 mapPos = WorldToMap(localPos);
+		Node2D cell = instancedTiles[mapPos];
+		if (cell != null)
+		{
+			if (cell is BreakableTile)
+			{
+				(cell as BreakableTile).Crack();
+			} else 
+			{
+				Node2D scene = tileLookup[2].Instance<Node2D>();
+				AddChild(scene);
+				scene.GlobalPosition = MapToWorld(mapPos) + new Vector2(halfCell, halfCell);
+				cell.QueueFree();
+				instancedTiles[mapPos] = scene;
+			}
 		}
 	}
 }

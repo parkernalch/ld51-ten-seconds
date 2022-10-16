@@ -27,6 +27,11 @@ public class SceneManager : Node
 		GetNode<GameManager>("/root/GameManager").currentRoom++;
 		GetTree().ChangeSceneTo(gameScene);
 	}
+	public void GoToPreviousLevel()
+	{
+		GetNode<GameManager>("/root/GameManager").currentRoom--;
+		GetTree().ChangeSceneTo(gameScene);
+	}
 	
 	public void GoToOptions()
 	{

@@ -3,7 +3,7 @@
 [ext_resource path="res://TileSystem/Tiles/EffectTile.cs" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 32, 32 )
+extents = Vector2( 16, 16 )
 
 [node name="EffectTile" type="Area2D"]
 script = ExtResource( 1 )
