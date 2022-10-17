@@ -36,7 +36,7 @@ public class CoinBag : ObjectiveObject
 		for(int i=0; i<count; i++)
 		{
 			angle += (float)GD.RandRange(0f, angleStep);
-			var magnitude = GD.RandRange(20f, 30f);
+			var magnitude = GD.RandRange(15f, 25f);
 			var coin = _coinScene.Instance<SimpleCoin>();
 			GetParent().AddChild(coin);
 			_coins.Add(coin);

@@ -26,7 +26,6 @@ public class BreakableTile : Area2D
 	public void Crack()
 	{
 		currentCrackTextureIndex += 1;
-		GD.Print("Crack Level ", currentCrackTextureIndex);
 		if(currentCrackTextureIndex >= crackIndices.Count)
 		{
 			Break();

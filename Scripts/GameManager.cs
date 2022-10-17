@@ -26,6 +26,7 @@ public class GameManager : Node
 		_eventBus.Connect(nameof(EventBus.CountdownEnded), this, nameof(OnCountdownEnded));
 		_eventBus.Connect(nameof(EventBus.PlayerChanged), this, nameof(OnPlayerChanged));
 		_eventBus.Connect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
+		_eventBus.Connect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
 	}
 	
 	void OnPlayerChanged(PlayerController player)
@@ -97,5 +98,11 @@ public class GameManager : Node
 		coinCount += coin.value;
 		_eventBus.ChangeCoinCount(coinCount);
 		return coinCount;
+	}
+	
+	void OnMissileConnected(Projectile p)
+	{
+		coinCount = Mathf.Max(coinCount - p.Damage, 0);
+		_eventBus.ChangeCoinCount(coinCount);
 	}
 }

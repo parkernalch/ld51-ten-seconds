@@ -2,52 +2,112 @@ using Godot;
 using System;
 using JamToolkit.Util;
 
-/// <summary>
-/// TODO: this just sets up a "Player" that will be replaced with the real player and creates missiles every 10s
-/// </summary>
 public class MainScene : Node2D
 {
+	PackedScene _coinBagScene;
 	EventBus _eventBus;
-	Rune _rune;
+	Timer _timer;
+	CoinBurst _coinBurst;
 	private float time = 0;
 	private PlayerController _player;
-	private const float Interval = 5f;
 	private int _level = 1;
-	Godot.Collections.Array<Objective> _objectives = new Godot.Collections.Array<Objective>();
-	Objective _currentObjective;
-	// If GameManager.currentLevel > 0, load increasingly difficult Obstacles
+	Godot.Collections.Array<RayCast2D> coinCasts = new Godot.Collections.Array<RayCast2D>();
+	private Vector2 _lastCoinSpawn;
 	public override void _Ready()
 	{
-		_rune = GetNode<Rune>("Rune");
+		PackedScene coinBurstScene = ResourceLoader.Load<PackedScene>("res://Atoms/CoinBurst/CoinBurst.tscn");
+		_coinBurst = coinBurstScene.Instance<CoinBurst>();
+		AddChild(_coinBurst);
+		_coinBagScene = ResourceLoader.Load<PackedScene>("res://Molecules/CoinBag/CoinBag.tscn");
 		_eventBus = GetNode<EventBus>("/root/EventBus");
-		foreach(Objective o in GetNode("Objectives").GetChildren())
-		{
-			o.Deactivate();
-			_objectives.Add(o);
-		}
+		_timer = new Timer();
+		AddChild(_timer);
+		_timer.WaitTime = 10f;
+		_timer.OneShot = false;
+		_timer.Autostart = true;
+		_timer.Connect("timeout", this, nameof(OnTimerTimeout));
 		GameManager _gameManager = GetNode<GameManager>("/root/GameManager");
 		_player = (PlayerController)this.FindNode("PlayerController");
 		_eventBus.LoadPlayer(_player);
-		_eventBus.Connect(nameof(EventBus.CountdownEnded), this, nameof(LoadNextObjective));
 		_eventBus.EnterRoom(_gameManager.currentRoom);
-		LoadNextObjective();
+		_eventBus.Connect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
+		for(int i=0; i<8; i++)
+		{
+			RayCast2D cast = new RayCast2D();
+			_player.AddChild(cast);
+			cast.SetCollisionMaskBit(0, false);
+			cast.SetCollisionMaskBit(4, true);
+			cast.Enabled = false;
+			cast.ExcludeParent = true;
+			cast.GlobalPosition = _player.GlobalPosition;
+			coinCasts.Add(cast);
+		}
+		_timer.Start();
 	}
 	
-	void LoadNextObjective()
+	void OnMissileConnected(Projectile p)
 	{
-		if (_currentObjective != null &&_currentObjective.HasMethod(nameof(Objective.Deactivate)))
+		_coinBurst.DoBurst(p.Damage, p.GlobalPosition);
+	}
+	
+	void OnTimerTimeout()
+	{
+		foreach(RayCast2D cast in coinCasts)
 		{
-			_currentObjective.Deactivate();
+			cast.Enabled = true;
+			cast.ForceRaycastUpdate();
 		}
-		if (_objectives.Count == 0)
+		float maxDistance = 0f;
+		Vector2 collisionPoint = Vector2.Zero;
+		for(int i=0; i<8; i++)
 		{
-			GetNode<SceneManager>("/root/SceneManager").GoToMainMenu();
-			return;
+			Vector2 tempCollisionPoint = coinCasts[i].GetCollisionPoint();
+			float dist = tempCollisionPoint.DistanceSquaredTo(_player.GlobalPosition); 
+			if (dist > maxDistance && tempCollisionPoint != _lastCoinSpawn) 
+			{
+				maxDistance = dist;	
+				collisionPoint = tempCollisionPoint;
+			}
 		}
-		_currentObjective = _objectives[0];
-		_objectives.RemoveAt(0);
-		_currentObjective.Activate();
-		_rune.SetObjectiveIcon(_currentObjective.objectiveType);
+		_lastCoinSpawn = collisionPoint;
+		if (collisionPoint != Vector2.Zero)
+		{
+			Vector2 effectVector = (collisionPoint - _player.GlobalPosition) * 0.8f;
+			SpawnCoinBag(_player.GlobalPosition + effectVector);
+		}
+		foreach(RayCast2D cast in coinCasts)
+		{
+			cast.Enabled = false;
+		}
+	}
+	
+	public override void _Draw()
+	{
+		for(int i=0; i < 8; i++)
+		{
+			Vector2 point = coinCasts[i].GetCollisionPoint();
+			DrawCircle(point, 5f, new Color(1, 1, 1, 1));
+		}
+	}
+	
+	void SpawnCoinBag(Vector2 globalSpawnPoint)
+	{
+		CoinBag coinBag = _coinBagScene.Instance<CoinBag>();
+		AddChild(coinBag);
+		coinBag.GlobalPosition = globalSpawnPoint;
+		coinBag.Enable();
+	}
+	
+	public override void _PhysicsProcess(float delta)
+	{
+		coinCasts[0].CastTo = Vector2.Up.Rotated(Mathf.Pi / 8) * 500f;
+		coinCasts[1].CastTo = Vector2.Right.Rotated(Mathf.Pi / 8) * 500f;
+		coinCasts[2].CastTo = Vector2.Left.Rotated(Mathf.Pi / 8) * 500f;
+		coinCasts[3].CastTo = Vector2.Down.Rotated(Mathf.Pi / 8) * 500f;
+		coinCasts[4].CastTo = (Vector2.Up + Vector2.Right).Rotated(Mathf.Pi / 8) * 500f;
+		coinCasts[5].CastTo = (Vector2.Up + Vector2.Left).Rotated(Mathf.Pi / 8) * 500f;
+		coinCasts[6].CastTo = (Vector2.Down + Vector2.Right).Rotated(Mathf.Pi / 8) * 500f;
+		coinCasts[7].CastTo = (Vector2.Down + Vector2.Left).Rotated(Mathf.Pi / 8) * 500f;
 	}
 	
 	public PlayerController GetPlayer() => _player;

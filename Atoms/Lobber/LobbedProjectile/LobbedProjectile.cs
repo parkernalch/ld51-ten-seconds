@@ -80,7 +80,7 @@ public class LobbedProjectile : Node2D
 	{
 		_pathFollow.Visible = false;
 		_shadowSprite.Visible = false;
-		GetNode<EventBus>("/root/EventBus").NotifyProjectileImpact(_targetPosition.GlobalPosition);
+		GetNode<EventBus>("/root/EventBus").NotifyProjectileImpact(_targetPosition.GlobalPosition, 1);
 		
 		SetProcess(true);
 		isActive = false;

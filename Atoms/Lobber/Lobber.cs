@@ -41,7 +41,6 @@ public class Lobber : Node2D
 	
 	void OnCooldownEnded()
 	{
-		GD.Print("OnCooldownEnded");
 		_sprite.GlobalPosition = this.GlobalPosition;
 		_sprite.Visible = true;
 		TweenFollowSpeed();

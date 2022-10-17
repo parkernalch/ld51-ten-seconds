@@ -9,6 +9,7 @@ public class SimpleCoin : Sprite
 	RayCast2D raycast;
 	PlayerController player;
 	private float dampFactor = 0.95f;
+	bool isAttracting = false;
 	
 	public override void _Ready()
 	{
@@ -23,7 +24,7 @@ public class SimpleCoin : Sprite
 	{
 		GlobalPosition = globalPosition;
 		velocity = direction;
-		raycast.CastTo = direction;
+		raycast.CastTo = direction * 1.5f;
 	}
 	
 	public override void _Process(float delta)
@@ -55,13 +56,28 @@ public class SimpleCoin : Sprite
 			Vector2 vCompW = velocity.Normalized() - vCompU;
 			Vector2 newVelocity = velocity.Length() * (vCompW - vCompU);
 			velocity = newVelocity;
-			raycast.CastTo = velocity;
+			raycast.CastTo = velocity * 1.5f;
 		}
 		if (player == null) return;
-		if ((player.GlobalPosition - this.GlobalPosition).LengthSquared() < 1000f)
+		if (isAttracting)
+		{
+			float x = Mathf.Lerp(GlobalPosition.x, player.GlobalPosition.x, delta * 10f);
+			float y = Mathf.Lerp(GlobalPosition.y, player.GlobalPosition.y, delta * 10f);
+			GlobalPosition = new Vector2(x, y); 
+		}
+		if ((player.GlobalPosition.DistanceSquaredTo(this.GlobalPosition)) < player.GetCollectionRadius())
+		{
+			SetCollecting();
+		}
+		if (isAttracting && player.GlobalPosition.DistanceSquaredTo(this.GlobalPosition) < 100f)
 		{
 			Collect();
 		}
+	}
+	
+	void SetCollecting()
+	{
+		isAttracting = true;
 	}
 	
 	async void Collect()

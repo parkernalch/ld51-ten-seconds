@@ -42,11 +42,10 @@ public class TileSystem : TileMap
 		}
 	}
 	
-	void BreakTile(Vector2 globalBreakPosition)
+	void BreakTileByMapPosition(Vector2 mapPosition)
 	{
-		Vector2 localPos = this.ToLocal(globalBreakPosition);
-		Vector2 mapPos = WorldToMap(localPos);
-		Node2D cell = instancedTiles[mapPos];
+		if (!instancedTiles.Keys.Contains(mapPosition)) return;
+		Node2D cell = instancedTiles[mapPosition];
 		if (cell != null)
 		{
 			if (cell is BreakableTile)
@@ -56,10 +55,25 @@ public class TileSystem : TileMap
 			{
 				Node2D scene = tileLookup[2].Instance<Node2D>();
 				AddChild(scene);
-				scene.GlobalPosition = MapToWorld(mapPos) + new Vector2(halfCell, halfCell);
+				scene.GlobalPosition = MapToWorld(mapPosition) + new Vector2(halfCell, halfCell);
 				cell.QueueFree();
-				instancedTiles[mapPos] = scene;
+				instancedTiles[mapPosition] = scene;
 			}
+		}
+
+	}
+	
+	void BreakTile(Vector2 globalBreakPosition, int displacement)
+	{
+		Vector2 localPos = this.ToLocal(globalBreakPosition);
+		Vector2 mapPos = WorldToMap(localPos);
+		BreakTileByMapPosition(mapPos);
+		if (displacement > 0)
+		{
+			BreakTileByMapPosition(new Vector2(mapPos.x - 1, mapPos.y));
+			BreakTileByMapPosition(new Vector2(mapPos.x + 1, mapPos.y));
+			BreakTileByMapPosition(new Vector2(mapPos.x, mapPos.y - 1));
+			BreakTileByMapPosition(new Vector2(mapPos.x, mapPos.y + 1));
 		}
 	}
 }

@@ -12,7 +12,7 @@ region = Rect2( 320, 512, 64, 64 )
 script = ExtResource( 2 )
 
 [node name="LevelLabel" type="Label" parent="."]
-self_modulate = Color( 0.282353, 0.282353, 0.282353, 1 )
+self_modulate = Color( 0.141176, 0.141176, 0.141176, 1 )
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0

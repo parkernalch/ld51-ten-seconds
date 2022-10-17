@@ -16,3 +16,4 @@ texture = SubResource( 1 )
 [node name="EffectTile" parent="." instance=ExtResource( 3 )]
 
 [node name="StickingEffect" parent="EffectTile" instance=ExtResource( 2 )]
+MaxVelocity = 50.0

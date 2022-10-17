@@ -63,6 +63,6 @@ public class EventBus : Node
 	public void ChangeCoinCount(int newCount) => this.EmitSignal(nameof(CoinCountChanged), newCount);
 	
 	[Signal]
-	public delegate void LobbedProjectileImpacted(Vector2 impactPoint);
-	public void NotifyProjectileImpact(Vector2 impactPoint) => this.EmitSignal(nameof(LobbedProjectileImpacted), impactPoint);
+	public delegate void LobbedProjectileImpacted(Vector2 impactPoint, int radius);
+	public void NotifyProjectileImpact(Vector2 impactPoint, int radius) => this.EmitSignal(nameof(LobbedProjectileImpacted), impactPoint, radius);
 }

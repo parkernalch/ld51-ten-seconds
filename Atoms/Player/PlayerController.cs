@@ -13,6 +13,7 @@ public class PlayerController : KinematicBody2D
 	[Export] public float dashMultiplier;
 	[Export] public float Friction { get; set; }
 	[Export] public int Health { get; set; } = 10;
+	[Export] public int CollectionRadiusInSquares = 1; 
 
 	private int _coinValue = 0;
 	private int _lastHealth;
@@ -229,7 +230,6 @@ public class PlayerController : KinematicBody2D
 	public int GiveCoin(int value)
 	{
 		_coinValue += value;
-		GD.Print("coins in purse: ", _coinValue);
 		return _coinValue;
 	}
 	
@@ -237,7 +237,6 @@ public class PlayerController : KinematicBody2D
 	{
 		GameManager gm = GetNode<GameManager>("/root/GameManager");
 		int coins = gm.coinCount;
-		GD.Print("Paying toll ", toll, " ", coins);
 		if (gm.coinCount >= toll)
 		{
 			gm.coinCount -= toll;
@@ -246,4 +245,6 @@ public class PlayerController : KinematicBody2D
 		}
 		return false;
 	}
+	
+	public int GetCollectionRadius() => (int)Mathf.Pow(CollectionRadiusInSquares * tileSize, 2);
 }

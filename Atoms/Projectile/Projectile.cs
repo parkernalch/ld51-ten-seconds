@@ -16,6 +16,7 @@ public class Projectile : Area2D
 	[Export] public Vector2 Velocity { get; set; } = Vector2.Zero;
 	[Export] public Vector2 Acceleration { get; set; } = Vector2.Zero;
 	[Export] public int Bounces { get; set; } = 5;
+	[Export] public int Damage { get; set; } = 3;
 
 
 	/// <summary>

@@ -32,6 +32,7 @@ public class Emitter : ObjectiveObject
 		_player = this.FindSingleton<PlayerController>();
 		angleMinRad = Mathf.Deg2Rad(angleMin);
 		angleMaxRad = Mathf.Deg2Rad(angleMax);
+		Enable();
 	}
 
 	void OnMissileConnected(Projectile projectile)

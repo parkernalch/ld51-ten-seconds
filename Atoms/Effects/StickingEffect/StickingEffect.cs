@@ -5,7 +5,7 @@ using JamToolkit.Util;
 
 public class StickingEffect : BaseEffect
 {
-	[Export] public float MaxVelocity { get; set; }
+	[Export] public float MaxVelocity { get; set; } = 1f;
 
 	public override void _Ready()
 	{
@@ -18,7 +18,7 @@ public class StickingEffect : BaseEffect
 
 	public override void Attach()
 	{
-		controller = this.FindSingleton<PlayerController>();
+		controller = (PlayerController)GetParent();
 		// can only have one StickingEffect at a time
 		var count = controller.EnumerateChildren().Count(child => child is StickingEffect);
 		if (count > 1)
