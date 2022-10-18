@@ -16,13 +16,13 @@ public class BreakableTile : Area2D
 		currentCrackTextureIndex = 0;
 		Connect("body_exited", this, nameof(OnBodyExited));
 	}
-	
+
 	void OnBodyExited(PlayerController pc)
 	{
-		if (!(pc is PlayerController)) return;
+		if (pc == null) return;
 		Crack();
 	}
-	
+
 	public void Crack()
 	{
 		currentCrackTextureIndex += 1;
@@ -36,25 +36,27 @@ public class BreakableTile : Area2D
 		}
 
 	}
-	
+
 	void Break()
 	{
 		Disconnect("body_exited", this, nameof(OnBodyExited));
 		Connect("body_entered", this, nameof(OnBodyEntered));
 	}
-	
+
 	void OnBodyEntered(PlayerController pc)
 	{
-		if (!(pc is PlayerController)) return;
-		if (pc.IsVulnerable()) Drop(pc);
+		if (pc == null) return;
+		if (pc.IsVulnerable())
+			Drop(pc);
 	}
-	
+
 	void Drop(PlayerController pc)
 	{
-		if (pc != null)
-		{
-			pc.QueueFree();
-			GetNode<SceneManager>("/root/SceneManager").GoToPreviousLevel();
-		}
+		if (pc == null) return;
+
+		PlayerController.DropLocation = pc.GlobalPosition;
+		pc.QueueFree();
+
+		GetNode<SceneManager>("/root/SceneManager").GoToPreviousLevel();
 	}
 }

@@ -13,7 +13,9 @@ public class PlayerController : KinematicBody2D
 	[Export] public float dashMultiplier;
 	[Export] public float Friction { get; set; }
 	[Export] public int Health { get; set; } = 10;
-	[Export] public int CollectionRadiusInSquares = 1; 
+	[Export] public int CollectionRadiusInSquares = 1;
+
+	public static Vector2? DropLocation = null;
 
 	private int _coinValue = 0;
 	private int _lastHealth;
@@ -39,7 +41,7 @@ public class PlayerController : KinematicBody2D
 	public override void _Ready()
 	{
 		_coinValue = 0;
-		_eventBus = GetNode<EventBus>("/root/EventBus");
+		_eventBus = GetNode<EventBus>("/root/EventBus") ?? throw new ArgumentException(nameof(EventBus));
 		_tween = this.GetNode<Tween>();
 		_animationTree = this.GetNode<AnimationTree>();
 		_material = (ShaderMaterial)Material;
@@ -54,6 +56,11 @@ public class PlayerController : KinematicBody2D
 		Assert.True(timeToAccelerate > 0, "acceleration time must be nonzero");
 		Assert.True(timeToDecelerate > 0, "deceleration time must be nonzero");
 		ResetTopSpeed();
+		if (DropLocation.HasValue)
+		{
+			this.GlobalPosition = DropLocation.Value;
+			DropLocation = null;
+		}
 
 		// _eventBus.Connect(nameof(EventBus.MissileConnected), this, nameof(OnMissileHit));
 	}
@@ -226,17 +233,16 @@ public class PlayerController : KinematicBody2D
 		);
 		_tween.Start();
 	}
-	
+
 	public int GiveCoin(int value)
 	{
 		_coinValue += value;
 		return _coinValue;
 	}
-	
+
 	public bool PayToll(int toll)
 	{
-		GameManager gm = GetNode<GameManager>("/root/GameManager");
-		int coins = gm.coinCount;
+		var gm = GetNode<GameManager>("/root/GameManager") ?? throw new ArgumentException(nameof(GameManager));
 		if (gm.coinCount >= toll)
 		{
 			gm.coinCount -= toll;
@@ -245,6 +251,6 @@ public class PlayerController : KinematicBody2D
 		}
 		return false;
 	}
-	
+
 	public int GetCollectionRadius() => (int)Mathf.Pow(CollectionRadiusInSquares * tileSize, 2);
 }

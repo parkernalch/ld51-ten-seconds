@@ -12,17 +12,23 @@ public class PaymentDoor : Area2D
 		doorSprite = GetNode<Sprite>("DoorBlocker/Sprite");
 		Connect("body_entered", this, nameof(OnBodyEntered));
 	}
-	
+
+	protected override void Dispose(bool disposing)
+	{
+		Disconnect("body_entered", this, nameof(OnBodyEntered));
+		base.Dispose(disposing);
+	}
+
 	public void OnBodyEntered(PlayerController pc)
 	{
-		if (pc != null && pc is PlayerController)
-		{ 
-			if( pc.PayToll(toll)) {
+		if (pc is PlayerController controller)
+		{
+			if( controller.PayToll(toll)) {
 				CallDeferred(nameof(OpenDoor));
 			}
 		}
 	}
-	
+
 	void OpenDoor()
 	{
 		doorBlocker.Disabled = true;

@@ -3,19 +3,24 @@ using System;
 
 public class GameManager : Node
 {
-	
 	int objectiveCompletedCount;
 	int objectiveFailedCount;
-	
-	public int currentRoom = 0;
+
+	public int CurrentRoom
+	{
+		get => _currentRoom;
+		set => _currentRoom = Math.Max(value, 0);
+	}
+
 	public int coinCount = 0;
-	
+
 	int objectivesPerRoom = 5;
-	
+
 	EventBus _eventBus;
 	SceneManager _sceneManager;
 	PlayerController _player;
-	
+	private int _currentRoom = 0;
+
 	public override void _Ready()
 	{
 		_sceneManager = GetNode<SceneManager>("/root/SceneManager");
@@ -28,17 +33,14 @@ public class GameManager : Node
 		_eventBus.Connect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
 		_eventBus.Connect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
 	}
-	
+
 	void OnPlayerChanged(PlayerController player)
 	{
 		_player = player;
 	}
-	
-	public PlayerController GetPlayer()
-	{
-		return _player;
-	}
-	
+
+	public PlayerController Player => _player;
+
 	void OnObjectiveCompleted()
 	{
 		objectiveCompletedCount++;
@@ -51,32 +53,32 @@ public class GameManager : Node
 	void OnObjectiveFailed()
 	{
 		objectiveFailedCount++;
-		_eventBus.ChangeObjectiveCount(objectiveCompletedCount, objectiveFailedCount);		
+		_eventBus.ChangeObjectiveCount(objectiveCompletedCount, objectiveFailedCount);
 		// the further you get in the dungeon, the less forgiving it is
-		if (objectiveFailedCount == Mathf.Max(6 - currentRoom, 1))
+		if (objectiveFailedCount == Mathf.Max(6 - CurrentRoom, 1))
 		{
 			_eventBus.FailLevel();
 		}
 	}
-	
+
 	void OnEnteredRoom(int roomIndex)
 	{
 		objectiveCompletedCount = 0;
 		objectiveFailedCount = 0;
 	}
-	
+
 	private void OnCountdownEnded()
 	{
 		// TODO: Get Next Objective
 		// _sceneManager.StartObjective(objective);
 	}
-	
+
 	private void StartGame()
 	{
 		objectiveCompletedCount = 0;
 		objectiveFailedCount = 0;
 	}
-	
+
 	public void NextLevel()
 	{
 		GD.Print("Next Level");
@@ -87,19 +89,16 @@ public class GameManager : Node
 		GD.Print("Next Level");
 		// _sceneManager.LoadNextLevel();
 	}
-	
-	public int GetCurrentDifficulty()
-	{
-		return objectiveCompletedCount + objectiveFailedCount;
-	}
-	
+
+	public int GetCurrentDifficulty() => objectiveCompletedCount + objectiveFailedCount;
+
 	public int OnCoinCollected(SimpleCoin coin)
 	{
 		coinCount += coin.value;
 		_eventBus.ChangeCoinCount(coinCount);
 		return coinCount;
 	}
-	
+
 	void OnMissileConnected(Projectile p)
 	{
 		coinCount = Mathf.Max(coinCount - p.Damage, 0);

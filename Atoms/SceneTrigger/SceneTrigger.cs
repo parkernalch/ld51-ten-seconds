@@ -3,11 +3,11 @@ using System;
 
 public class SceneTrigger : Area2D
 {
-	[Export]String targetScene = "MainMenu";
-	[Export]bool startActive = true;
+	[Export] string targetScene = "MainMenu";
+	[Export] bool startActive = true;
 	SceneManager _sceneManager;
 	EventBus _eventBus;
-	
+
 	public override void _Ready()
 	{
 		_eventBus = GetNode<EventBus>("/root/EventBus");
@@ -15,37 +15,38 @@ public class SceneTrigger : Area2D
 		_eventBus.Connect(nameof(EventBus.LevelCompleted), this, nameof(Activate));
 		if (startActive) Activate();
 	}
-	
+
 	void Activate()
 	{
-		this.Connect("body_entered", this, nameof(OnBodyEntered));		
+		this.Connect("body_entered", this, nameof(OnBodyEntered));
 	}
-	
+
 	void Deactivate()
 	{
 		this.Disconnect("body_entered", this, nameof(OnBodyEntered));
 	}
-	
+
 	void OnBodyEntered(Node2D body)
 	{
-		if (body is PlayerController)
+		if (!(body is PlayerController)) return;
+
+		switch (targetScene)
 		{
-			if (targetScene == "MainMenu")
-			{
+			case "MainMenu":
 				_sceneManager.GoToMainMenu();
-			} else if (targetScene == "Credits")
-			{
+				break;
+			case "Credits":
 				_sceneManager.GoToCredits();
-			} else if (targetScene == "Options")
-			{
+				break;
+			case "Options":
 				_sceneManager.GoToOptions();
-			} else if (targetScene == "StartGame")
-			{
+				break;
+			case "StartGame":
 				_sceneManager.GoToGame();
-			} else if (targetScene == "NextLevel")
-			{
+				break;
+			case "NextLevel":
 				_sceneManager.GoToNextLevel();
-			}
+				break;
 		}
 	}
 }

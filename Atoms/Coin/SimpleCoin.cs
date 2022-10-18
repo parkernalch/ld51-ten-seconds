@@ -10,23 +10,23 @@ public class SimpleCoin : Sprite
 	PlayerController player;
 	private float dampFactor = 0.95f;
 	bool isAttracting = false;
-	
+
 	public override void _Ready()
 	{
 		_eventBus = GetNode<EventBus>("/root/EventBus");
 		raycast = GetNode<RayCast2D>("RayCast2D");
 		velocity = new Vector2(0f, 0f);
-		player = GetNode<GameManager>("/root/GameManager").GetPlayer();
+		player = GetNode<GameManager>("/root/GameManager").Player;
 		dampFactor = (float)GD.RandRange(0.7, 0.95);
 	}
-	
+
 	public void Start(Vector2 globalPosition, Vector2 direction)
 	{
 		GlobalPosition = globalPosition;
 		velocity = direction;
 		raycast.CastTo = direction * 1.5f;
 	}
-	
+
 	public override void _Process(float delta)
 	{
 		if (velocity == new Vector2(0, 0))
@@ -40,13 +40,13 @@ public class SimpleCoin : Sprite
 		}
 		GlobalPosition += velocity;
 	}
-	
+
 	private void Stop()
 	{
 		velocity = Vector2.Zero;
 		raycast.Enabled = false;
 	}
-	
+
 	public override void _PhysicsProcess(float delta)
 	{
 		if (raycast.Enabled && raycast.IsColliding())
@@ -63,7 +63,7 @@ public class SimpleCoin : Sprite
 		{
 			float x = Mathf.Lerp(GlobalPosition.x, player.GlobalPosition.x, delta * 10f);
 			float y = Mathf.Lerp(GlobalPosition.y, player.GlobalPosition.y, delta * 10f);
-			GlobalPosition = new Vector2(x, y); 
+			GlobalPosition = new Vector2(x, y);
 		}
 		if ((player.GlobalPosition.DistanceSquaredTo(this.GlobalPosition)) < player.GetCollectionRadius())
 		{
@@ -74,12 +74,12 @@ public class SimpleCoin : Sprite
 			Collect();
 		}
 	}
-	
+
 	void SetCollecting()
 	{
 		isAttracting = true;
 	}
-	
+
 	async void Collect()
 	{
 		_eventBus.CollectCoin(this);

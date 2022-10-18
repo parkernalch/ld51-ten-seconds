@@ -116,7 +116,8 @@ public class Emitter : ObjectiveObject
 	{
 		isActive = true;
 		Visible = true;
-		_timer.Connect("timeout", this, nameof(FireNextWave));
+		if (!_timer.IsConnected("timeout", this, nameof(FireNextWave)))
+			_timer.Connect("timeout", this, nameof(FireNextWave));
 		_timer.Start();
 	}
 

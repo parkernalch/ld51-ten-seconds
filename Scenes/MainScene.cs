@@ -26,10 +26,10 @@ public class MainScene : Node2D
 		_timer.OneShot = false;
 		_timer.Autostart = true;
 		_timer.Connect("timeout", this, nameof(OnTimerTimeout));
-		GameManager _gameManager = GetNode<GameManager>("/root/GameManager");
+		GameManager gameManager = GetNode<GameManager>("/root/GameManager");
 		_player = (PlayerController)this.FindNode("PlayerController");
 		_eventBus.LoadPlayer(_player);
-		_eventBus.EnterRoom(_gameManager.currentRoom);
+		_eventBus.EnterRoom(gameManager.CurrentRoom);
 		_eventBus.Connect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
 		for(int i=0; i<8; i++)
 		{
@@ -44,12 +44,19 @@ public class MainScene : Node2D
 		}
 		_timer.Start();
 	}
-	
+
+	protected override void Dispose(bool disposing)
+	{
+		_timer?.Disconnect("timeout", this, nameof(OnTimerTimeout));
+		_eventBus?.Disconnect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
+		base.Dispose(disposing);
+	}
+
 	void OnMissileConnected(Projectile p)
 	{
 		_coinBurst.DoBurst(p.Damage, p.GlobalPosition);
 	}
-	
+
 	void OnTimerTimeout()
 	{
 		foreach(RayCast2D cast in coinCasts)
@@ -62,10 +69,10 @@ public class MainScene : Node2D
 		for(int i=0; i<8; i++)
 		{
 			Vector2 tempCollisionPoint = coinCasts[i].GetCollisionPoint();
-			float dist = tempCollisionPoint.DistanceSquaredTo(_player.GlobalPosition); 
-			if (dist > maxDistance && tempCollisionPoint != _lastCoinSpawn) 
+			float dist = tempCollisionPoint.DistanceSquaredTo(_player.GlobalPosition);
+			if (dist > maxDistance && tempCollisionPoint != _lastCoinSpawn)
 			{
-				maxDistance = dist;	
+				maxDistance = dist;
 				collisionPoint = tempCollisionPoint;
 			}
 		}
@@ -80,7 +87,7 @@ public class MainScene : Node2D
 			cast.Enabled = false;
 		}
 	}
-	
+
 	public override void _Draw()
 	{
 		for(int i=0; i < 8; i++)
@@ -89,7 +96,7 @@ public class MainScene : Node2D
 			DrawCircle(point, 5f, new Color(1, 1, 1, 1));
 		}
 	}
-	
+
 	void SpawnCoinBag(Vector2 globalSpawnPoint)
 	{
 		CoinBag coinBag = _coinBagScene.Instance<CoinBag>();
@@ -97,7 +104,7 @@ public class MainScene : Node2D
 		coinBag.GlobalPosition = globalSpawnPoint;
 		coinBag.Enable();
 	}
-	
+
 	public override void _PhysicsProcess(float delta)
 	{
 		coinCasts[0].CastTo = Vector2.Up.Rotated(Mathf.Pi / 8) * 500f;
@@ -109,6 +116,6 @@ public class MainScene : Node2D
 		coinCasts[6].CastTo = (Vector2.Down + Vector2.Right).Rotated(Mathf.Pi / 8) * 500f;
 		coinCasts[7].CastTo = (Vector2.Down + Vector2.Left).Rotated(Mathf.Pi / 8) * 500f;
 	}
-	
+
 	public PlayerController GetPlayer() => _player;
 }
