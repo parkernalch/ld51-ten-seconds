@@ -196,7 +196,7 @@ public class PlayerController : KinematicBody2D
 	private bool IsRunning => _velocity.LengthSquared() > 0;
 
 	private bool IsDead => Health == 0;
-	
+
 	public void Fall() {
 		_animationTree.Active = false;
 		_anim.Play("fall");

@@ -1,13 +1,18 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Resources/scribble_tiles.tres" type="TileSet" id=1]
 [ext_resource path="res://Atoms/Player/PlayerController.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/primary/OptionsScene/OptionsScene.cs" type="Script" id=3]
 [ext_resource path="res://Atoms/SceneTrigger/SceneTrigger.tscn" type="PackedScene" id=4]
 [ext_resource path="res://TileSystem/TileSystem.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Assets/Fonts/Silkscreen-Regular.ttf" type="DynamicFontData" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 16, 40 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 12
+font_data = ExtResource( 6 )
 
 [node name="OptionsScene" type="Node2D"]
 script = ExtResource( 3 )
@@ -31,3 +36,106 @@ position = Vector2( -14, 139 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SceneTrigger"]
 shape = SubResource( 1 )
+
+[node name="GridContainer" type="GridContainer" parent="."]
+margin_left = 170.0
+margin_top = 38.0
+margin_right = 488.0
+margin_bottom = 259.0
+custom_constants/hseparation = 30
+columns = 2
+
+[node name="Labels" type="VFlowContainer" parent="GridContainer"]
+margin_right = 106.0
+margin_bottom = 221.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_vertical = 3
+custom_constants/vseparation = 16
+
+[node name="GamesPlayed" type="Label" parent="GridContainer/Labels"]
+margin_right = 106.0
+margin_bottom = 16.0
+custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Options -->"
+
+[node name="TotalCoinsPickedUp" type="Label" parent="GridContainer/Labels"]
+margin_top = 32.0
+margin_right = 106.0
+margin_bottom = 48.0
+custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Options ---->"
+
+[node name="TotalCoinsDropped" type="Label" parent="GridContainer/Labels"]
+margin_top = 64.0
+margin_right = 106.0
+margin_bottom = 80.0
+custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Options ---->"
+
+[node name="MostCoinsHeld" type="Label" parent="GridContainer/Labels"]
+margin_top = 96.0
+margin_right = 106.0
+margin_bottom = 112.0
+custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Options ---->"
+
+[node name="FurthestRoom" type="Label" parent="GridContainer/Labels"]
+margin_top = 128.0
+margin_right = 106.0
+margin_bottom = 144.0
+custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Options ---->"
+
+[node name="Values" type="VFlowContainer" parent="GridContainer"]
+margin_left = 136.0
+margin_right = 242.0
+margin_bottom = 221.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_vertical = 3
+custom_constants/vseparation = 16
+
+[node name="GamesPlayed" type="Label" parent="GridContainer/Values"]
+margin_right = 106.0
+margin_bottom = 16.0
+custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Options -->"
+
+[node name="TotalCoinsPickedUp" type="Label" parent="GridContainer/Values"]
+margin_top = 32.0
+margin_right = 106.0
+margin_bottom = 48.0
+custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Options ---->"
+
+[node name="TotalCoinsDropped" type="Label" parent="GridContainer/Values"]
+margin_top = 64.0
+margin_right = 106.0
+margin_bottom = 80.0
+custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Options ---->"
+
+[node name="MostCoinsHeld" type="Label" parent="GridContainer/Values"]
+margin_top = 96.0
+margin_right = 106.0
+margin_bottom = 112.0
+custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Options ---->"
+
+[node name="FurthestRoom" type="Label" parent="GridContainer/Values"]
+margin_top = 128.0
+margin_right = 106.0
+margin_bottom = 144.0
+custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Options ---->"

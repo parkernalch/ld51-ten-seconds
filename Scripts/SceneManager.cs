@@ -13,6 +13,7 @@ public class SceneManager : Node
 	{
 		var gameManager = GetNode<GameManager>("/root/GameManager");
 		gameManager.CurrentRoom = 1;
+		gameManager.Scores.GamesPlayed++;
 		GetTree().ChangeSceneTo(gameScene);
 	}
 

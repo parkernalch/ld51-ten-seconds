@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using JamToolkit.Util;
+using TenSeconds.Data;
 
 public class GameManager : Node
 {
@@ -10,7 +11,11 @@ public class GameManager : Node
 	public int CurrentRoom
 	{
 		get => _currentRoom;
-		set => _currentRoom = Math.Max(value, 0);
+		set
+		{
+			_currentRoom = Math.Max(value, 0);
+			Scores.FurthestRoom = Math.Max(Scores.FurthestRoom, _currentRoom);
+		}
 	}
 
 	public int coinCount;
@@ -21,6 +26,9 @@ public class GameManager : Node
 	SceneManager _sceneManager;
 	PlayerController _player;
 	private int _currentRoom;
+	public SaveState Scores { get; private set; }
+	private const float SaveInterval = 2.0f;
+	private float _timeUntilSave = SaveInterval;
 
 	public override void _Ready()
 	{
@@ -33,6 +41,17 @@ public class GameManager : Node
 		_eventBus.SafeConnect(nameof(EventBus.PlayerChanged), this, nameof(OnPlayerChanged));
 		_eventBus.SafeConnect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
 		_eventBus.SafeConnect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
+		Scores = SaveState.Load();
+	}
+
+	public override void _Process(float delta)
+	{
+		_timeUntilSave -= SaveInterval;
+		if (_timeUntilSave < 0)
+		{
+			Scores.Save();
+			_timeUntilSave += SaveInterval;
+		}
 	}
 
 	void OnPlayerChanged(PlayerController player)
@@ -95,7 +114,11 @@ public class GameManager : Node
 
 	public int OnCoinCollected(SimpleCoin coin)
 	{
+
 		coinCount += coin.value;
+		Scores.TotalCoinsPickedUp += coin.value;
+		Scores.MostCoinsHeld = Math.Max(coinCount, Scores.MostCoinsHeld);
+
 		_eventBus.ChangeCoinCount(coinCount);
 		return coinCount;
 	}
@@ -103,6 +126,7 @@ public class GameManager : Node
 	void OnMissileConnected(Projectile p)
 	{
 		coinCount = Mathf.Max(coinCount - p.Damage, 0);
+		Scores.TotalCoinsDropped += p.Damage;
 		_eventBus.ChangeCoinCount(coinCount);
 	}
 }

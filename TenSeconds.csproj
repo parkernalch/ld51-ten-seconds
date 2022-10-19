@@ -5,4 +5,7 @@
   <ItemGroup>
     <Folder Include="Scenes" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="6.0.6" />
+  </ItemGroup>
 </Project>

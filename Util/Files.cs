@@ -13,11 +13,20 @@ namespace JamToolkit.Util
 
         public static string ReadAllText(string path)
         {
-            var file = new File();
-            using (file.OpenSafe(path, File.ModeFlags.Read))
-            {
-                return file.GetAsText();
-            }
+	        var file = new File();
+	        using (file.OpenSafe(path, File.ModeFlags.Read))
+	        {
+		        return file.GetAsText();
+	        }
+        }
+
+        public static void WriteAllText(string path, string content)
+        {
+	        var file = new File();
+	        using (file.OpenSafe(path, File.ModeFlags.Write))
+	        {
+		        file.StoreString(content);
+	        }
         }
     }
 }
