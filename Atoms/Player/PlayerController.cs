@@ -62,7 +62,7 @@ public class PlayerController : KinematicBody2D
 			DropLocation = null;
 		}
 
-		// _eventBus.Connect(nameof(EventBus.MissileConnected), this, nameof(OnMissileHit));
+		// _eventBus.SafeConnect(nameof(EventBus.MissileConnected), this, nameof(OnMissileHit));
 	}
 
 	public void SetTopSpeed(float speed)

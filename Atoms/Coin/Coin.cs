@@ -16,7 +16,7 @@ public class Coin : Area2D
 	public override void _Ready()
 	{
 		_eventBus = GetNode<EventBus>("/root/EventBus");
-		Connect("body_entered", this, nameof(OnCoinBodyEntered));
+		this.SafeConnect("body_entered", this, nameof(OnCoinBodyEntered));
 	}
 
 	/// <summary>

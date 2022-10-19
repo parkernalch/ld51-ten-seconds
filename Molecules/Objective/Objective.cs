@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using JamToolkit.Util;
 
 public class Objective : Node2D
 {
@@ -10,10 +11,10 @@ public class Objective : Node2D
 	};
 	[Export]public OBJECTIVE_TYPE objectiveType;
 	EventBus _eventBus;
-	
+
 	Godot.Collections.Array<ObjectiveObject> objects = new Godot.Collections.Array<ObjectiveObject>();
 	bool isActive = false;
-	
+
 	public override void _Ready()
 	{
 		_eventBus = GetNode<EventBus>("/root/EventBus");
@@ -26,20 +27,20 @@ public class Objective : Node2D
 			}
 		}
 	}
-	
+
 	public void Activate()
-	{ 
+	{
 		foreach(ObjectiveObject obj in objects)
 		{
 			obj.Enable();
 			GD.Print("Enabled object ", obj.Name);
-			obj.Connect(nameof(ObjectiveObject.StateResolved), this, nameof(OnStateResolved));
+			obj.SafeConnect(nameof(ObjectiveObject.StateResolved), this, nameof(OnStateResolved));
 			GD.Print("Connected StateResolved for ", obj.Name);
 		}
-		_eventBus.Connect(nameof(EventBus.CountdownEnded), this, nameof(ObjectiveTimerEnded));
+		_eventBus.SafeConnect(nameof(EventBus.CountdownEnded), this, nameof(ObjectiveTimerEnded));
 		isActive = true;
 	}
-	
+
 	public void Deactivate()
 	{
 		if (!isActive) return;
@@ -47,10 +48,10 @@ public class Objective : Node2D
 		Visible = false;
 		foreach(ObjectiveObject obj in objects)
 		{
-			obj.Disconnect(nameof(ObjectiveObject.StateResolved), this, nameof(OnStateResolved));
+			obj.SafeDisconnect(nameof(ObjectiveObject.StateResolved), this, nameof(OnStateResolved));
 			obj.Disable();
 		}
-		_eventBus.Disconnect(nameof(EventBus.CountdownEnded), this, nameof(ObjectiveTimerEnded));
+		_eventBus.SafeDisconnect(nameof(EventBus.CountdownEnded), this, nameof(ObjectiveTimerEnded));
 	}
 
 	void OnStateResolved(ObjectiveObject obj)
@@ -61,7 +62,7 @@ public class Objective : Node2D
 			Deactivate();
 		}
 	}
-	
+
 	public void CheckState()
 	{
 		foreach(ObjectiveObject obj in objects)
@@ -74,7 +75,7 @@ public class Objective : Node2D
 		}
 		_eventBus.CompleteObjective();
 	}
-	
+
 	async void ObjectiveTimerEnded()
 	{
 		CheckState();

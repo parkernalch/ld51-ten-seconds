@@ -67,11 +67,11 @@ public class Projectile : Area2D
 		_visibilityNotifier2D = this.FindChildByName<VisibilityNotifier2D>("VisibilityNotifier2D");
 		_timer = this.FindChildByName<Timer>("Lifetime");
 
-		_visibilityNotifier2D.Connect("screen_exited", this, nameof(OnLifetimeTimeout));
-		Connect("body_entered", this, nameof(OnProjectileBodyEntered));
-		_timer.Connect("timeout", this, nameof(OnLifetimeTimeout));
-		_timer.Connect("tree_exiting", this, nameof(OnLifetimeExitingTree));
-		_eventBus.Connect(nameof(EventBus.LevelCompleted), this, nameof(OnLevelCompleted));
+		_visibilityNotifier2D.SafeConnect("screen_exited", this, nameof(OnLifetimeTimeout));
+		this.SafeConnect("body_entered", this, nameof(OnProjectileBodyEntered));
+		_timer.SafeConnect("timeout", this, nameof(OnLifetimeTimeout));
+		_timer.SafeConnect("tree_exiting", this, nameof(OnLifetimeExitingTree));
+		_eventBus.SafeConnect(nameof(EventBus.LevelCompleted), this, nameof(OnLevelCompleted));
 	}
 
 	private void OnLevelCompleted()
@@ -81,11 +81,7 @@ public class Projectile : Area2D
 
 	protected override void Dispose(bool disposing)
 	{
-		if (IsConnected("body_entered", this, nameof(OnProjectileBodyEntered)))
-		{
-			Disconnect("body_entered", this, nameof(OnProjectileBodyEntered));
-		}
-
+		this.SafeDisconnect("body_entered", this, nameof(OnProjectileBodyEntered));
 		base.Dispose(disposing);
 	}
 
@@ -126,8 +122,8 @@ public class Projectile : Area2D
 
 	void OnLifetimeExitingTree()
 	{
-		_timer.Disconnect("timeout", this, nameof(OnLifetimeTimeout));
-		_timer.Disconnect("tree_exiting", this, nameof(OnLifetimeExitingTree));
+		_timer.SafeDisconnect("timeout", this, nameof(OnLifetimeTimeout));
+		_timer.SafeDisconnect("tree_exiting", this, nameof(OnLifetimeExitingTree));
 	}
 
 	void OnLifetimeTimeout() => QueueFree();

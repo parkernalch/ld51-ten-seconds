@@ -25,12 +25,12 @@ public class MainScene : Node2D
 		_timer.WaitTime = 10f;
 		_timer.OneShot = false;
 		_timer.Autostart = true;
-		_timer.Connect("timeout", this, nameof(OnTimerTimeout));
+		_timer.SafeConnect("timeout", this, nameof(OnTimerTimeout));
 		GameManager gameManager = GetNode<GameManager>("/root/GameManager");
 		_player = (PlayerController)this.FindNode("PlayerController");
 		_eventBus.LoadPlayer(_player);
 		_eventBus.EnterRoom(gameManager.CurrentRoom);
-		_eventBus.Connect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
+		_eventBus.SafeConnect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
 		for(int i=0; i<8; i++)
 		{
 			RayCast2D cast = new RayCast2D();
@@ -47,8 +47,8 @@ public class MainScene : Node2D
 
 	protected override void Dispose(bool disposing)
 	{
-		_timer?.Disconnect("timeout", this, nameof(OnTimerTimeout));
-		_eventBus?.Disconnect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
+		_timer?.SafeDisconnect("timeout", this, nameof(OnTimerTimeout));
+		_eventBus?.SafeDisconnect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
 		base.Dispose(disposing);
 	}
 

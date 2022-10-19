@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using JamToolkit.Util;
 
 public class RuneRing : Sprite
 {
@@ -13,26 +14,26 @@ public class RuneRing : Sprite
 		_tween = new Tween();
 		AddChild(_tween);
 		_timer = GetNode<Timer>("Timer");
-		_timer.Connect("timeout", this, nameof(OnTimeout));
-		_eventBus.Connect(nameof(EventBus.LevelCompleted), this, nameof(OnLevelCompleted));
+		_timer.SafeConnect("timeout", this, nameof(OnTimeout));
+		_eventBus.SafeConnect(nameof(EventBus.LevelCompleted), this, nameof(OnLevelCompleted));
 		Start();
 	}
-	
-	void OnLevelCompleted() 
+
+	void OnLevelCompleted()
 	{
 		_tween.StopAll();
 		ShaderMaterial mat = Material as ShaderMaterial;
 		mat.SetShaderParam("fill_ratio", 0);
-		_timer.Disconnect("timeout", this, nameof(OnTimeout));
+		_timer.SafeDisconnect("timeout", this, nameof(OnTimeout));
 		_timer.Stop();
 	}
-	
+
 	void OnTimeout()
 	{
 		Start();
-		_eventBus.EndCountdown();		
+		_eventBus.EndCountdown();
 	}
-	
+
 	void Start()
 	{
 		_timer.Start();

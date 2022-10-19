@@ -1,5 +1,6 @@
-using Godot;
 using System;
+using Godot;
+using JamToolkit.Util;
 
 public class GameManager : Node
 {
@@ -12,26 +13,26 @@ public class GameManager : Node
 		set => _currentRoom = Math.Max(value, 0);
 	}
 
-	public int coinCount = 0;
+	public int coinCount;
 
 	int objectivesPerRoom = 5;
 
 	EventBus _eventBus;
 	SceneManager _sceneManager;
 	PlayerController _player;
-	private int _currentRoom = 0;
+	private int _currentRoom;
 
 	public override void _Ready()
 	{
 		_sceneManager = GetNode<SceneManager>("/root/SceneManager");
 		_eventBus = GetNode<EventBus>("/root/EventBus");
-		_eventBus.Connect(nameof(EventBus.EnteredRoom), this, nameof(OnEnteredRoom));
-		_eventBus.Connect(nameof(EventBus.ObjectiveCompleted), this, nameof(OnObjectiveCompleted));
-		_eventBus.Connect(nameof(EventBus.ObjectiveFailed), this, nameof(OnObjectiveFailed));
-		_eventBus.Connect(nameof(EventBus.CountdownEnded), this, nameof(OnCountdownEnded));
-		_eventBus.Connect(nameof(EventBus.PlayerChanged), this, nameof(OnPlayerChanged));
-		_eventBus.Connect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
-		_eventBus.Connect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
+		_eventBus.SafeConnect(nameof(EventBus.EnteredRoom), this, nameof(OnEnteredRoom));
+		_eventBus.SafeConnect(nameof(EventBus.ObjectiveCompleted), this, nameof(OnObjectiveCompleted));
+		_eventBus.SafeConnect(nameof(EventBus.ObjectiveFailed), this, nameof(OnObjectiveFailed));
+		_eventBus.SafeConnect(nameof(EventBus.CountdownEnded), this, nameof(OnCountdownEnded));
+		_eventBus.SafeConnect(nameof(EventBus.PlayerChanged), this, nameof(OnPlayerChanged));
+		_eventBus.SafeConnect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
+		_eventBus.SafeConnect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
 	}
 
 	void OnPlayerChanged(PlayerController player)

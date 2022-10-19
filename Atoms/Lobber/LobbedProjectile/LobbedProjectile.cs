@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using JamToolkit.Util;
 
 public class LobbedProjectile : Node2D
 {
@@ -9,7 +10,7 @@ public class LobbedProjectile : Node2D
 	Node2D _targetPosition;
 	Tween _tween;
 	Timer _timer;
-	
+
 	float speed = 10f;
 	[Export]float airTime = 1f;
 	bool isActive = false;
@@ -18,7 +19,7 @@ public class LobbedProjectile : Node2D
 	{
 		_timer = new Timer();
 		AddChild(_timer);
-		_timer.Connect("timeout", this, nameof(OnTimerFinished));
+		_timer.SafeConnect("timeout", this, nameof(OnTimerFinished));
 		_tween = new Tween();
 		AddChild(_tween);
 		_targetPosition = GetNode<Node2D>("TargetPosition");
@@ -31,7 +32,7 @@ public class LobbedProjectile : Node2D
 		_pathFollow.Visible = false;
 		_shadowSprite.Visible = false;
 	}
-	
+
 	public void Shoot(Vector2 targetPos)
 	{
 		_targetPosition.GlobalPosition = targetPos;
@@ -75,13 +76,13 @@ public class LobbedProjectile : Node2D
 		_shadowSprite.Visible = true;
 		isActive = true;
 	}
-	
+
 	void OnTimerFinished()
 	{
 		_pathFollow.Visible = false;
 		_shadowSprite.Visible = false;
 		GetNode<EventBus>("/root/EventBus").NotifyProjectileImpact(_targetPosition.GlobalPosition, 1);
-		
+
 		SetProcess(true);
 		isActive = false;
 	}

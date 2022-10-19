@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using JamToolkit.Util;
 
 public class HUD : CanvasLayer
 {
@@ -10,8 +11,8 @@ public class HUD : CanvasLayer
 
 	protected override void Dispose(bool disposing)
 	{
-		_eventBus.Disconnect(nameof(EventBus.EnteredRoom), this, nameof(OnEnteredRoom));
-		_eventBus.Disconnect(nameof(EventBus.CoinCountChanged), this, nameof(OnCoinCountChanged));
+		_eventBus.SafeDisconnect(nameof(EventBus.EnteredRoom), this, nameof(OnEnteredRoom));
+		_eventBus.SafeDisconnect(nameof(EventBus.CoinCountChanged), this, nameof(OnCoinCountChanged));
 
 		base.Dispose(disposing);
 	}
@@ -23,8 +24,8 @@ public class HUD : CanvasLayer
 		_coinLabel = GetNode<Label>("HBoxContainer/CoinCountLabel");
 		_coinLabel.Text = _gm.coinCount.ToString();
 		_eventBus = GetNode<EventBus>("/root/EventBus");
-		_eventBus.Connect(nameof(EventBus.EnteredRoom), this, nameof(OnEnteredRoom));
-		_eventBus.Connect(nameof(EventBus.CoinCountChanged), this, nameof(OnCoinCountChanged));
+		_eventBus.SafeConnect(nameof(EventBus.EnteredRoom), this, nameof(OnEnteredRoom));
+		_eventBus.SafeConnect(nameof(EventBus.CoinCountChanged), this, nameof(OnCoinCountChanged));
 	}
 
 	void OnEnteredRoom(int room)

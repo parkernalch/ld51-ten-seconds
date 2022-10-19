@@ -25,10 +25,10 @@ public class Emitter : ObjectiveObject
 		_eventBus = GetNode<EventBus>("/root/EventBus");
 		_timer = GetNode<Timer>("Timer");
 		_timer.WaitTime = volleyInterval;
-		_timer.Connect("timeout", this, nameof(FireNextWave));
+		_timer.SafeConnect("timeout", this, nameof(FireNextWave));
 		_projectile = ResourceLoader.Load<PackedScene>("res://Atoms/Projectile/Projectile.tscn");
 		await ToSignal(GetTree(), "idle_frame");
-		_eventBus.Connect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
+		_eventBus.SafeConnect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
 		_player = this.FindSingleton<PlayerController>();
 		angleMinRad = Mathf.Deg2Rad(angleMin);
 		angleMaxRad = Mathf.Deg2Rad(angleMax);
@@ -99,25 +99,21 @@ public class Emitter : ObjectiveObject
 
 	private float CircleClamp(float value) => value % TwoPi;
 
-	public void Clear()
-	{
-		this.RemoveChildren<Projectile>();
-	}
+	public void Clear() => this.RemoveChildren<Projectile>();
 
 	public override void Disable()
 	{
 		isActive = false;
 		Visible = false;
 		_timer.Stop();
-		_timer.Disconnect("timeout", this, nameof(FireNextWave));
+		_timer.SafeDisconnect("timeout", this, nameof(FireNextWave));
 	}
 
 	public override void Enable()
 	{
 		isActive = true;
 		Visible = true;
-		if (!_timer.IsConnected("timeout", this, nameof(FireNextWave)))
-			_timer.Connect("timeout", this, nameof(FireNextWave));
+		_timer.SafeConnect("timeout", this, nameof(FireNextWave));
 		_timer.Start();
 	}
 

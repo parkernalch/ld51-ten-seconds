@@ -1,9 +1,8 @@
 using Godot;
-using System;
 
 public class EventBus : Node
 {
-	private bool _disposed = false;
+	private bool _disposed;
 
 	protected override void Dispose(bool disposing)
 	{
@@ -17,7 +16,7 @@ public class EventBus : Node
 	public void CreateCoin(SimpleCoin coin)
 	{
 		if (_disposed) return;
-		this.EmitSignal(nameof(EventBus.CoinCreated), coin);
+		EmitSignal(nameof(CoinCreated), coin);
 	}
 
 	[Signal]
@@ -26,7 +25,7 @@ public class EventBus : Node
 	public void CollectCoin(SimpleCoin coin)
 	{
 		if (_disposed) return;
-		this.EmitSignal(nameof(EventBus.CoinCollected), coin);
+		EmitSignal(nameof(CoinCollected), coin);
 	}
 
 	[Signal]
@@ -34,7 +33,7 @@ public class EventBus : Node
 	public void ObtainKey(Node key)
 	{
 		if (_disposed) return;
-		this.EmitSignal(nameof(EventBus.KeyObtained), key);
+		EmitSignal(nameof(KeyObtained), key);
 	}
 
 	[Signal]
@@ -42,7 +41,7 @@ public class EventBus : Node
 	public void OpenChest(Node chest)
 	{
 		if (_disposed) return;
-		this.EmitSignal(nameof(EventBus.ChestOpened), chest);
+		EmitSignal(nameof(ChestOpened), chest);
 	}
 
 	[Signal]
@@ -51,7 +50,7 @@ public class EventBus : Node
 	public void ConnectMissile(Projectile projectile)
 	{
 		if (_disposed) return;
-		this.EmitSignal(nameof(EventBus.MissileConnected), projectile);
+		EmitSignal(nameof(MissileConnected), projectile);
 	}
 
 	[Signal]
@@ -59,7 +58,7 @@ public class EventBus : Node
 	public void CompleteObjective()
 	{
 		if (_disposed) return;
-		this.EmitSignal(nameof(EventBus.ObjectiveCompleted));
+		EmitSignal(nameof(ObjectiveCompleted));
 	}
 
 	[Signal]
@@ -67,7 +66,7 @@ public class EventBus : Node
 	public void FailObjective()
 	{
 		if (_disposed) return;
-		this.EmitSignal(nameof(EventBus.ObjectiveFailed));
+		EmitSignal(nameof(ObjectiveFailed));
 	}
 
 	[Signal]
@@ -75,7 +74,7 @@ public class EventBus : Node
 	public void EndCountdown()
 	{
 		if (_disposed) return;
-		this.EmitSignal(nameof(EventBus.CountdownEnded));
+		EmitSignal(nameof(CountdownEnded));
 	}
 
 	[Signal]
@@ -83,7 +82,7 @@ public class EventBus : Node
 	public void CompleteLevel()
 	{
 		if (_disposed) return;
-		this.EmitSignal(nameof(EventBus.LevelCompleted));
+		EmitSignal(nameof(LevelCompleted));
 	}
 
 	[Signal]
@@ -91,7 +90,7 @@ public class EventBus : Node
 	public void FailLevel()
 	{
 		if (_disposed) return;
-		this.EmitSignal(nameof(EventBus.LevelFailed));
+		EmitSignal(nameof(LevelFailed));
 	}
 
 	[Signal]
@@ -99,7 +98,7 @@ public class EventBus : Node
 	public void ChangeObjectiveCount(int success, int fail)
 	{
 		if (_disposed) return;
-		this.EmitSignal(nameof(ObjectiveCountChanged), success, fail);
+		EmitSignal(nameof(ObjectiveCountChanged), success, fail);
 	}
 
 	[Signal]
@@ -107,7 +106,7 @@ public class EventBus : Node
 	public void EnterRoom(int roomIndex)
 	{
 		if (_disposed) return;
-		this.EmitSignal(nameof(EnteredRoom), roomIndex);
+		EmitSignal(nameof(EnteredRoom), roomIndex);
 	}
 
 	[Signal]
@@ -115,7 +114,7 @@ public class EventBus : Node
 	public void LoadPlayer(PlayerController player)
 	{
 		if (_disposed) return;
-		this.EmitSignal(nameof(PlayerChanged), player);
+		EmitSignal(nameof(PlayerChanged), player);
 	}
 
 	[Signal]
@@ -123,7 +122,7 @@ public class EventBus : Node
 	public void ChangeCoinCount(int newCount)
 	{
 		if (_disposed) return;
-		this.EmitSignal(nameof(CoinCountChanged), newCount);
+		EmitSignal(nameof(CoinCountChanged), newCount);
 	}
 
 	[Signal]
@@ -131,6 +130,6 @@ public class EventBus : Node
 	public void NotifyProjectileImpact(Vector2 impactPoint, int radius)
 	{
 		if (_disposed) return;
-		this.EmitSignal(nameof(LobbedProjectileImpacted), impactPoint, radius);
+		EmitSignal(nameof(LobbedProjectileImpacted), impactPoint, radius);
 	}
 }

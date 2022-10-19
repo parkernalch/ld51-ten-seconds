@@ -19,13 +19,13 @@ public class Lobber : Node2D
 		AddChild(_tween);
 		_timer.WaitTime = cooldown;
 		_timer.OneShot = true;
-		_timer.Connect("timeout", this, nameof(OnCooldownEnded));
+		_timer.SafeConnect("timeout", this, nameof(OnCooldownEnded));
 		_sprite = GetNode<Sprite>("TargetSprite");
 		_pc = this.FindSingleton<PlayerController>();
 		_lobbedProjectileScene = ResourceLoader.Load<PackedScene>("res://Atoms/Lobber/LobbedProjectile/LobbedProjectile.tscn");
 		TweenFollowSpeed();
 	}
-	
+
 	void TweenFollowSpeed()
 	{
 		_tween.StopAll();
@@ -38,7 +38,7 @@ public class Lobber : Node2D
 		);
 		_tween.Start();
 	}
-	
+
 	void OnCooldownEnded()
 	{
 		_sprite.GlobalPosition = this.GlobalPosition;
@@ -46,7 +46,7 @@ public class Lobber : Node2D
 		TweenFollowSpeed();
 		SetProcess(true);
 	}
-	
+
 	Vector2 VectorLerp(Vector2 v1, Vector2 v2, float weight)
 	{
 		float yComp = Mathf.Lerp(v1.y, v2.y, weight);

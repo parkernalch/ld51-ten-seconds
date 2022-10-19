@@ -7,11 +7,11 @@ public class EffectTile : Area2D
 	BaseEffect _effect;
 	public override void _Ready()
 	{
-		Connect("body_entered", this, nameof(OnBodyEntered));
-		Connect("body_exited", this, nameof(OnBodyExited));
+		this.SafeConnect("body_entered", this, nameof(OnBodyEntered));
+		this.SafeConnect("body_exited", this, nameof(OnBodyExited));
 		_effect = this.FindChild<BaseEffect>();
 	}
-	
+
 	void OnBodyEntered(Node2D body)
 	{
 		if (body is PlayerController)
@@ -21,7 +21,7 @@ public class EffectTile : Area2D
 			newEffect.Attach();
 		}
 	}
-	
+
 	void OnBodyExited(Node2D body)
 	{
 		if (body is PlayerController)

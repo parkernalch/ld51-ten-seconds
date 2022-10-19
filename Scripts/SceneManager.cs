@@ -1,6 +1,4 @@
 using Godot;
-using System;
-using JamToolkit.Util;
 
 public class SceneManager : Node
 {

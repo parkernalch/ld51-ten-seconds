@@ -8,8 +8,8 @@ public class SpiderWeb : Area2D
 
 	public override void _Ready()
 	{
-		Connect("body_entered", this, nameof(OnBodyEntered));
-		Connect("body_exited", this, nameof(OnBodyExited));
+		this.SafeConnect("body_entered", this, nameof(OnBodyEntered));
+		this.SafeConnect("body_exited", this, nameof(OnBodyExited));
 	}
 
 	void OnBodyEntered(Node body)

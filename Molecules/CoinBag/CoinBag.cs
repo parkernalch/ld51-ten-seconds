@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using JamToolkit.Util;
 
 public class CoinBag : ObjectiveObject
 {
@@ -9,7 +10,7 @@ public class CoinBag : ObjectiveObject
 	PackedScene _coinScene;
 	Random random;
 	Godot.Collections.Array<SimpleCoin> _coins = new Godot.Collections.Array<SimpleCoin>();
-	
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -18,7 +19,7 @@ public class CoinBag : ObjectiveObject
 		_eventBus = GetNode<EventBus>("/root/EventBus");
 		_timer.Autostart = false;
 	}
-	
+
 	void OnCoinCollected(SimpleCoin coin)
 	{
 		_coins.Remove(coin);
@@ -27,7 +28,7 @@ public class CoinBag : ObjectiveObject
 			this.NotifySuccess();
 		}
 	}
-	
+
 	void Burst()
 	{
 		int count = coinsToDisburse;
@@ -47,14 +48,14 @@ public class CoinBag : ObjectiveObject
 		}
 		GetNode<Sprite>("Sprite").Visible = false;
 	}
-	
+
 	public override void Disable()
 	{
 		if (IsConnected(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected)))
 		{
 			_timer.Stop();
-			_timer.Disconnect("timeout", this, nameof(Burst));
-			_eventBus.Disconnect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
+			_timer.SafeDisconnect("timeout", this, nameof(Burst));
+			_eventBus.SafeDisconnect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
 			Visible = false;
 		}
 	}
@@ -63,7 +64,7 @@ public class CoinBag : ObjectiveObject
 	{
 		Visible = true;
 		_timer.Start();
-		_timer.Connect("timeout", this, nameof(Burst));
-		_eventBus.Connect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
+		_timer.SafeConnect("timeout", this, nameof(Burst));
+		_eventBus.SafeConnect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
 	}
 }

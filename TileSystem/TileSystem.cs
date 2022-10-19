@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using JamToolkit.Util;
 
 public class TileSystem : TileMap
 {
@@ -7,8 +8,8 @@ public class TileSystem : TileMap
 	Godot.Collections.Dictionary<int, PackedScene> tileLookup = new Godot.Collections.Dictionary<int, PackedScene>();
 	int halfCell;
 	Godot.Collections.Dictionary<Vector2, Node2D> instancedTiles = new Godot.Collections.Dictionary<Vector2, Node2D>();
-	
-	 
+
+
 	public override void _Ready()
 	{
 		_eventBus = GetNode<EventBus>("/root/EventBus");
@@ -24,7 +25,7 @@ public class TileSystem : TileMap
 		// Floor
 		tileLookup.Add(4, ResourceLoader.Load<PackedScene>("res://TileSystem/Tiles/Floor/FloorTile.tscn"));
 		ReplaceTilesWithScenes();
-		_eventBus.Connect(nameof(EventBus.LobbedProjectileImpacted), this, nameof(BreakTile));
+		_eventBus.SafeConnect(nameof(EventBus.LobbedProjectileImpacted), this, nameof(BreakTile));
 	}
 
 	void ReplaceTilesWithScenes()
@@ -41,7 +42,7 @@ public class TileSystem : TileMap
 			instancedTiles[tilePosition] = scene;
 		}
 	}
-	
+
 	void BreakTileByMapPosition(Vector2 mapPosition)
 	{
 		if (!instancedTiles.Keys.Contains(mapPosition)) return;
@@ -51,7 +52,7 @@ public class TileSystem : TileMap
 			if (cell is BreakableTile)
 			{
 				(cell as BreakableTile).Crack();
-			} else 
+			} else
 			{
 				Node2D scene = tileLookup[2].Instance<Node2D>();
 				AddChild(scene);
@@ -62,7 +63,7 @@ public class TileSystem : TileMap
 		}
 
 	}
-	
+
 	void BreakTile(Vector2 globalBreakPosition, int displacement)
 	{
 		Vector2 localPos = this.ToLocal(globalBreakPosition);

@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using JamToolkit.Util;
 
 public class PaymentDoor : Area2D
 {
@@ -10,12 +11,12 @@ public class PaymentDoor : Area2D
 	{
 		doorBlocker = GetNode<CollisionShape2D>("DoorBlocker/CollisionShape2D");
 		doorSprite = GetNode<Sprite>("DoorBlocker/Sprite");
-		Connect("body_entered", this, nameof(OnBodyEntered));
+		this.SafeConnect("body_entered", this, nameof(OnBodyEntered));
 	}
 
 	protected override void Dispose(bool disposing)
 	{
-		Disconnect("body_entered", this, nameof(OnBodyEntered));
+		this.SafeDisconnect("body_entered", this, nameof(OnBodyEntered));
 		base.Dispose(disposing);
 	}
 

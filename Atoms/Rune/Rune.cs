@@ -1,21 +1,22 @@
 using Godot;
 using System;
+using JamToolkit.Util;
 
 public class Rune : Sprite
 {
 	[Export]Texture arrowTexture;
 	[Export]Texture keyTexture;
 	[Export]Texture coinTexture;
-	
+
 	EventBus _eventBus;
-	
+
 	Color white = new Color(1, 1, 1, 1);
 	Color transparent = new Color(0, 0, 0, 0);
-	
+
 	Godot.Collections.Array<Sprite> successPips = new Godot.Collections.Array<Sprite>();
 	Godot.Collections.Array<Sprite> failurePips = new Godot.Collections.Array<Sprite>();
 	int successes = 0;
-	
+
 	public override void _Ready()
 	{
 		_eventBus = GetNode<EventBus>("/root/EventBus");
@@ -28,9 +29,9 @@ public class Rune : Sprite
 			failurePips.Add(pip as Sprite);
 		}
 		ClearPips();
-		_eventBus.Connect(nameof(EventBus.ObjectiveCountChanged), this, nameof(UpdatePips));
+		_eventBus.SafeConnect(nameof(EventBus.ObjectiveCountChanged), this, nameof(UpdatePips));
 	}
-	
+
 	public void SetObjectiveIcon(Objective.OBJECTIVE_TYPE type)
 	{
 		if (type == Objective.OBJECTIVE_TYPE.COLLECT)
@@ -39,12 +40,12 @@ public class Rune : Sprite
 		} else if (type == Objective.OBJECTIVE_TYPE.DODGE)
 		{
 			Texture = arrowTexture;
-		} else 
+		} else
 		{
 			Texture = keyTexture;
 		}
 	}
-	
+
 	void ClearPips()
 	{
 		foreach(Sprite pip in successPips)
@@ -56,7 +57,7 @@ public class Rune : Sprite
 			pip.SelfModulate = transparent;
 		}
 	}
-	
+
 	void UpdatePips(int success, int failure)
 	{
 		for(int i=0; i<failurePips.Count; i++)

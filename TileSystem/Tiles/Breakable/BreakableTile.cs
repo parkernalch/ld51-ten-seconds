@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using JamToolkit.Util;
 
 public class BreakableTile : Area2D
 {
@@ -14,7 +15,7 @@ public class BreakableTile : Area2D
 		_sprite = GetNode<Sprite>("Sprite");
 		_shaderMaterial = _sprite.Material as ShaderMaterial;
 		currentCrackTextureIndex = 0;
-		Connect("body_exited", this, nameof(OnBodyExited));
+		this.SafeConnect("body_exited", this, nameof(OnBodyExited));
 	}
 
 	void OnBodyExited(PlayerController pc)
@@ -39,8 +40,8 @@ public class BreakableTile : Area2D
 
 	void Break()
 	{
-		Disconnect("body_exited", this, nameof(OnBodyExited));
-		Connect("body_entered", this, nameof(OnBodyEntered));
+		this.SafeDisconnect("body_exited", this, nameof(OnBodyExited));
+		this.SafeConnect("body_entered", this, nameof(OnBodyEntered));
 	}
 
 	void OnBodyEntered(PlayerController pc)

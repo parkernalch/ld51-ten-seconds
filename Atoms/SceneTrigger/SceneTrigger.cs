@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using JamToolkit.Util;
 
 public class SceneTrigger : Area2D
 {
@@ -12,19 +13,13 @@ public class SceneTrigger : Area2D
 	{
 		_eventBus = GetNode<EventBus>("/root/EventBus");
 		_sceneManager = GetNode<SceneManager>("/root/SceneManager");
-		_eventBus.Connect(nameof(EventBus.LevelCompleted), this, nameof(Activate));
+		_eventBus.SafeConnect(nameof(EventBus.LevelCompleted), this, nameof(Activate));
 		if (startActive) Activate();
 	}
 
-	void Activate()
-	{
-		this.Connect("body_entered", this, nameof(OnBodyEntered));
-	}
+	void Activate() => this.SafeConnect("body_entered", this, nameof(OnBodyEntered));
 
-	void Deactivate()
-	{
-		this.Disconnect("body_entered", this, nameof(OnBodyEntered));
-	}
+	void Deactivate() => this.SafeDisconnect("body_entered", this, nameof(OnBodyEntered));
 
 	void OnBodyEntered(Node2D body)
 	{
