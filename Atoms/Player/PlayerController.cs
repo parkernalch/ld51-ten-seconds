@@ -22,6 +22,7 @@ public class PlayerController : KinematicBody2D
 	private EventBus _eventBus;
 	private AnimationNodeStateMachinePlayback _stateMachine;
 
+	private float _timeUntilDeathTransition = 5;
 	private Vector2 _inputDirection;
 	private Vector2 _acceleration;
 	private Vector2 _velocity;
@@ -86,6 +87,11 @@ public class PlayerController : KinematicBody2D
 		if (IsDead)
 		{
 			_stateMachine.Travel("Die");
+			_timeUntilDeathTransition -= delta;
+			if (_timeUntilDeathTransition <= 0)
+			{
+				GetNode<SceneManager>("/root/SceneManager").GoToGameOver();
+			}
 			return;
 		}
 

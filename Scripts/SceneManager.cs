@@ -7,14 +7,7 @@ public class SceneManager : Node
 	PackedScene creditsScene = ResourceLoader.Load<PackedScene>("res://Scenes/primary/CreditsScene/CreditsScene.tscn");
 	PackedScene optionsScene = ResourceLoader.Load<PackedScene>("res://Scenes/primary/OptionsScene/OptionsScene.tscn");
 
-	public override void _Ready()
-	{
-	}
-
-	public void GoToMainMenu()
-	{
-		GetTree().ChangeSceneTo(mainMenuScene);
-	}
+	public void GoToMainMenu() => GetTree().ChangeSceneTo(mainMenuScene);
 
 	public void GoToGame()
 	{
@@ -45,13 +38,13 @@ public class SceneManager : Node
 		GetTree().ChangeSceneTo(gameScene);
 	}
 
-	public void GoToOptions()
-	{
-		GetTree().ChangeSceneTo(optionsScene);
-	}
+	public void GoToOptions() => GetTree().ChangeSceneTo(optionsScene);
 
-	public void GoToCredits()
+	public void GoToCredits() => GetTree().ChangeSceneTo(creditsScene);
+
+	public void GoToGameOver()
 	{
-		GetTree().ChangeSceneTo(creditsScene);
+		// TODO: add GameOver scene or update Credits Scene to have a GameOver mode?
+		GoToMainMenu();
 	}
 }

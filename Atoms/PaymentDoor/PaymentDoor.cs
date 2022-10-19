@@ -24,7 +24,7 @@ public class PaymentDoor : Area2D
 	{
 		if (pc is PlayerController controller)
 		{
-			if( controller.PayToll(toll)) {
+			if(controller.PayToll(toll)) {
 				CallDeferred(nameof(OpenDoor));
 			}
 		}
