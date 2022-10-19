@@ -51,13 +51,15 @@ public class BreakableTile : Area2D
 			Drop(pc);
 	}
 
-	void Drop(PlayerController pc)
+	async void Drop(PlayerController pc)
 	{
 		if (pc == null) return;
 
 		PlayerController.DropLocation = pc.GlobalPosition;
-		pc.QueueFree();
+		pc.Fall();
+		// pc.QueueFree();
 
+		await ToSignal(GetTree().CreateTimer(1f), "timeout");
 		GetNode<SceneManager>("/root/SceneManager").GoToPreviousLevel();
 	}
 }

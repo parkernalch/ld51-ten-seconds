@@ -21,6 +21,7 @@ public class PlayerController : KinematicBody2D
 	private int _lastHealth;
 	private EventBus _eventBus;
 	private AnimationNodeStateMachinePlayback _stateMachine;
+	private AnimationPlayer _anim;
 
 	private float _timeUntilDeathTransition = 5;
 	private Vector2 _inputDirection;
@@ -45,6 +46,7 @@ public class PlayerController : KinematicBody2D
 		_eventBus = GetNode<EventBus>("/root/EventBus") ?? throw new ArgumentException(nameof(EventBus));
 		_tween = this.GetNode<Tween>();
 		_animationTree = this.GetNode<AnimationTree>();
+		_anim = this.GetNode<AnimationPlayer>();
 		_material = (ShaderMaterial)Material;
 		_stateMachine = (AnimationNodeStateMachinePlayback)_animationTree.Get("parameters/playback");
 		_sprite = this.GetNode<Sprite>();
@@ -57,13 +59,20 @@ public class PlayerController : KinematicBody2D
 		Assert.True(timeToAccelerate > 0, "acceleration time must be nonzero");
 		Assert.True(timeToDecelerate > 0, "deceleration time must be nonzero");
 		ResetTopSpeed();
-		if (DropLocation.HasValue)
-		{
-			this.GlobalPosition = DropLocation.Value;
-			DropLocation = null;
-		}
+		if (DropLocation.HasValue) LandAtDropLocation();
+	}
 
-		// _eventBus.SafeConnect(nameof(EventBus.MissileConnected), this, nameof(OnMissileHit));
+	async void LandAtDropLocation()
+	{
+		SetPhysicsProcess(false);
+		this.GlobalPosition = DropLocation.Value;
+		DropLocation = null;
+		_animationTree.Active = false;
+		GetNode<CPUParticles2D>("CPUParticles2D").Emitting = true;
+		_anim.Play("land");
+		await ToSignal(_anim, "animation_finished");
+		_animationTree.Active = true;
+		SetPhysicsProcess(true);
 	}
 
 	public void SetTopSpeed(float speed)
@@ -187,6 +196,14 @@ public class PlayerController : KinematicBody2D
 	private bool IsRunning => _velocity.LengthSquared() > 0;
 
 	private bool IsDead => Health == 0;
+	
+	public void Fall() {
+		_animationTree.Active = false;
+		_anim.Play("fall");
+		SetProcessInput(false);
+		SetPhysicsProcess(false);
+		GD.Print("falling");
+	}
 
 	async void Dash()
 	{

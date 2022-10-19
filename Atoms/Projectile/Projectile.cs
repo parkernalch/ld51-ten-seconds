@@ -67,6 +67,7 @@ public class Projectile : Area2D
 		_visibilityNotifier2D = this.FindChildByName<VisibilityNotifier2D>("VisibilityNotifier2D");
 		_timer = this.FindChildByName<Timer>("Lifetime");
 
+		Damage = GetNode<GameManager>("/root/GameManager").CurrentRoom;
 		_visibilityNotifier2D.SafeConnect("screen_exited", this, nameof(OnLifetimeTimeout));
 		this.SafeConnect("body_entered", this, nameof(OnProjectileBodyEntered));
 		_timer.SafeConnect("timeout", this, nameof(OnLifetimeTimeout));

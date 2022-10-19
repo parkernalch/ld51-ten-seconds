@@ -1,11 +1,11 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Atoms/Coin/SimpleCoin.cs" type="Script" id=1]
-[ext_resource path="res://Assets/temp/tilesheet.png" type="Texture" id=2]
+[ext_resource path="res://Assets/aseprite/tenSecSheet_32x.png" type="Texture" id=2]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 2 )
-region = Rect2( 320, 512, 64, 64 )
+region = Rect2( 128, 32, 32, 32 )
 
 [node name="SimpleCoin" type="Sprite"]
 scale = Vector2( 0.5, 0.5 )

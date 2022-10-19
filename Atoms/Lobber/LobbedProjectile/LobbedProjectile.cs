@@ -7,7 +7,10 @@ public class LobbedProjectile : Node2D
 	Path2D _path;
 	PathFollow2D _pathFollow;
 	Sprite _shadowSprite;
+	Sprite _projectileSprite;
 	Node2D _targetPosition;
+	CPUParticles2D _poofParticles;
+	CPUParticles2D _shardParticles;
 	Tween _tween;
 	Timer _timer;
 
@@ -22,8 +25,11 @@ public class LobbedProjectile : Node2D
 		_timer.SafeConnect("timeout", this, nameof(OnTimerFinished));
 		_tween = new Tween();
 		AddChild(_tween);
+		_poofParticles = GetNode<CPUParticles2D>("PoofParticles");
+		_shardParticles = GetNode<CPUParticles2D>("ShardParticles");
 		_targetPosition = GetNode<Node2D>("TargetPosition");
 		_shadowSprite = GetNode<Sprite>("ShadowSprite");
+		_projectileSprite = GetNode<Sprite>("ProjectilePath/PathFollow2D/ProjectileSprite");
 		_pathFollow = GetNode<PathFollow2D>("ProjectilePath/PathFollow2D");
 		_path = GetNode<Path2D>("ProjectilePath");
 		float curveLength = _path.Curve.GetBakedLength();
@@ -72,6 +78,7 @@ public class LobbedProjectile : Node2D
 		_timer.OneShot = true;
 		_timer.Start();
 		_tween.Start();
+		_poofParticles.Emitting = true;
 		_pathFollow.Visible = true;
 		_shadowSprite.Visible = true;
 		isActive = true;
@@ -79,9 +86,12 @@ public class LobbedProjectile : Node2D
 
 	void OnTimerFinished()
 	{
+		_shardParticles.GlobalPosition = _targetPosition.GlobalPosition;
+		_shardParticles.Emitting = true;
 		_pathFollow.Visible = false;
 		_shadowSprite.Visible = false;
 		GetNode<EventBus>("/root/EventBus").NotifyProjectileImpact(_targetPosition.GlobalPosition, 1);
+
 
 		SetProcess(true);
 		isActive = false;
@@ -89,6 +99,7 @@ public class LobbedProjectile : Node2D
 
 	public override void _Process(float delta)
 	{
+		_projectileSprite.Rotation = 0;
 		if (Input.GetMouseButtonMask() == 1)
 		{
 			Shoot(GetGlobalMousePosition());

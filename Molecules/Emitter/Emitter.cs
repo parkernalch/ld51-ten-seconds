@@ -10,6 +10,7 @@ public class Emitter : ObjectiveObject
 	[Export]bool homing = false;
 	[Export]float volleyInterval = 1f;
 	Timer _timer;
+	AnimationPlayer _anim;
 
 	[Export]int missileCount = 0;
 
@@ -23,9 +24,10 @@ public class Emitter : ObjectiveObject
 	{
 		this.state = ObjectiveObject.OBJECTIVE_STATE.SUCCESS;
 		_eventBus = GetNode<EventBus>("/root/EventBus");
+		_anim = GetNode<AnimationPlayer>("AnimationPlayer");
 		_timer = GetNode<Timer>("Timer");
 		_timer.WaitTime = volleyInterval;
-		_timer.SafeConnect("timeout", this, nameof(FireNextWave));
+		_timer.SafeConnect("timeout", this, nameof(StartNextWave));
 		_projectile = ResourceLoader.Load<PackedScene>("res://Atoms/Projectile/Projectile.tscn");
 		await ToSignal(GetTree(), "idle_frame");
 		_eventBus.SafeConnect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
@@ -38,6 +40,11 @@ public class Emitter : ObjectiveObject
 	void OnMissileConnected(Projectile projectile)
 	{
 		this.NotifyFailure();
+	}
+
+	private void StartNextWave()
+	{
+		_anim.Play("flash");
 	}
 
 	private void FireNextWave()
@@ -106,15 +113,16 @@ public class Emitter : ObjectiveObject
 		isActive = false;
 		Visible = false;
 		_timer.Stop();
-		_timer.SafeDisconnect("timeout", this, nameof(FireNextWave));
+		_timer.SafeDisconnect("timeout", this, nameof(StartNextWave));
 	}
 
 	public override void Enable()
 	{
 		isActive = true;
 		Visible = true;
-		_timer.SafeConnect("timeout", this, nameof(FireNextWave));
+		_timer.SafeConnect("timeout", this, nameof(StartNextWave));
 		_timer.Start();
+		_anim.Play("float");
 	}
 
 

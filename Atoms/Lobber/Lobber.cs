@@ -10,11 +10,13 @@ public class Lobber : Node2D
 	float cooldown = 4f;
 	Timer _timer;
 	Tween _tween;
+	AnimationPlayer _anim;
 	float followSpeed = 0f;
 	public override void _Ready()
 	{
 		_timer = new Timer();
 		_tween = new Tween();
+		_anim = GetNode<AnimationPlayer>("AnimationPlayer");
 		AddChild(_timer);
 		AddChild(_tween);
 		_timer.WaitTime = cooldown;
@@ -37,6 +39,7 @@ public class Lobber : Node2D
 			1f
 		);
 		_tween.Start();
+		_anim.Play("follow");
 	}
 
 	void OnCooldownEnded()
@@ -53,19 +56,24 @@ public class Lobber : Node2D
 		float xComp = Mathf.Lerp(v1.x, v2.x, weight);
 		return new Vector2(xComp, yComp);
 	}
+	
+	void Fire()
+	{
+		LobbedProjectile proj = _lobbedProjectileScene.Instance<LobbedProjectile>();
+		AddChild(proj);
+		proj.GlobalPosition = this.GlobalPosition;
+		proj.Shoot(_pc.GlobalPosition);
+		_timer.Start();
+		_sprite.Visible = false;
+		SetProcess(false);
+	}
 
 	public override void _Process(float delta)
 	{
 		_sprite.GlobalPosition = VectorLerp(_sprite.GlobalPosition, _pc.GlobalPosition, delta * 2f * followSpeed);
 		if (_sprite.GlobalPosition.DistanceSquaredTo(_pc.GlobalPosition) < 100f)
 		{
-			LobbedProjectile proj = _lobbedProjectileScene.Instance<LobbedProjectile>();
-			AddChild(proj);
-			proj.GlobalPosition = this.GlobalPosition;
-			proj.Shoot(_pc.GlobalPosition);
-			_timer.Start();
-			_sprite.Visible = false;
-			SetProcess(false);
+			Fire();
 		}
 	}
 }

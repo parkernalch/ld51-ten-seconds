@@ -51,7 +51,8 @@ position = Vector2( 256, 144 )
 current = true
 
 [node name="PaymentDoor" parent="." instance=ExtResource( 9 )]
-position = Vector2( 271, 48 )
+position = Vector2( 272, 16 )
+toll = 5
 
 [node name="Lobber" parent="." instance=ExtResource( 5 )]
 position = Vector2( 47, 237 )
