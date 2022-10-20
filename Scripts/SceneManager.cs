@@ -3,6 +3,7 @@ using Godot;
 public class SceneManager : Node
 {
 	PackedScene gameScene = ResourceLoader.Load<PackedScene>("res://Scenes/main_scene.tscn");
+	PackedScene transitionScene = ResourceLoader.Load<PackedScene>("res://Scenes/FloorTransition/FloorTransition.tscn");
 	PackedScene mainMenuScene = ResourceLoader.Load<PackedScene>("res://Scenes/primary/PlayableMenu/PlayableMenu.tscn");
 	PackedScene creditsScene = ResourceLoader.Load<PackedScene>("res://Scenes/primary/CreditsScene/CreditsScene.tscn");
 	PackedScene optionsScene = ResourceLoader.Load<PackedScene>("res://Scenes/primary/OptionsScene/OptionsScene.tscn");
@@ -12,7 +13,8 @@ public class SceneManager : Node
 	public void GoToGame()
 	{
 		var gameManager = GetNode<GameManager>("/root/GameManager");
-		gameManager.CurrentRoom = 1;
+		gameManager.SetCurrentRoom(1);
+		// gameManager.CurrentRoom = 1;
 		gameManager.Scores.GamesPlayed++;
 		GetTree().ChangeSceneTo(gameScene);
 	}
@@ -20,7 +22,12 @@ public class SceneManager : Node
 	public void GoToNextLevel()
 	{
 		var gameManager = GetNode<GameManager>("/root/GameManager");
-		gameManager.CurrentRoom++;
+		gameManager.SetCurrentRoom(gameManager.CurrentRoom + 1);
+		GetTree().ChangeSceneTo(transitionScene);
+	}
+	
+	public void FinishTransition()
+	{
 		GetTree().ChangeSceneTo(gameScene);
 	}
 
@@ -36,7 +43,8 @@ public class SceneManager : Node
 		}
 
 		gameManager.CurrentRoom--;
-		GetTree().ChangeSceneTo(gameScene);
+		GetTree().ChangeSceneTo(transitionScene);
+		// GetTree().ChangeSceneTo(gameScene);
 	}
 
 	public void GoToOptions() => GetTree().ChangeSceneTo(optionsScene);

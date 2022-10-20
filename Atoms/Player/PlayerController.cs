@@ -202,7 +202,6 @@ public class PlayerController : KinematicBody2D
 		_anim.Play("fall");
 		SetProcessInput(false);
 		SetPhysicsProcess(false);
-		GD.Print("falling");
 	}
 
 	async void Dash()

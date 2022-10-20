@@ -8,11 +8,13 @@ public class GameManager : Node
 	int objectiveCompletedCount;
 	int objectiveFailedCount;
 
+	public int PreviousRoom;
 	public int CurrentRoom
 	{
 		get => _currentRoom;
 		set
 		{
+			PreviousRoom = _currentRoom;
 			_currentRoom = Math.Max(value, 0);
 			Scores.FurthestRoom = Math.Max(Scores.FurthestRoom, _currentRoom);
 		}
@@ -108,6 +110,13 @@ public class GameManager : Node
 	{
 		GD.Print("Next Level");
 		// _sceneManager.LoadNextLevel();
+	}
+	
+	public int SetCurrentRoom(int room)
+	{
+		this.PreviousRoom = this.CurrentRoom;
+		this.CurrentRoom = room;
+		return this.CurrentRoom;
 	}
 
 	public int GetCurrentDifficulty() => objectiveCompletedCount + objectiveFailedCount;
