@@ -26,7 +26,7 @@ public class MainScene : Node2D
 		_eventBus = GetNode<EventBus>("/root/EventBus");
 		_timer = new Timer();
 		AddChild(_timer);
-		_timer.WaitTime = 3f;
+		_timer.WaitTime = 10f;
 		_timer.OneShot = false;
 		_timer.Autostart = true;
 		_timer.SafeConnect("timeout", this, nameof(OnTimerTimeout));
@@ -121,15 +121,6 @@ public class MainScene : Node2D
 		foreach(RayCast2D cast in coinCasts)
 		{
 			cast.Enabled = false;
-		}
-	}
-
-	public override void _Draw()
-	{
-		for(int i=0; i < 8; i++)
-		{
-			Vector2 point = coinCasts[i].GetCollisionPoint();
-			DrawCircle(point, 5f, new Color(1, 1, 1, 1));
 		}
 	}
 

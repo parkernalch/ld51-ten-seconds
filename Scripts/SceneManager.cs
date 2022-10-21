@@ -3,6 +3,7 @@ using Godot;
 public class SceneManager : Node
 {
 	EventBus _eventBus;
+	GameManager _gameManager;
 	PackedScene gameScene = ResourceLoader.Load<PackedScene>("res://Scenes/main_scene.tscn");
 	PackedScene transitionScene = ResourceLoader.Load<PackedScene>("res://Scenes/FloorTransition/FloorTransition.tscn");
 	PackedScene mainMenuScene = ResourceLoader.Load<PackedScene>("res://Scenes/primary/PlayableMenu/PlayableMenu.tscn");
@@ -13,22 +14,27 @@ public class SceneManager : Node
 		_eventBus = GetNode<EventBus>("/root/EventBus");
 	}
 
-	public void GoToMainMenu() => GetTree().ChangeSceneTo(mainMenuScene);
+	public void GoToMainMenu()
+	{
+		_gameManager.SetCurrentRoom(0);
+		_gameManager.RoomsVisitedInRun.Clear();
+		GetTree().ChangeSceneTo(mainMenuScene);
+	}
 
 	public void GoToGame()
 	{
-		var gameManager = GetNode<GameManager>("/root/GameManager");
-		gameManager.SetCurrentRoom(1);
-		// gameManager.CurrentRoom = 1;
-		gameManager.Scores.GamesPlayed++;
+		_gameManager = GetNode<GameManager>("/root/GameManager");
+		_gameManager.SetCurrentRoom(1);
+		_gameManager.StartGame();
+		_gameManager.Scores.GamesPlayed++;
+		_gameManager.coinCount = 0;
 		GetTree().ChangeSceneTo(gameScene);
 	}
 
 	public void GoToNextLevel()
 	{
-		var gameManager = GetNode<GameManager>("/root/GameManager");
-		_eventBus.LeaveRoom(gameManager.CurrentRoom);
-		gameManager.SetCurrentRoom(gameManager.CurrentRoom + 1);
+		_eventBus.LeaveRoom(_gameManager.CurrentRoom);
+		_gameManager.SetCurrentRoom(_gameManager.CurrentRoom + 1);
 		GetTree().ChangeSceneTo(transitionScene);
 	}
 	
@@ -39,16 +45,14 @@ public class SceneManager : Node
 
 	public void GoToPreviousLevel()
 	{
-		var gameManager = GetNode<GameManager>("/root/GameManager");
-
-		if (gameManager.CurrentRoom <= 1)
+		if (_gameManager.CurrentRoom <= 1)
 		{
 			// TODO: may want to change this or at least play a fall animation or "woo woo woooooo" noise 💀
 			GoToMainMenu();
 			return;
 		}
 
-		gameManager.CurrentRoom--;
+		_gameManager.CurrentRoom--;
 		GetTree().ChangeSceneTo(transitionScene);
 		// GetTree().ChangeSceneTo(gameScene);
 	}

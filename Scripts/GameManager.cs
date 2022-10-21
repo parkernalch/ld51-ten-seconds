@@ -98,7 +98,7 @@ public class GameManager : Node
 		// _sceneManager.StartObjective(objective);
 	}
 
-	private void StartGame()
+	public void StartGame()
 	{
 		objectiveCompletedCount = 0;
 		objectiveFailedCount = 0;
@@ -145,6 +145,7 @@ public class GameManager : Node
 
 	public bool IsFirstVisit()
 	{
+		if (_currentRoom == 0) return true;
 		return !RoomsVisitedInRun.Contains(_currentRoom);
 	}
 }

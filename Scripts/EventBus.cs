@@ -140,4 +140,12 @@ public class EventBus : Node
 		if (_disposed) return;
 		EmitSignal(nameof(LobbedProjectileImpacted), projectileType, impactPoint, radius);
 	}
+	
+	[Signal]
+	public delegate void PlayerDied();
+	public void KillPlayer()
+	{
+		if (_disposed) return;
+		EmitSignal(nameof(PlayerDied));
+	}
 }

@@ -95,17 +95,6 @@ public class PlayerController : KinematicBody2D
 
 	public override void _Process(float delta)
 	{
-		if (IsDead)
-		{
-			_stateMachine.Travel("Die");
-			_timeUntilDeathTransition -= delta;
-			if (_timeUntilDeathTransition <= 0)
-			{
-				GetNode<SceneManager>("/root/SceneManager").GoToGameOver();
-			}
-			return;
-		}
-
 		if (IsHurt)
 		{
 			_stateMachine.Travel("Hurt");
@@ -222,7 +211,7 @@ public class PlayerController : KinematicBody2D
 
 	private SignalAwaiter Delay(float timeSec) => ToSignal(GetTree().CreateTimer(timeSec), "timeout");
 
-	public void TakeProjectileDamage(Projectile projectile)
+	public async void TakeProjectileDamage(Projectile projectile)
 	{
 		if (Health == 0) return;
 
@@ -232,6 +221,11 @@ public class PlayerController : KinematicBody2D
 		if (Health == 0)
 		{
 			_velocity = Vector2.Zero;
+			_animationTree.Active = false;
+			_anim.Play("die");
+			_eventBus.KillPlayer();
+			await ToSignal(GetTree().CreateTimer(_timeUntilDeathTransition), "timeout");
+			GetNode<SceneManager>("/root/SceneManager").GoToGameOver();
 		}
 	}
 

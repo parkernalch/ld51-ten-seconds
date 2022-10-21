@@ -8,6 +8,7 @@ public class HUD : CanvasLayer
 	Label _coinLabel;
 	EventBus _eventBus;
 	GameManager _gm;
+	ColorRect _colorRect;
 
 	protected override void Dispose(bool disposing)
 	{
@@ -20,12 +21,22 @@ public class HUD : CanvasLayer
 	public override void _Ready()
 	{
 		_gm = GetNode<GameManager>("/root/GameManager");
+		_colorRect = GetNode<ColorRect>("ColorRect");
 		_levelLabel = GetNode<Label>("LevelLabel");
 		_coinLabel = GetNode<Label>("HBoxContainer/CoinCountLabel");
 		_coinLabel.Text = _gm.coinCount.ToString();
 		_eventBus = GetNode<EventBus>("/root/EventBus");
 		_eventBus.SafeConnect(nameof(EventBus.EnteredRoom), this, nameof(OnEnteredRoom));
 		_eventBus.SafeConnect(nameof(EventBus.CoinCountChanged), this, nameof(OnCoinCountChanged));
+		_eventBus.SafeConnect(nameof(EventBus.PlayerDied), this, nameof(OnPlayerDied));
+	}
+	
+	void OnPlayerDied()
+	{
+		Tween _tween = new Tween();
+		AddChild(_tween);
+		_tween.InterpolateProperty(_colorRect, "self_modulate", Colors.Transparent, Colors.White, 1f, Tween.TransitionType.Linear, Tween.EaseType.In, 1f);
+		_tween.Start();
 	}
 
 	void OnEnteredRoom(int room)
