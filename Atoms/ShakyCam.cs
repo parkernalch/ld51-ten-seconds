@@ -36,7 +36,7 @@ public class ShakyCam : Camera2D
 		DoShake(1f, 0.1f);
 	}
 	
-	void OnLobbedProjectileLanded(Vector2 point, int radius)
+	void OnLobbedProjectileLanded(ProjectileType type, Vector2 point, int radius)
 	{
 		DoShake(2f, 0.2f);
 	}

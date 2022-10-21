@@ -13,6 +13,7 @@ public class LobbedProjectile : Node2D
 	CPUParticles2D _shardParticles;
 	Tween _tween;
 	Timer _timer;
+	SoundManager _sounds;
 
 	float speed = 10f;
 	[Export] float airTime = 1f;
@@ -21,6 +22,7 @@ public class LobbedProjectile : Node2D
 
 	public override void _Ready()
 	{
+		_sounds = GetNode<SoundManager>("/root/SoundManager");
 		_timer = new Timer();
 		AddChild(_timer);
 		_timer.SafeConnect("timeout", this, nameof(OnTimerFinished));
@@ -92,6 +94,18 @@ public class LobbedProjectile : Node2D
 		_pathFollow.Visible = false;
 		_shadowSprite.Visible = false;
 		GetNode<EventBus>("/root/EventBus").NotifyProjectileImpact(ProjectileType, _targetPosition.GlobalPosition, 1);
+		switch(ProjectileType)
+		{
+			case ProjectileType.Cannon:
+				_sounds.PlaySound(SoundManager.SOUND_TYPE.CANNONBALL);
+				break;
+			case ProjectileType.Ice:
+				_sounds.PlaySound(SoundManager.SOUND_TYPE.ICE);
+				break;
+			case ProjectileType.Web:
+				_sounds.PlaySound(SoundManager.SOUND_TYPE.WEB);
+				break;
+		}
 
 		SetProcess(true);
 		isActive = false;

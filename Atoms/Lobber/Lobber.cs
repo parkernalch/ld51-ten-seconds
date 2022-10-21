@@ -11,12 +11,15 @@ public class Lobber : Node2D
 	Timer _timer;
 	Tween _tween;
 	AnimationPlayer _anim;
+	AudioStreamPlayer _shootSfx;
+	float followMod = 2f;
 	float followSpeed = 0f;
 
 	[Export] public ProjectileType ProjectileType { get; set; }
 
 	public override void _Ready()
 	{
+		_shootSfx = GetNode<AudioStreamPlayer>("AudioStreamPlayer");
 		_timer = new Timer();
 		_tween = new Tween();
 		_anim = GetNode<AnimationPlayer>("AnimationPlayer");
@@ -28,6 +31,7 @@ public class Lobber : Node2D
 		_sprite = GetNode<Sprite>("TargetSprite");
 		_pc = this.FindSingleton<PlayerController>();
 		_lobbedProjectileScene = ResourceLoader.Load<PackedScene>("res://Atoms/Lobber/LobbedProjectile/LobbedProjectile.tscn");
+		followMod = new RandomNumberGenerator().RandfRange(1.5f, 3f);
 		TweenFollowSpeed();
 	}
 
@@ -69,15 +73,18 @@ public class Lobber : Node2D
 		proj.Shoot(_pc.GlobalPosition);
 		_timer.Start();
 		_sprite.Visible = false;
+		_shootSfx.Play();
 		SetProcess(false);
 	}
 
 	public override void _Process(float delta)
 	{
-		_sprite.GlobalPosition = VectorLerp(_sprite.GlobalPosition, _pc.GlobalPosition, delta * 2f * followSpeed);
+		_sprite.GlobalPosition = VectorLerp(_sprite.GlobalPosition, _pc.GlobalPosition, delta * followMod * followSpeed);
 		if (_sprite.GlobalPosition.DistanceSquaredTo(_pc.GlobalPosition) < 100f)
 		{
 			Fire();
+			_anim.Stop();
+			_anim.Play("RESET");
 		}
 	}
 }

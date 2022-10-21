@@ -7,6 +7,7 @@ public class Emitter : ObjectiveObject
 	private PlayerController _player;
 	const float TwoPi = Mathf.Pi * 2;
 	EventBus _eventBus;
+	GameManager _gameManager;
 	[Export]bool homing = false;
 	[Export]float volleyInterval = 1f;
 	Timer _timer;
@@ -23,6 +24,8 @@ public class Emitter : ObjectiveObject
 	public override async void _Ready()
 	{
 		this.state = ObjectiveObject.OBJECTIVE_STATE.SUCCESS;
+		_gameManager = GetNode<GameManager>("/root/GameManager");
+		missileCount = Mathf.CeilToInt(_gameManager.CurrentRoom / 3f);
 		_eventBus = GetNode<EventBus>("/root/EventBus");
 		_anim = GetNode<AnimationPlayer>("AnimationPlayer");
 		_timer = GetNode<Timer>("Timer");
@@ -35,6 +38,7 @@ public class Emitter : ObjectiveObject
 		angleMinRad = Mathf.Deg2Rad(angleMin);
 		angleMaxRad = Mathf.Deg2Rad(angleMax);
 		Enable();
+		_anim.Play("RESET");
 	}
 
 	void OnMissileConnected(Projectile projectile)
@@ -51,17 +55,19 @@ public class Emitter : ObjectiveObject
 	{
 		if (!isActive) return;
 		// normal arc spray
-		SprayArcWave(missileCount, angleMaxRad - angleMinRad, Mathf.Pi / 8, 1, 0);
+		// SprayArcWave(missileCount, angleMaxRad - angleMinRad, Mathf.Pi / 8, 1, 0);
 
 		// sprinkler spray
 		SprayArcWave(missileCount, angleMaxRad - angleMinRad, Mathf.Pi / 8, 1, .2f);
 	}
 
-	public void EmitProjectile(bool homing, float angle)
+	public async void EmitProjectile(bool homing, float angle)
 	{
 		var bullet = _projectile.Instance<Projectile>();
 		this.AddChild(bullet);
-		bullet.Start(this.Transform, angle, homing ? _player : null);
+		await ToSignal(GetTree(), "idle_frame");
+		var speed = Mathf.Min(_gameManager.CurrentRoom * 10 + 250f, 350f);
+		bullet.Start(this.Transform, new Vector2(Mathf.Sin(angle), Mathf.Cos(angle)), homing ? _player : null, speed);
 	}
 
 	/// <summary>
@@ -124,6 +130,4 @@ public class Emitter : ObjectiveObject
 		_timer.Start();
 		_anim.Play("float");
 	}
-
-
 }

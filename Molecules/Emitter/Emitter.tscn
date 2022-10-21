@@ -1,8 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Molecules/Emitter/Emitter.cs" type="Script" id=1]
 [ext_resource path="res://Assets/aseprite/tenSecSheet_32x.png" type="Texture" id=2]
 [ext_resource path="res://Resources/flash_shader.gdshader" type="Shader" id=3]
+[ext_resource path="res://Assets/Sounds/missileshoot.wav" type="AudioStream" id=4]
+[ext_resource path="res://Assets/Sounds/charge.wav" type="AudioStream" id=5]
 
 [sub_resource type="ShaderMaterial" id=3]
 shader = ExtResource( 3 )
@@ -68,6 +70,37 @@ tracks/2/keys = {
 "method": "FireNextWave"
 } ]
 }
+tracks/3/type = "method"
+tracks/3/path = NodePath("ShootPlayer")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ 0.0 ],
+"method": "play"
+} ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath("ChargePlayer")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [ 0.0 ],
+"method": "play"
+}, {
+"args": [  ],
+"method": "stop"
+} ]
+}
 
 [sub_resource type="Animation" id=5]
 resource_name = "float"
@@ -99,3 +132,11 @@ autostart = true
 anims/RESET = SubResource( 4 )
 anims/flash = SubResource( 6 )
 anims/float = SubResource( 5 )
+
+[node name="ShootPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[node name="ChargePlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = -2.0
+pitch_scale = 0.2

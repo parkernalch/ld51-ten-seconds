@@ -35,6 +35,7 @@ config/icon="res://icon.png"
 EventBus="*res://Scripts/EventBus.cs"
 GameManager="*res://Scripts/GameManager.cs"
 SceneManager="*res://Scripts/SceneManager.cs"
+SoundManager="*res://Scripts/SoundManager.tscn"
 
 [display]
 

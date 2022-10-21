@@ -38,11 +38,12 @@ public class Projectile : Area2D
 	/// <param name="origin"></param>
 	/// <param name="direction"></param>
 	/// <param name="target"></param>
-	public void Start(Transform2D origin, Vector2 direction, Node2D target = null)
+	public void Start(Transform2D origin, Vector2 direction, Node2D target = null, float speed = 350f)
 	{
 		GlobalTransform = origin;
 		Rotation += (float)GD.RandRange(-0.09f, 0.09f);
-		Velocity = direction.Normalized() * Speed;
+		Speed = speed;
+		Velocity = direction.Normalized() * speed;
 		_raycast.CastTo = direction.Normalized();
 		_target = target;
 		if (target != null)

@@ -37,6 +37,7 @@ public class PlayerController : KinematicBody2D
 
 	private Sprite _sprite;
 	private AnimationTree _animationTree;
+	private SoundManager _sounds;
 	private GameManager _gm;
 	private Tween _tween;
 	private ShaderMaterial _material;
@@ -46,6 +47,8 @@ public class PlayerController : KinematicBody2D
 		_coinValue = 0;
 		_gm = GetNode<GameManager>("/root/GameManager") ?? throw new ArgumentException(nameof(GameManager));
 		_eventBus = GetNode<EventBus>("/root/EventBus") ?? throw new ArgumentException(nameof(EventBus));
+		_sounds = GetNode<SoundManager>("/root/SoundManager") ?? throw new ArgumentException(nameof(SoundManager));
+		
 		_tween = this.GetNode<Tween>();
 		_animationTree = this.GetNode<AnimationTree>();
 		_anim = this.GetNode<AnimationPlayer>();
@@ -199,6 +202,7 @@ public class PlayerController : KinematicBody2D
 	async void Dash()
 	{
 		if (_isDashing || !_canDash) return;
+		_sounds.PlaySound(SoundManager.SOUND_TYPE.DASH);
 		_isDashing = true;
 		_sprite.SelfModulate = new Color(1, 1, 1, 0.5f);
 		await Delay(dashTime);
@@ -215,6 +219,7 @@ public class PlayerController : KinematicBody2D
 	{
 		if (Health == 0) return;
 
+		_sounds.PlaySound(SoundManager.SOUND_TYPE.HURT);
 		PlayShaderDamage();
 
 		Health--;
