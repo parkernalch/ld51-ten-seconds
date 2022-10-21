@@ -39,7 +39,7 @@ public class SoundManager : Node
 		actionMusic = GetNode<AudioStreamPlayer>("ActionMusic");
 		menuMusic = GetNode<AudioStreamPlayer>("MenuMusic");
 	}
-	
+
 	public void PlayMenuMusic()
 	{
 		if (menuMusic.Playing) return;
@@ -90,6 +90,16 @@ public class SoundManager : Node
 		);
 		_tween.Start();
 		_backgroundTrack = actionMusic;
+	}
+
+	public void StopMenuMusic() {
+		if (!menuMusic.Playing) return;
+		menuMusic.Stop();
+	}
+
+	public void StopGameMusic() {
+		if (!actionMusic.Playing) return;
+		actionMusic.Stop();
 	}
 	
 	public void DuckBackingTrack(float target, float duration)

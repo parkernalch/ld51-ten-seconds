@@ -52,6 +52,7 @@ public class MainScene : Node2D
 		}
 
 		SoundManager _sm = GetNode<SoundManager>("/root/SoundManager");
+		_sm.StopMenuMusic();
 		_sm.PlayGameMusic();
 		_timer.Start();
 	}
@@ -97,14 +98,14 @@ public class MainScene : Node2D
 
 	void OnTimerTimeout()
 	{
-		foreach(RayCast2D cast in coinCasts)
+		foreach (RayCast2D cast in coinCasts)
 		{
 			cast.Enabled = true;
 			cast.ForceRaycastUpdate();
 		}
 		float maxDistance = 0f;
 		Vector2 collisionPoint = Vector2.Zero;
-		for(int i=0; i<8; i++)
+		for (int i = 0; i < 8; i++)
 		{
 			Vector2 tempCollisionPoint = coinCasts[i].GetCollisionPoint();
 			float dist = tempCollisionPoint.DistanceSquaredTo(_player.GlobalPosition);
@@ -120,7 +121,7 @@ public class MainScene : Node2D
 			Vector2 effectVector = (collisionPoint - _player.GlobalPosition) * 0.8f;
 			SpawnCoinBag(_player.GlobalPosition + effectVector);
 		}
-		foreach(RayCast2D cast in coinCasts)
+		foreach (RayCast2D cast in coinCasts)
 		{
 			cast.Enabled = false;
 		}

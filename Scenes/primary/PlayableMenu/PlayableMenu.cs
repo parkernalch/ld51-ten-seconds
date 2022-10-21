@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 public class PlayableMenu : Node2D
-{	
+{
 	GameManager _gameManager;
 	PlayerController player;
 
@@ -11,6 +11,7 @@ public class PlayableMenu : Node2D
 		_gameManager = GetNode<GameManager>("/root/GameManager");
 		SoundManager _sm = GetNode<SoundManager>("/root/SoundManager");
 		GetNode<EventBus>("/root/EventBus").LoadPlayer(GetNode<PlayerController>("PlayerController"));
+		_sm.StopGameMusic();
 		_sm.PlayMenuMusic();
 	}
 }
