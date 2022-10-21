@@ -75,11 +75,13 @@ public class MainScene : Node2D
 			var i = (int)(GD.Randf() * positions.Count);
 			var position = positions[i];
 			var type = (ProjectileType)GD.RandRange(0, 2.99);
+			GD.Print(type);
 			positions.RemoveAt(i);
 
 			var lobber = _lobberScene.Instance<Lobber>();
 			lobber.GlobalPosition = position;
 			lobber.ProjectileType = type;
+			lobber.SetProjectileType();
 			tileSystem.TrackNode(lobber);
 		}
 	}

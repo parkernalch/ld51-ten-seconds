@@ -1,10 +1,22 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Atoms/Lobber/Lobber.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Items/crossair_red.png" type="Texture" id=2]
 [ext_resource path="res://Assets/aseprite/tenSecSheet_32x.png" type="Texture" id=3]
 [ext_resource path="res://Resources/flash_shader.gdshader" type="Shader" id=4]
 [ext_resource path="res://Assets/Sounds/lobbershoot.wav" type="AudioStream" id=5]
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 3 )
+region = Rect2( 64, 64, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 3 )
+region = Rect2( 32, 64, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=8]
+atlas = ExtResource( 3 )
+region = Rect2( 96, 64, 32, 32 )
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = ExtResource( 4 )
@@ -102,6 +114,9 @@ tracks/3/keys = {
 [node name="Lobber" type="Node2D"]
 z_index = 2
 script = ExtResource( 1 )
+cannonTexture = SubResource( 6 )
+webTexture = SubResource( 7 )
+iceTexture = SubResource( 8 )
 
 [node name="TargetSprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )

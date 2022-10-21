@@ -14,6 +14,10 @@ public class Lobber : Node2D
 	AudioStreamPlayer _shootSfx;
 	float followMod = 2f;
 	float followSpeed = 0f;
+	[Export]Texture cannonTexture;
+	[Export]Texture webTexture;
+	[Export]Texture iceTexture;
+	Sprite bookSprite;
 
 	[Export] public ProjectileType ProjectileType { get; set; }
 
@@ -28,11 +32,32 @@ public class Lobber : Node2D
 		_timer.WaitTime = cooldown;
 		_timer.OneShot = true;
 		_timer.SafeConnect("timeout", this, nameof(OnCooldownEnded));
+		bookSprite = GetNode<Sprite>("Sprite");
 		_sprite = GetNode<Sprite>("TargetSprite");
 		_pc = this.FindSingleton<PlayerController>();
 		_lobbedProjectileScene = ResourceLoader.Load<PackedScene>("res://Atoms/Lobber/LobbedProjectile/LobbedProjectile.tscn");
 		followMod = new RandomNumberGenerator().RandfRange(1.5f, 3f);
+		SetProjectileType();
 		TweenFollowSpeed();
+	}
+	
+	public async void SetProjectileType()
+	{
+		await ToSignal(GetTree(), "idle_frame");
+		// GD.Print("setting projectile type to ", projectileType);
+		// this.ProjectileType = projectileType;
+		switch (this.ProjectileType)
+		{
+			case ProjectileType.Cannon:
+				bookSprite.Texture = cannonTexture;
+				break;
+			case ProjectileType.Ice:
+				bookSprite.Texture = iceTexture;
+				break;
+			case ProjectileType.Web:
+				bookSprite.Texture = webTexture;
+				break;
+		}
 	}
 
 	void TweenFollowSpeed()
