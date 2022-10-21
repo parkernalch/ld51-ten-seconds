@@ -11,6 +11,7 @@ public class SceneManager : Node
 	PackedScene optionsScene = ResourceLoader.Load<PackedScene>("res://Scenes/primary/OptionsScene/OptionsScene.tscn");
 	public override void _Ready()
 	{
+		_gameManager = GetNode<GameManager>("/root/GameManager");
 		_eventBus = GetNode<EventBus>("/root/EventBus");
 	}
 
@@ -23,7 +24,6 @@ public class SceneManager : Node
 
 	public void GoToGame()
 	{
-		_gameManager = GetNode<GameManager>("/root/GameManager");
 		_gameManager.SetCurrentRoom(1);
 		_gameManager.StartGame();
 		_gameManager.Scores.GamesPlayed++;
@@ -37,7 +37,7 @@ public class SceneManager : Node
 		_gameManager.SetCurrentRoom(_gameManager.CurrentRoom + 1);
 		GetTree().ChangeSceneTo(transitionScene);
 	}
-	
+
 	public void FinishTransition()
 	{
 		GetTree().ChangeSceneTo(gameScene);

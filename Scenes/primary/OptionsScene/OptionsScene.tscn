@@ -107,6 +107,7 @@ margin_bottom = 16.0
 custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
 custom_fonts/font = SubResource( 2 )
 text = "Options -->"
+align = 2
 
 [node name="TotalCoinsPickedUp" type="Label" parent="GridContainer/Values"]
 margin_top = 32.0
@@ -115,6 +116,7 @@ margin_bottom = 48.0
 custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
 custom_fonts/font = SubResource( 2 )
 text = "Options ---->"
+align = 2
 
 [node name="TotalCoinsDropped" type="Label" parent="GridContainer/Values"]
 margin_top = 64.0
@@ -123,6 +125,7 @@ margin_bottom = 80.0
 custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
 custom_fonts/font = SubResource( 2 )
 text = "Options ---->"
+align = 2
 
 [node name="MostCoinsHeld" type="Label" parent="GridContainer/Values"]
 margin_top = 96.0
@@ -131,6 +134,7 @@ margin_bottom = 112.0
 custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
 custom_fonts/font = SubResource( 2 )
 text = "Options ---->"
+align = 2
 
 [node name="FurthestRoom" type="Label" parent="GridContainer/Values"]
 margin_top = 128.0
@@ -139,3 +143,4 @@ margin_bottom = 144.0
 custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
 custom_fonts/font = SubResource( 2 )
 text = "Options ---->"
+align = 2
