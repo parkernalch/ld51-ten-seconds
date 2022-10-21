@@ -9,6 +9,8 @@ public class PlayableMenu : Node2D
 	public override void _Ready()
 	{
 		_gameManager = GetNode<GameManager>("/root/GameManager");
+		SoundManager _sm = GetNode<SoundManager>("/root/SoundManager");
 		GetNode<EventBus>("/root/EventBus").LoadPlayer(GetNode<PlayerController>("PlayerController"));
+		_sm.PlayMenuMusic();
 	}
 }

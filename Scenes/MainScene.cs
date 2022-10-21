@@ -51,6 +51,8 @@ public class MainScene : Node2D
 			coinCasts.Add(cast);
 		}
 
+		SoundManager _sm = GetNode<SoundManager>("/root/SoundManager");
+		_sm.PlayGameMusic();
 		_timer.Start();
 	}
 

@@ -8,14 +8,17 @@ public class FloorTransition : CanvasLayer
 	AnimationPlayer _anim;
 	GameManager _gm;
 	SceneManager _sceneManager;
+	SoundManager _sm;
 	public override void _Ready()
 	{
+		_sm = GetNode<SoundManager>("/root/SoundManager");
 		_sceneManager = GetNode<SceneManager>("/root/SceneManager");
 		_anim = GetNode<AnimationPlayer>("AnimationPlayer");
 		_prevLabel = GetNode<Label>("ColorRect/PreviousContainer/PreviousLevelLabel");
 		_nextLabel = GetNode<Label>("ColorRect/NextContainer/NextLevelLabel");
 		_gm = GetNode<GameManager>("/root/GameManager");
 		_anim.Play("RESET");
+		_sm.DuckBackingTrack(-4f, 2f);
 
 		StartAnimation();
 	}
@@ -34,6 +37,7 @@ public class FloorTransition : CanvasLayer
 			_anim.Play("transition");
 		}
 		await ToSignal(_anim, "animation_finished");
+		_sm.DuckBackingTrack(0f, 2f);
 		_sceneManager.FinishTransition();
 	}
 

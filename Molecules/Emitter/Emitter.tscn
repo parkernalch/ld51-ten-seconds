@@ -84,23 +84,6 @@ tracks/3/keys = {
 "method": "play"
 } ]
 }
-tracks/4/type = "method"
-tracks/4/path = NodePath("ChargePlayer")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"values": [ {
-"args": [ 0.0 ],
-"method": "play"
-}, {
-"args": [  ],
-"method": "stop"
-} ]
-}
 
 [sub_resource type="Animation" id=5]
 resource_name = "float"
