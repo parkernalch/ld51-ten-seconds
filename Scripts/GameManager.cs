@@ -23,6 +23,7 @@ public class GameManager : Node
 	}
 
 	public int coinCount;
+	public int PlayerHealth = 10;
 
 	int objectivesPerRoom = 5;
 
@@ -45,8 +46,14 @@ public class GameManager : Node
 		_eventBus.SafeConnect(nameof(EventBus.PlayerChanged), this, nameof(OnPlayerChanged));
 		_eventBus.SafeConnect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
 		_eventBus.SafeConnect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
+		_eventBus.SafeConnect(nameof(EventBus.PlayerHealthChanged), this, nameof(OnPlayerHealthChanged));
 		Scores = SaveState.Load();
 		GD.Randomize();
+	}
+	
+	void OnPlayerHealthChanged(float percent)
+	{
+		PlayerHealth = Mathf.RoundToInt(percent * 10f);
 	}
 
 	public override void _Process(float delta)
@@ -102,6 +109,7 @@ public class GameManager : Node
 	{
 		objectiveCompletedCount = 0;
 		objectiveFailedCount = 0;
+		PlayerHealth = 10;
 		RoomsVisitedInRun.Clear();
 	}
 

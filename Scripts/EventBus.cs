@@ -148,4 +148,12 @@ public class EventBus : Node
 		if (_disposed) return;
 		EmitSignal(nameof(PlayerDied));
 	}
+
+	[Signal]
+	public delegate void PlayerHealthChanged(float percent);
+	public void ChangePlayerHealth(float percent)
+	{
+		if (_disposed) return;
+		EmitSignal(nameof(PlayerHealthChanged), percent);
+	}
 }

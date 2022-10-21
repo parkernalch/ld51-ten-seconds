@@ -9,6 +9,7 @@ public class HUD : CanvasLayer
 	EventBus _eventBus;
 	GameManager _gm;
 	ColorRect _colorRect;
+	NinePatchRect _healthBar;
 
 	protected override void Dispose(bool disposing)
 	{
@@ -21,6 +22,7 @@ public class HUD : CanvasLayer
 	public override void _Ready()
 	{
 		_gm = GetNode<GameManager>("/root/GameManager");
+		_healthBar = GetNode<NinePatchRect>("HealthBar");
 		_colorRect = GetNode<ColorRect>("ColorRect");
 		_levelLabel = GetNode<Label>("LevelLabel");
 		_coinLabel = GetNode<Label>("HBoxContainer/CoinCountLabel");
@@ -29,6 +31,12 @@ public class HUD : CanvasLayer
 		_eventBus.SafeConnect(nameof(EventBus.EnteredRoom), this, nameof(OnEnteredRoom));
 		_eventBus.SafeConnect(nameof(EventBus.CoinCountChanged), this, nameof(OnCoinCountChanged));
 		_eventBus.SafeConnect(nameof(EventBus.PlayerDied), this, nameof(OnPlayerDied));
+		_eventBus.SafeConnect(nameof(EventBus.PlayerHealthChanged), this, nameof(OnPlayerHealthChanged));
+	}
+	
+	void OnPlayerHealthChanged(float percent)
+	{
+		(_healthBar.Material as ShaderMaterial).SetShaderParam("fill_amount", percent);
 	}
 	
 	void OnPlayerDied()

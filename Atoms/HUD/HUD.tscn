@@ -1,12 +1,32 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Resources/label_theme.tres" type="Theme" id=1]
 [ext_resource path="res://Atoms/HUD/HUD.cs" type="Script" id=2]
 [ext_resource path="res://Assets/temp/tilesheet.png" type="Texture" id=3]
+[ext_resource path="res://Assets/aseprite/ui_health.png" type="Texture" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 3 )
 region = Rect2( 320, 512, 64, 64 )
+
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
+render_mode unshaded;
+
+uniform float fill_amount : hint_range(0.0, 1.0);
+
+void fragment()
+{
+	COLOR = texture(TEXTURE, UV);
+	if (UV.x > fill_amount)
+	{
+		COLOR.a = 0.0;
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
+shader_param/fill_amount = 1.0
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource( 2 )
@@ -45,3 +65,14 @@ self_modulate = Color( 1, 1, 1, 0 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 color = Color( 0.105882, 0.117647, 0.160784, 1 )
+
+[node name="HealthBar" type="NinePatchRect" parent="."]
+material = SubResource( 3 )
+margin_left = 22.0
+margin_right = 123.0
+margin_bottom = 32.0
+texture = ExtResource( 4 )
+patch_margin_left = 16
+patch_margin_top = 13
+patch_margin_right = 4
+patch_margin_bottom = 14

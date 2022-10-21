@@ -19,6 +19,7 @@ public class SceneManager : Node
 	{
 		_gameManager.SetCurrentRoom(0);
 		_gameManager.RoomsVisitedInRun.Clear();
+		_gameManager.PlayerHealth = 10;
 		GetTree().ChangeSceneTo(mainMenuScene);
 	}
 

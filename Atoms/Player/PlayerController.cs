@@ -48,6 +48,8 @@ public class PlayerController : KinematicBody2D
 		_gm = GetNode<GameManager>("/root/GameManager") ?? throw new ArgumentException(nameof(GameManager));
 		_eventBus = GetNode<EventBus>("/root/EventBus") ?? throw new ArgumentException(nameof(EventBus));
 		_sounds = GetNode<SoundManager>("/root/SoundManager") ?? throw new ArgumentException(nameof(SoundManager));
+
+		Health = _gm.PlayerHealth;
 		
 		_tween = this.GetNode<Tween>();
 		_animationTree = this.GetNode<AnimationTree>();
@@ -65,6 +67,12 @@ public class PlayerController : KinematicBody2D
 		Assert.True(timeToDecelerate > 0, "deceleration time must be nonzero");
 		ResetTopSpeed();
 		if (DropLocation.HasValue) LandAtDropLocation();
+		CallDeferred(nameof(NotifyPlayerHealthChanged));
+	}
+	
+	void NotifyPlayerHealthChanged()
+	{
+		_eventBus.ChangePlayerHealth(Health / 10f);
 	}
 
 	async void LandAtDropLocation()
@@ -223,6 +231,7 @@ public class PlayerController : KinematicBody2D
 		PlayShaderDamage();
 
 		Health--;
+		NotifyPlayerHealthChanged();
 		if (Health == 0)
 		{
 			_velocity = Vector2.Zero;
