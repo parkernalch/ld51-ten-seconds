@@ -78,7 +78,10 @@ public class PlayerController : KinematicBody2D
 	async void LandAtDropLocation()
 	{
 		SetPhysicsProcess(false);
-		this.GlobalPosition = DropLocation.Value;
+		if (_gm.CurrentRoom > 0) 
+		{
+			this.GlobalPosition = DropLocation.Value;
+		}
 		DropLocation = null;
 		_animationTree.Active = false;
 		GetNode<CPUParticles2D>("CPUParticles2D").Emitting = true;
@@ -211,12 +214,14 @@ public class PlayerController : KinematicBody2D
 	{
 		if (_isDashing || !_canDash) return;
 		_sounds.PlaySound(SoundManager.SOUND_TYPE.DASH);
+		SetCollisionMaskBit(9, false);
 		_isDashing = true;
 		_sprite.SelfModulate = new Color(1, 1, 1, 0.5f);
 		await Delay(dashTime);
 		_isDashing = false;
 		_sprite.SelfModulate = new Color(1, 1, 1);
 		_canDash = false;
+		SetCollisionMaskBit(9, true);
 		await Delay(dashCooldown);
 		_canDash = true;
 	}

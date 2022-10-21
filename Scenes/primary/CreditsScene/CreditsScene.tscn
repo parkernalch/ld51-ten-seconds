@@ -1,17 +1,22 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Resources/obstacle_tiles.tres" type="TileSet" id=1]
 [ext_resource path="res://Atoms/Player/PlayerController.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Atoms/SceneTrigger/SceneTrigger.tscn" type="PackedScene" id=3]
 [ext_resource path="res://TileSystem/TileSystem.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Fonts/Silkscreen-Regular.ttf" type="DynamicFontData" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 16, 40 )
 
+[sub_resource type="DynamicFont" id=2]
+size = 12
+font_data = ExtResource( 5 )
+
 [node name="CreditsScene" type="Node2D"]
 
 [node name="TileSystem" parent="." instance=ExtResource( 4 )]
-tile_data = PoolIntArray( 65537, 4, 0, 65538, 4, 0, 65539, 4, 0, 65540, 4, 0, 65541, 4, 0, 65542, 4, 0, 65543, 4, 0, 65544, 4, 0, 65545, 1610612739, 0, 65546, 1610612739, 0, 65547, 1610612739, 0, 65548, 1610612739, 0, 65549, 4, 0, 65550, 4, 0, 65551, 4, 0, 131073, 4, 0, 131074, 4, 0, 131075, 4, 0, 131076, 4, 0, 131077, 4, 0, 131078, 4, 0, 131079, 4, 0, 131080, 4, 0, 131081, 4, 0, 131082, 1610612739, 0, 131083, 1610612739, 0, 131084, 1610612739, 0, 131085, 4, 0, 131086, 4, 0, 131087, 4, 0, 196609, 4, 0, 196610, 4, 0, 196611, 4, 0, 196612, 4, 0, 196613, 4, 0, 196614, 4, 0, 196615, 4, 0, 196616, 4, 0, 196617, 4, 0, 196618, 1610612739, 0, 196619, 1610612739, 0, 196620, 1610612739, 0, 196621, 4, 0, 196622, 4, 0, 196623, 4, 0, 262145, 4, 0, 262146, 4, 0, 262147, 4, 0, 262148, 4, 0, 262149, 4, 0, 262150, 4, 0, 262151, 4, 0, 262152, 4, 0, 262153, 4, 0, 262154, 1610612739, 0, 262155, 1610612739, 0, 262156, 1610612739, 0, 262157, 4, 0, 262158, 4, 0, 262159, 4, 0, 327681, 4, 0, 327682, 4, 0, 327683, 4, 0, 327684, 4, 0, 327685, 4, 0, 327686, 4, 0, 327687, 4, 0, 327688, 4, 0, 327689, 4, 0, 327690, 1610612739, 0, 327691, 1610612739, 0, 327692, 1610612739, 0, 327693, 4, 0, 327694, 4, 0, 327695, 4, 0, 393217, 4, 0, 393218, 4, 0, 393219, 4, 0, 393220, 4, 0, 393221, 4, 0, 393222, 4, 0, 393223, 4, 0, 393224, 4, 0, 393225, 1610612739, 0, 393226, 1610612739, 0, 393227, 1610612739, 0, 393228, 1610612739, 0, 393229, 4, 0, 393230, 4, 0, 393231, 4, 0, 458753, 4, 0, 458754, 4, 0, 458755, 4, 0, 458756, 4, 0, 458757, 4, 0, 458758, 4, 0, 458759, 4, 0, 458760, 1610612739, 0, 458761, 1610612739, 0, 458762, 1610612739, 0, 458763, 1610612739, 0, 458764, 1610612739, 0, 458765, 4, 0, 458766, 4, 0, 458767, 4, 0 )
+tile_data = PoolIntArray( 65537, 4, 0, 65538, 4, 0, 65539, 4, 0, 65540, 4, 0, 65541, 4, 0, 65542, 4, 0, 65543, 4, 0, 65544, 3, 0, 65545, 3, 0, 65546, 1, 0, 65547, 1, 0, 65548, 1, 0, 65549, 1, 0, 65550, 4, 0, 65551, 4, 0, 131073, 4, 0, 131074, 4, 0, 131075, 4, 0, 131076, 4, 0, 131077, 4, 0, 131078, 4, 0, 131079, 4, 0, 131080, 4, 0, 131081, 3, 0, 131082, 3, 0, 131083, 1, 0, 131084, 1, 0, 131085, 4, 0, 131086, 4, 0, 131087, 4, 0, 196609, 4, 0, 196610, 4, 0, 196611, 4, 0, 196612, 4, 0, 196613, 4, 0, 196614, 4, 0, 196615, 4, 0, 196616, 4, 0, 196617, 3, 0, 196618, 3, 0, 196619, 1, 0, 196620, 1, 0, 196621, 4, 0, 196622, 4, 0, 196623, 4, 0, 262145, 4, 0, 262146, 4, 0, 262147, 4, 0, 262148, 4, 0, 262149, 4, 0, 262150, 4, 0, 262151, 4, 0, 262152, 4, 0, 262153, 3, 0, 262154, 3, 0, 262155, 1, 0, 262156, 1, 0, 262157, 4, 0, 262158, 4, 0, 262159, 4, 0, 327681, 4, 0, 327682, 4, 0, 327683, 4, 0, 327684, 4, 0, 327685, 4, 0, 327686, 4, 0, 327687, 4, 0, 327688, 4, 0, 327689, 3, 0, 327690, 3, 0, 327691, 1, 0, 327692, 1, 0, 327693, 4, 0, 327694, 4, 0, 327695, 4, 0, 393217, 4, 0, 393218, 4, 0, 393219, 4, 0, 393220, 4, 0, 393221, 4, 0, 393222, 4, 0, 393223, 4, 0, 393224, 4, 0, 393225, 3, 0, 393226, 1, 0, 393227, 1, 0, 393228, 1, 0, 393229, 4, 0, 393230, 4, 0, 393231, 4, 0, 458753, 4, 0, 458754, 4, 0, 458755, 4, 0, 458756, 4, 0, 458757, 4, 0, 458758, 4, 0, 458759, 4, 0, 458760, 3, 0, 458761, 3, 0, 458762, 1, 0, 458763, 1, 0, 458764, 1, 0, 458765, 1, 0, 458766, 4, 0, 458767, 4, 0 )
 
 [node name="Obstacles" type="TileMap" parent="."]
 tile_set = ExtResource( 1 )
@@ -29,3 +34,58 @@ position = Vector2( 523, 142 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SceneTrigger"]
 shape = SubResource( 1 )
+
+[node name="GridContainer" type="GridContainer" parent="."]
+margin_left = 73.0
+margin_top = 42.0
+margin_right = 391.0
+margin_bottom = 244.0
+custom_constants/hseparation = 30
+columns = 2
+
+[node name="Labels" type="VFlowContainer" parent="GridContainer"]
+margin_right = 189.0
+margin_bottom = 202.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_vertical = 3
+custom_constants/vseparation = 16
+
+[node name="Kevin" type="Label" parent="GridContainer/Labels"]
+margin_right = 189.0
+margin_bottom = 35.0
+custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Kevin Thompson
+Gameplay & Systems"
+align = 1
+
+[node name="Owen" type="Label" parent="GridContainer/Labels"]
+margin_top = 51.0
+margin_right = 189.0
+margin_bottom = 86.0
+custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Owen Levin
+Music"
+align = 1
+
+[node name="Parker" type="Label" parent="GridContainer/Labels"]
+margin_top = 102.0
+margin_right = 189.0
+margin_bottom = 137.0
+custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Parker Nalchajian
+Gameplay, Systems, Art"
+align = 1
+
+[node name="Rick" type="Label" parent="GridContainer/Labels"]
+margin_top = 153.0
+margin_right = 189.0
+margin_bottom = 188.0
+custom_colors/font_color = Color( 0.47451, 0.47451, 0.47451, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Rick Burke
+Character Design"
+align = 1

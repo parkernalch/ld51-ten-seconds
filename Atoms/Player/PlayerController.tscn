@@ -620,7 +620,8 @@ extents = Vector2( 8, 8.75 )
 
 [node name="PlayerController" type="KinematicBody2D"]
 material = ExtResource( 3 )
-collision_mask = 31
+z_index = 5
+collision_mask = 543
 script = ExtResource( 1 )
 Friction = 900.0
 tileSize = 32

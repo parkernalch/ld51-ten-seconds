@@ -10,14 +10,17 @@ public class CoinBag : ObjectiveObject
 	PackedScene _coinScene;
 	Random random;
 	Godot.Collections.Array<SimpleCoin> _coins = new Godot.Collections.Array<SimpleCoin>();
+	AnimationPlayer _anim;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		_anim = GetNode<AnimationPlayer>("AnimationPlayer");
 		_coinScene = ResourceLoader.Load<PackedScene>("res://Atoms/Coin/SimpleCoin.tscn");
 		_timer = GetNode<Timer>("Timer");
 		_eventBus = GetNode<EventBus>("/root/EventBus");
 		_timer.Autostart = false;
+		_anim.Play("squash");
 	}
 
 	void OnCoinCollected(SimpleCoin coin)

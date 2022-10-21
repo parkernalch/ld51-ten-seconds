@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/aseprite/breakableTile-Sheet.png" type="Texture" id=1]
 [ext_resource path="res://Atoms/BaseTile/BaseTile.cs" type="Script" id=2]
+[ext_resource path="res://TileSystem/Tiles/Breakable/BreakableTile.tscn" type="PackedScene" id=3]
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 1 )
@@ -13,10 +14,16 @@ extents = Vector2( 16, 16 )
 [node name="VoidTile" type="Node2D"]
 script = ExtResource( 2 )
 
-[node name="FloorTile" type="StaticBody2D" parent="."]
+[node name="BreakableTileArea" parent="." instance=ExtResource( 3 )]
+BreakLevel = 3
+
+[node name="FloorTile" type="Area2D" parent="."]
+visible = false
+collision_layer = 512
+collision_mask = 0
 
 [node name="Sprite" type="Sprite" parent="FloorTile"]
 texture = SubResource( 3 )
 
-[node name="StaticBody2D" type="CollisionShape2D" parent="FloorTile"]
+[node name="CollisionShape" type="CollisionShape2D" parent="FloorTile"]
 shape = SubResource( 2 )

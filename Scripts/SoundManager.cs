@@ -43,15 +43,17 @@ public class SoundManager : Node
 	public void PlayMenuMusic()
 	{
 		if (menuMusic.Playing) return;
+		GD.Print("playing menu music");
 		menuMusic.VolumeDb = -10;
 		menuMusic.Play();
 		if (actionMusic.Playing)
 		{
+			GD.Print("dimming action music");
 			_tween.InterpolateProperty(
 				actionMusic,
 				"volume_db",
 				actionMusic.VolumeDb,
-				-10,
+				-50,
 				3f
 			);
 		}
@@ -69,15 +71,17 @@ public class SoundManager : Node
 	public void PlayGameMusic()
 	{
 		if (actionMusic.Playing) return;
+		GD.Print("playing game music");
 		actionMusic.VolumeDb = -10;
 		actionMusic.Play();
 		if (menuMusic.Playing)
 		{
+			GD.Print("dimming menu music");
 			_tween.InterpolateProperty(
 				menuMusic,
 				"volume_db",
 				menuMusic.VolumeDb,
-				-10,
+				-50,
 				3f
 			);
 		}
