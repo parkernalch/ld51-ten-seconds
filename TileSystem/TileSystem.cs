@@ -5,14 +5,19 @@ using JamToolkit.Util;
 public class TileSystem : TileMap
 {
 	EventBus _eventBus;
+	GameManager _gm;
+	Node2D _cachedTileContainer;
 	Godot.Collections.Dictionary<int, PackedScene> tileLookup = new Godot.Collections.Dictionary<int, PackedScene>();
 	int halfCell;
 	Godot.Collections.Dictionary<Vector2, Node2D> instancedTiles = new Godot.Collections.Dictionary<Vector2, Node2D>();
-
+	Node _currentScene;
 
 	public override void _Ready()
 	{
+		_cachedTileContainer = GetNode<Node2D>("CachedTiles");
+		_currentScene = GetTree().CurrentScene;
 		_eventBus = GetNode<EventBus>("/root/EventBus");
+		_gm = GetNode<GameManager>("/root/GameManager");
 		halfCell = (int)(CellSize.x * 0.5f);
 		// Ice
 		tileLookup.Add(0, ResourceLoader.Load<PackedScene>("res://TileSystem/Tiles/Ice/IceTile.tscn"));
@@ -24,8 +29,46 @@ public class TileSystem : TileMap
 		tileLookup.Add(3, ResourceLoader.Load<PackedScene>("res://TileSystem/Tiles/Void/VoidTile.tscn"));
 		// Floor
 		tileLookup.Add(4, ResourceLoader.Load<PackedScene>("res://TileSystem/Tiles/Floor/FloorTile.tscn"));
-		ReplaceTilesWithScenes();
+		if (_gm.IsFirstVisit())
+		{
+			ReplaceTilesWithScenes();
+		} else {
+			LoadTiles(_gm.CurrentRoom);
+		}
 		_eventBus.SafeConnect(nameof(EventBus.LobbedProjectileImpacted), this, nameof(BreakTile));
+		_eventBus.SafeConnect(nameof(EventBus.LeftRoom), this, nameof(SaveTiles));
+	}
+	
+	void SaveTiles(int room)
+	{
+		PackedScene _packedScene = new PackedScene();
+		_packedScene.Pack(_cachedTileContainer);
+		ResourceSaver.Save($"res://floor_{_gm.CurrentRoom}.tscn", _packedScene);
+	}
+	
+	void LoadTiles(int room)
+	{
+		var scene = GD.Load<PackedScene>($"res://floor_{_gm.CurrentRoom}.tscn");
+		var myScene = scene.Instance();
+		if (myScene.GetParent() != null)
+		{
+			myScene.GetParent().RemoveChild(myScene);
+		}
+		Clear();
+		CallDeferred(nameof(SafeAddChild), myScene);
+	}
+	
+	async void SafeAddChild(Node2D scene)
+	{
+		_cachedTileContainer.Owner = null;
+		_cachedTileContainer.QueueFree();
+		await ToSignal(GetTree(), "idle_frame");
+		AddChild(scene);
+		_cachedTileContainer = scene;
+		foreach(BaseTile tile in _cachedTileContainer.GetChildren())
+		{
+			instancedTiles[tile.Coordinates] = tile;
+		}
 	}
 
 	void ReplaceTilesWithScenes()
@@ -35,14 +78,16 @@ public class TileSystem : TileMap
 		foreach(Vector2 tilePosition in usedTiles)
 		{
 			int cell = GetCell((int)tilePosition.x, (int)tilePosition.y);
-			Node2D scene = tileLookup[cell].Instance<Node2D>();
-			AddChild(scene);
+			BaseTile scene = tileLookup[cell].Instance<BaseTile>();
+			_cachedTileContainer.AddChild(scene);
+			scene.Owner = _cachedTileContainer;
 			scene.GlobalPosition = MapToWorld(tilePosition) + offsetVector;
 			SetCell((int)tilePosition.x, (int)tilePosition.y, -1);
+			scene.Coordinates = tilePosition;
 			instancedTiles[tilePosition] = scene;
 		}
 	}
-
+	
 	void BreakTileByMapPosition(Vector2 mapPosition)
 	{
 		if (!instancedTiles.Keys.Contains(mapPosition)) return;
@@ -54,10 +99,13 @@ public class TileSystem : TileMap
 				(cell as BreakableTile).Crack();
 			} else
 			{
-				Node2D scene = tileLookup[2].Instance<Node2D>();
-				AddChild(scene);
+				BaseTile scene = tileLookup[2].Instance<BaseTile>();
+				_cachedTileContainer.AddChild(scene);
+				scene.Owner = _cachedTileContainer;
 				scene.GlobalPosition = MapToWorld(mapPosition) + new Vector2(halfCell, halfCell);
 				cell.QueueFree();
+				scene.Coordinates = mapPosition;
+				(scene as BreakableTile).Crack();
 				instancedTiles[mapPosition] = scene;
 			}
 		}

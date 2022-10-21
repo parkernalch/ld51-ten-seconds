@@ -110,6 +110,14 @@ public class EventBus : Node
 	}
 
 	[Signal]
+	public delegate void LeftRoom(int roomIndex);
+	public void LeaveRoom(int roomIndex)
+	{
+		if (_disposed) return;
+		EmitSignal(nameof(LeftRoom), roomIndex);
+	}
+
+	[Signal]
 	public delegate void PlayerChanged(PlayerController player);
 	public void LoadPlayer(PlayerController player)
 	{

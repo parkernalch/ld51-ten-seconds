@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using System.Collections.Generic;
 using JamToolkit.Util;
 using TenSeconds.Data;
 
@@ -8,6 +9,7 @@ public class GameManager : Node
 	int objectiveCompletedCount;
 	int objectiveFailedCount;
 
+	public List<int> RoomsVisitedInRun = new List<int>();
 	public int PreviousRoom;
 	public int CurrentRoom
 	{
@@ -85,8 +87,8 @@ public class GameManager : Node
 
 	void OnEnteredRoom(int roomIndex)
 	{
-		objectiveCompletedCount = 0;
-		objectiveFailedCount = 0;
+		if(RoomsVisitedInRun.Contains(roomIndex)) return;
+		RoomsVisitedInRun.Add(roomIndex);
 	}
 
 	private void OnCountdownEnded()
@@ -99,6 +101,7 @@ public class GameManager : Node
 	{
 		objectiveCompletedCount = 0;
 		objectiveFailedCount = 0;
+		RoomsVisitedInRun.Clear();
 	}
 
 	public void NextLevel()
@@ -108,7 +111,7 @@ public class GameManager : Node
 	}
 	public void PrevLevel()
 	{
-		GD.Print("Next Level");
+		GD.Print("Previous Level");
 		// _sceneManager.LoadNextLevel();
 	}
 	
@@ -137,5 +140,10 @@ public class GameManager : Node
 		coinCount = Mathf.Max(coinCount - p.Damage, 0);
 		Scores.TotalCoinsDropped += p.Damage;
 		_eventBus.ChangeCoinCount(coinCount);
+	}
+	
+	public bool IsFirstVisit()
+	{
+		return !RoomsVisitedInRun.Contains(_currentRoom);
 	}
 }

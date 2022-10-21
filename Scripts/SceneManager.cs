@@ -2,11 +2,16 @@ using Godot;
 
 public class SceneManager : Node
 {
+	EventBus _eventBus;
 	PackedScene gameScene = ResourceLoader.Load<PackedScene>("res://Scenes/main_scene.tscn");
 	PackedScene transitionScene = ResourceLoader.Load<PackedScene>("res://Scenes/FloorTransition/FloorTransition.tscn");
 	PackedScene mainMenuScene = ResourceLoader.Load<PackedScene>("res://Scenes/primary/PlayableMenu/PlayableMenu.tscn");
 	PackedScene creditsScene = ResourceLoader.Load<PackedScene>("res://Scenes/primary/CreditsScene/CreditsScene.tscn");
 	PackedScene optionsScene = ResourceLoader.Load<PackedScene>("res://Scenes/primary/OptionsScene/OptionsScene.tscn");
+	public override void _Ready()
+	{
+		_eventBus = GetNode<EventBus>("/root/EventBus");
+	}
 
 	public void GoToMainMenu() => GetTree().ChangeSceneTo(mainMenuScene);
 
@@ -22,6 +27,7 @@ public class SceneManager : Node
 	public void GoToNextLevel()
 	{
 		var gameManager = GetNode<GameManager>("/root/GameManager");
+		_eventBus.LeaveRoom(gameManager.CurrentRoom);
 		gameManager.SetCurrentRoom(gameManager.CurrentRoom + 1);
 		GetTree().ChangeSceneTo(transitionScene);
 	}

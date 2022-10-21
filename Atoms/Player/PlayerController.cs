@@ -37,12 +37,14 @@ public class PlayerController : KinematicBody2D
 
 	private Sprite _sprite;
 	private AnimationTree _animationTree;
+	private GameManager _gm;
 	private Tween _tween;
 	private ShaderMaterial _material;
 
 	public override void _Ready()
 	{
 		_coinValue = 0;
+		_gm = GetNode<GameManager>("/root/GameManager") ?? throw new ArgumentException(nameof(GameManager));
 		_eventBus = GetNode<EventBus>("/root/EventBus") ?? throw new ArgumentException(nameof(EventBus));
 		_tween = this.GetNode<Tween>();
 		_animationTree = this.GetNode<AnimationTree>();
@@ -200,6 +202,7 @@ public class PlayerController : KinematicBody2D
 	public void Fall() {
 		_animationTree.Active = false;
 		_anim.Play("fall");
+		_eventBus.LeaveRoom(_gm.CurrentRoom);
 		SetProcessInput(false);
 		SetPhysicsProcess(false);
 	}

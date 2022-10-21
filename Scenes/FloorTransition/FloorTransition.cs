@@ -7,8 +7,10 @@ public class FloorTransition : CanvasLayer
 	Label _nextLabel;
 	AnimationPlayer _anim;
 	GameManager _gm;
+	SceneManager _sceneManager;
 	public override void _Ready()
 	{
+		_sceneManager = GetNode<SceneManager>("/root/SceneManager");
 		_anim = GetNode<AnimationPlayer>("AnimationPlayer");
 		_prevLabel = GetNode<Label>("ColorRect/PreviousContainer/PreviousLevelLabel");
 		_nextLabel = GetNode<Label>("ColorRect/NextContainer/NextLevelLabel");
@@ -16,11 +18,6 @@ public class FloorTransition : CanvasLayer
 		_anim.Play("RESET");
 
 		StartAnimation();
-	}
-	
-	public void GoToNextScreen()
-	{
-		GetNode<SceneManager>("/root/SceneManager").FinishTransition();
 	}
 	
 	async void StartAnimation()
@@ -37,7 +34,7 @@ public class FloorTransition : CanvasLayer
 			_anim.Play("transition");
 		}
 		await ToSignal(_anim, "animation_finished");
-		GetNode<SceneManager>("/root/SceneManager").FinishTransition();
+		_sceneManager.FinishTransition();
 	}
 
 }

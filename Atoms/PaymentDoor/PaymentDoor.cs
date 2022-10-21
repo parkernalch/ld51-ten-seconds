@@ -49,5 +49,6 @@ public class PaymentDoor : Area2D
 	{
 		doorBlocker.Disabled = true;
 		doorSprite.Visible = false;
+		this.SafeDisconnect("body_entered", this, nameof(OnBodyEntered));
 	}
 }

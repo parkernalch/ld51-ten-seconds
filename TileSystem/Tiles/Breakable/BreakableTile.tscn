@@ -29,19 +29,18 @@ resource_local_to_scene = true
 shader = SubResource( 3 )
 shader_param/columns = 3.0
 shader_param/rows = 3.0
-shader_param/position = Vector2( 0, 0 )
+shader_param/position = Vector2( 2, -1 )
 shader_param/textureSheet = ExtResource( 1 )
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
 region = Rect2( 0, 32, 32, 32 )
 
-[node name="BreakableTile" type="Area2D"]
+[node name="BreakableTileArea" type="Area2D"]
 script = ExtResource( 2 )
-crackIndices = [ Vector2( 0, 0 ), Vector2( 1, 0 ), Vector2( 2, 0 ) ]
+crackIndices = [ Vector2( 2, -1 ), Vector2( 0, 0 ), Vector2( 1, 0 ), Vector2( 2, 0 ) ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]

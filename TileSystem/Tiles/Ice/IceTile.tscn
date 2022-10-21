@@ -1,14 +1,16 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Assets/aseprite/breakableTile-Sheet.png" type="Texture" id=1]
 [ext_resource path="res://Atoms/Effects/FrictionEffect/FrictionEffect.tscn" type="PackedScene" id=2]
 [ext_resource path="res://TileSystem/Tiles/EffectTile.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Atoms/BaseTile/BaseTile.cs" type="Script" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 32, 32 )
 
 [node name="IceTile" type="Node2D"]
+script = ExtResource( 4 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = SubResource( 1 )

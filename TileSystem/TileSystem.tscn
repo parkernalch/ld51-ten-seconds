@@ -80,3 +80,5 @@ tile_set = SubResource( 1 )
 cell_size = Vector2( 32, 32 )
 format = 1
 script = ExtResource( 1 )
+
+[node name="CachedTiles" type="Node2D" parent="."]

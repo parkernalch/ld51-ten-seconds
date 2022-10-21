@@ -22,7 +22,7 @@ public class MainScene : Node2D
 		_eventBus = GetNode<EventBus>("/root/EventBus");
 		_timer = new Timer();
 		AddChild(_timer);
-		_timer.WaitTime = 10f;
+		_timer.WaitTime = 3f;
 		_timer.OneShot = false;
 		_timer.Autostart = true;
 		_timer.SafeConnect("timeout", this, nameof(OnTimerTimeout));
