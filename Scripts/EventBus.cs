@@ -134,10 +134,10 @@ public class EventBus : Node
 	}
 
 	[Signal]
-	public delegate void LobbedProjectileImpacted(Vector2 impactPoint, int radius);
-	public void NotifyProjectileImpact(Vector2 impactPoint, int radius)
+	public delegate void LobbedProjectileImpacted(ProjectileType projectileType, Vector2 impactPoint, int radius);
+	public void NotifyProjectileImpact(ProjectileType projectileType, Vector2 impactPoint, int radius)
 	{
 		if (_disposed) return;
-		EmitSignal(nameof(LobbedProjectileImpacted), impactPoint, radius);
+		EmitSignal(nameof(LobbedProjectileImpacted), projectileType, impactPoint, radius);
 	}
 }

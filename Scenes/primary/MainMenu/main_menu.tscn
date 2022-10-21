@@ -51,21 +51,21 @@ margin_left = 200.0
 margin_right = -200.0
 
 [node name="PlayButton" type="Button" parent="ButtonContainer"]
-margin_right = 624.0
+margin_right = 518.0
 margin_bottom = 57.0
 theme = ExtResource( 2 )
 text = "Start the Clock"
 
 [node name="CreditsButton" type="Button" parent="ButtonContainer"]
 margin_top = 61.0
-margin_right = 624.0
+margin_right = 518.0
 margin_bottom = 118.0
 theme = ExtResource( 2 )
 text = "Show Me The Credits"
 
 [node name="OptionsButton" type="Button" parent="ButtonContainer"]
 margin_top = 122.0
-margin_right = 624.0
+margin_right = 518.0
 margin_bottom = 179.0
 theme = ExtResource( 2 )
 text = "what are my options?"

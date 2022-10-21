@@ -12,6 +12,9 @@ public class Lobber : Node2D
 	Tween _tween;
 	AnimationPlayer _anim;
 	float followSpeed = 0f;
+
+	[Export] public ProjectileType ProjectileType { get; set; }
+
 	public override void _Ready()
 	{
 		_timer = new Timer();
@@ -56,11 +59,12 @@ public class Lobber : Node2D
 		float xComp = Mathf.Lerp(v1.x, v2.x, weight);
 		return new Vector2(xComp, yComp);
 	}
-	
+
 	void Fire()
 	{
 		LobbedProjectile proj = _lobbedProjectileScene.Instance<LobbedProjectile>();
 		AddChild(proj);
+		proj.ProjectileType = this.ProjectileType;
 		proj.GlobalPosition = this.GlobalPosition;
 		proj.Shoot(_pc.GlobalPosition);
 		_timer.Start();

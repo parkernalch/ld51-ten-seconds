@@ -46,6 +46,7 @@ public class GameManager : Node
 		_eventBus.SafeConnect(nameof(EventBus.CoinCollected), this, nameof(OnCoinCollected));
 		_eventBus.SafeConnect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
 		Scores = SaveState.Load();
+		GD.Randomize();
 	}
 
 	public override void _Process(float delta)
@@ -114,7 +115,7 @@ public class GameManager : Node
 		GD.Print("Previous Level");
 		// _sceneManager.LoadNextLevel();
 	}
-	
+
 	public int SetCurrentRoom(int room)
 	{
 		this.PreviousRoom = this.CurrentRoom;
@@ -141,7 +142,7 @@ public class GameManager : Node
 		Scores.TotalCoinsDropped += p.Damage;
 		_eventBus.ChangeCoinCount(coinCount);
 	}
-	
+
 	public bool IsFirstVisit()
 	{
 		return !RoomsVisitedInRun.Contains(_currentRoom);

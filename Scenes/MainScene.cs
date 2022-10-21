@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using JamToolkit.Util;
 
 public class MainScene : Node2D
@@ -13,6 +15,8 @@ public class MainScene : Node2D
 	private int _level = 1;
 	Godot.Collections.Array<RayCast2D> coinCasts = new Godot.Collections.Array<RayCast2D>();
 	private Vector2 _lastCoinSpawn;
+
+	PackedScene _lobberScene = ResourceLoader.Load<PackedScene>("res://Atoms/Lobber/Lobber.tscn");
 	public override void _Ready()
 	{
 		PackedScene coinBurstScene = ResourceLoader.Load<PackedScene>("res://Atoms/CoinBurst/CoinBurst.tscn");
@@ -28,10 +32,14 @@ public class MainScene : Node2D
 		_timer.SafeConnect("timeout", this, nameof(OnTimerTimeout));
 		GameManager gameManager = GetNode<GameManager>("/root/GameManager");
 		_player = (PlayerController)this.FindNode("PlayerController");
+		if (gameManager.IsFirstVisit())
+		{
+			SpawnLobbers(gameManager.CurrentRoom);
+		}
 		_eventBus.LoadPlayer(_player);
 		_eventBus.EnterRoom(gameManager.CurrentRoom);
 		_eventBus.SafeConnect(nameof(EventBus.MissileConnected), this, nameof(OnMissileConnected));
-		for(int i=0; i<8; i++)
+		for (int i = 0; i < 8; i++)
 		{
 			RayCast2D cast = new RayCast2D();
 			_player.AddChild(cast);
@@ -42,7 +50,35 @@ public class MainScene : Node2D
 			cast.GlobalPosition = _player.GlobalPosition;
 			coinCasts.Add(cast);
 		}
+
 		_timer.Start();
+	}
+
+	private void SpawnLobbers(int currentRoom)
+	{
+		var tileSystem = this.FindChild<TileSystem>();
+		var xs = new[] { 47, 176, 336, 464 };
+		var ys = new[] { 47, 144, 237 };
+		var positions = (
+			from x in xs
+			from y in ys
+			select new Vector2(x, y)
+		).ToList();
+
+		// every 3 levels we get another lobber
+		var lobberCount = Math.Min(12, (currentRoom / 3) + 1);
+		while (lobberCount-- > 0 || positions.Count == 0)
+		{
+			var i = (int)(GD.Randf() * positions.Count);
+			var position = positions[i];
+			var type = (ProjectileType)GD.RandRange(0, 2.99);
+			positions.RemoveAt(i);
+
+			var lobber = _lobberScene.Instance<Lobber>();
+			lobber.GlobalPosition = position;
+			lobber.ProjectileType = type;
+			tileSystem.TrackNode(lobber);
+		}
 	}
 
 	protected override void Dispose(bool disposing)

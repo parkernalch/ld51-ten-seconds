@@ -1,10 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Resources/obstacle_tiles.tres" type="TileSet" id=1]
 [ext_resource path="res://Atoms/Player/PlayerController.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/MainScene.cs" type="Script" id=3]
 [ext_resource path="res://Molecules/Emitter/Emitter.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Atoms/Lobber/Lobber.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Atoms/ShakyCam.cs" type="Script" id=6]
 [ext_resource path="res://Atoms/SceneTrigger/SceneTrigger.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Atoms/PaymentDoor/PaymentDoor.tscn" type="PackedScene" id=9]
@@ -55,9 +54,6 @@ script = ExtResource( 6 )
 [node name="PaymentDoor" parent="." instance=ExtResource( 9 )]
 position = Vector2( 272, 16 )
 toll = 5
-
-[node name="Lobber" parent="." instance=ExtResource( 5 )]
-position = Vector2( 47, 237 )
 
 [node name="Emitter" parent="." instance=ExtResource( 4 )]
 position = Vector2( 255, 144 )

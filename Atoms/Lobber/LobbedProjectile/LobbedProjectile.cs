@@ -15,7 +15,8 @@ public class LobbedProjectile : Node2D
 	Timer _timer;
 
 	float speed = 10f;
-	[Export]float airTime = 1f;
+	[Export] float airTime = 1f;
+	[Export] public ProjectileType ProjectileType { get; set; }
 	bool isActive = false;
 
 	public override void _Ready()
@@ -32,7 +33,7 @@ public class LobbedProjectile : Node2D
 		_projectileSprite = GetNode<Sprite>("ProjectilePath/PathFollow2D/ProjectileSprite");
 		_pathFollow = GetNode<PathFollow2D>("ProjectilePath/PathFollow2D");
 		_path = GetNode<Path2D>("ProjectilePath");
-		float curveLength = _path.Curve.GetBakedLength();
+		var curveLength = _path.Curve.GetBakedLength();
 		speed = curveLength / airTime;
 		Shoot(_targetPosition.GlobalPosition);
 		_pathFollow.Visible = false;
@@ -90,8 +91,7 @@ public class LobbedProjectile : Node2D
 		_shardParticles.Emitting = true;
 		_pathFollow.Visible = false;
 		_shadowSprite.Visible = false;
-		GetNode<EventBus>("/root/EventBus").NotifyProjectileImpact(_targetPosition.GlobalPosition, 1);
-
+		GetNode<EventBus>("/root/EventBus").NotifyProjectileImpact(ProjectileType, _targetPosition.GlobalPosition, 1);
 
 		SetProcess(true);
 		isActive = false;
